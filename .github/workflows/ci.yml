@@ -1,0 +1,54 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  versioning:
+    name: CI / versioning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate branch naming
+        run: |
+          if [ -f scripts/validate-versioning.mjs ]; then node scripts/validate-versioning.mjs; else echo "No versioning script yet."; fi
+
+  content:
+    name: CI / content-validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate frontmatter schema
+        run: |
+          if [ -d content/en ] && [ -f scripts/validate-frontmatter.mjs ]; then node scripts/validate-frontmatter.mjs; else echo "No content to validate yet (placeholder)."; fi
+      - name: Verify content hashes
+        run: |
+          if [ -f scripts/hash-content.mjs ] && [ -f reports/content_hashes.sha256 ]; then node scripts/hash-content.mjs --verify; else echo "No hash verification configured (placeholder)."; fi
+
+  lint:
+    name: CI / lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Lint placeholder (enable once app exists)."
+
+  test:
+    name: CI / test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Test placeholder (enable once app exists)."
+
+  build:
+    name: CI / build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Build placeholder (enable once app exists)."

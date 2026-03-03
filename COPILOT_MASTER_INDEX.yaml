@@ -1,0 +1,59 @@
+meta:
+  pack_name: "Sea Reader — Copilot Instruction Pack (v0.0.x Infrastructure)"
+  generated: "2026-03-03"
+  purpose: "Fully-automated infrastructure/bootstrap + content ingestion governance. Designed for 'Ingest and comply'."
+  authority_layers:
+    - "GOVERNANCE_CHARTER.md (policy) > instructions/*.yaml (execution) > templates/** (reference artifacts)."
+
+ingest_and_comply_contract:
+  - "Execute instruction files in priority order from this index without additional prompting."
+  - "One feature branch per instruction file."
+  - "Before starting ANY feature or patch branch, create an annotated tag on main matching the instruction version."
+  - "After completing an instruction file: commit, push, open PR, ensure required checks pass, merge."
+  - "After merge: run CI on main + targeted regressions. Failures trigger PATCH branch."
+  - "PATCH branch naming: patch/vX.Y.Z_PATCH-<kebab-description> (same tag discipline)."
+
+stages:
+  - version: "v0.0.0"
+    priority: 1
+    file: "instructions/v0.0.0-project-and-repo-bootstrap.yaml"
+    outcome: "Local repo initialized + GitHub repo created (private) + remotes configured."
+  - version: "v0.0.1"
+    priority: 2
+    file: "instructions/v0.0.1-templates-materialization-and-rulesets.yaml"
+    outcome: "Repo baseline docs/workflows/scripts/schemas copied from templates; rulesets applied via REST API; checks aligned."
+  - version: "v0.0.2"
+    priority: 3
+    file: "instructions/v0.0.2-content-ingestion.yaml"
+    outcome: "Markdown zip ingested; frontmatter corrected without body edits; ingestion report generated."
+  - version: "v0.0.3"
+    priority: 4
+    file: "instructions/v0.0.3-quality-enforcement.yaml"
+    outcome: "Quality gates documented; CI hardened."
+  - version: "v0.0.4"
+    priority: 5
+    file: "instructions/v0.0.4-environment-hardening.yaml"
+    outcome: "Env policy + security headers/CSP plan + rate limiting/observability documentation."
+  - version: "v0.0.5"
+    priority: 6
+    file: "instructions/v0.0.5-content-integrity-hashing.yaml"
+    outcome: "SHA256 content inventory + CI verification + changelog requirement."
+  - version: "v0.0.6"
+    priority: 7
+    file: "instructions/v0.0.6-semver-and-branch-policy-enforcement.yaml"
+    outcome: "Branch naming enforcement wired into CI."
+  - version: "v0.0.7"
+    priority: 8
+    file: "instructions/v0.0.7-security-scanning-and-dependabot.yaml"
+    outcome: "CodeQL + Dependabot + secret scanning posture documented."
+  - version: "v0.0.8"
+    priority: 9
+    file: "instructions/v0.0.8-accessibility-and-performance-baseline.yaml"
+    outcome: "A11y/perf budgets documented + Lighthouse placeholder workflow."
+  - version: "v0.0.9"
+    priority: 10
+    file: "instructions/v0.0.9-rollback-and-dr-policy.yaml"
+    outcome: "Rollback and DR policy + release checklist."
+
+notes:
+  - "Application build (v0.1.x+) must not start until v0.0.9 is merged and CI is green on main."

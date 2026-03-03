@@ -1,0 +1,8 @@
+name: Lighthouse (baseline)
+on:
+  workflow_dispatch:
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Placeholder."

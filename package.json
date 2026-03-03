@@ -1,0 +1,28 @@
+{
+  "name": "sea-reader",
+  "version": "1.0.0",
+  "description": "Governed reader platform. See GOVERNANCE_CHARTER.md and COPILOT_MASTER_INDEX.yaml.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finnoybu/sea-reader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/finnoybu/sea-reader/issues"
+  },
+  "homepage": "https://github.com/finnoybu/sea-reader#readme",
+  "devDependencies": {
+    "ajv": "^8.18.0",
+    "gray-matter": "^4.0.3"
+  }
+}
