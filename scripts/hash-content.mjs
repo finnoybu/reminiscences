@@ -58,8 +58,13 @@ if (!fs.existsSync(reportPath)) {
 const expected = new Map();
 for (const line of fs.readFileSync(reportPath, "utf8").split(/\r?\n/)) {
   if (!line.trim()) continue;
-  const [h, rel] = line.split(/\s{2,}/);
-  expected.set(rel.trim(), h.trim());
+  const [h, relRaw] = line.split(/\s{2,}/);
+
+  const rel = relRaw
+    .trim()
+    .replaceAll("\\", "/");   // normalize Windows paths
+
+  expected.set(rel, h.trim());
 }
 
 let ok = true;
