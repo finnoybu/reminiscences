@@ -5,3 +5,34 @@
 body {
   font-family: system-ui, sans-serif;
 }
+/* High contrast mode support */
+html.high-contrast {
+  @apply bg-black text-white;
+}
+
+html.high-contrast body {
+  @apply bg-black text-white;
+}
+
+html.high-contrast a {
+  @apply text-yellow-300 underline;
+}
+
+html.high-contrast button,
+html.high-contrast input[type="radio"],
+html.high-contrast input[type="checkbox"] {
+  @apply border-white border-2;
+}
+
+html.high-contrast .prose {
+  @apply text-white;
+}
+
+html.high-contrast .prose a {
+  @apply text-yellow-300;
+}
+
+/* Dark mode support */
+html.dark {
+  color-scheme: dark;
+}

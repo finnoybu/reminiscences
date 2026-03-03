@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getChapterBySlug, getAdjacentChapters, getAllChapters } from '@/lib/chapters'
 import Hero from '@/components/Hero'
 import ReaderShell from '@/components/ReaderShell'
+import ReaderSettings from '@/components/ReaderSettings'
 
 interface ChapterPageProps {
   params: {
@@ -32,40 +33,43 @@ export default function ChapterPage({ params }: ChapterPageProps) {
   const { prev, next } = getAdjacentChapters(params.slug)
 
   return (
-    <ReaderShell>
-      <Hero title={chapter.title} />
+    <>
+      <ReaderShell>
+        <Hero title={chapter.title} />
 
-      <article className="prose prose-sm max-w-none mb-8">
-        <div dangerouslySetInnerHTML={{ __html: chapter.content }} />
-      </article>
+        <article className="prose prose-sm max-w-none mb-8">
+          <div dangerouslySetInnerHTML={{ __html: chapter.content }} />
+        </article>
 
-      <nav className="flex justify-between items-center border-t pt-6 mt-8">
-        {prev ? (
-          <Link
-            href={`/chapters/${prev.slug}`}
-            className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
-          >
-            ← {prev.title}
+        <nav className="flex justify-between items-center border-t pt-6 mt-8">
+          {prev ? (
+            <Link
+              href={`/chapters/${prev.slug}`}
+              className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
+            >
+              ← {prev.title}
+            </Link>
+          ) : (
+            <div />
+          )}
+
+          <Link href="/" className="text-sm text-slate-600 hover:text-slate-900">
+            Table of Contents
           </Link>
-        ) : (
-          <div />
-        )}
 
-        <Link href="/" className="text-sm text-slate-600 hover:text-slate-900">
-          Table of Contents
-        </Link>
-
-        {next ? (
-          <Link
-            href={`/chapters/${next.slug}`}
-            className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
-          >
-            {next.title} →
-          </Link>
-        ) : (
-          <div />
-        )}
-      </nav>
-    </ReaderShell>
+          {next ? (
+            <Link
+              href={`/chapters/${next.slug}`}
+              className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
+            >
+              {next.title} →
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+      </ReaderShell>
+      <ReaderSettings />
+    </>
   )
 }

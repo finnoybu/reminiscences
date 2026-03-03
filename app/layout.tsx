@@ -1,4 +1,5 @@
 import './globals.css'
+import { ReaderProvider } from '@/lib/reader-context'
 
 export const metadata = {
   title: 'Sea Reader',
@@ -7,10 +8,13 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-white text-slate-900">
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors">
+        <ReaderProvider>
+          {children}
+        </ReaderProvider>
       </body>
     </html>
   )
 }
+
