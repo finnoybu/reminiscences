@@ -15,7 +15,8 @@ const cache = new Map<string, WikiSummary | null>()
 function extractWikiTitle(href: string): string | null {
   try {
     const url = new URL(href)
-    if (!url.hostname.endsWith('wikipedia.org')) return null
+    const hostname = url.hostname.toLowerCase()
+    if (hostname !== 'wikipedia.org' && !hostname.endsWith('.wikipedia.org')) return null
     const match = url.pathname.match(/^\/wiki\/(.+)$/)
     if (!match) return null
     return decodeURIComponent(match[1])
