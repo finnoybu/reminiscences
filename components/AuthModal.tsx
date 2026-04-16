@@ -22,7 +22,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname)}` },
       })
       if (error) { setError(error.message); setLoading(false); return }
       setView('check_email')
@@ -32,7 +32,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
       onClose()
     } else if (view === 'forgot_password') {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname)}`,
       })
       if (error) { setError(error.message); setLoading(false); return }
       setView('check_email')
@@ -45,7 +45,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
     setLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname)}` },
     })
     if (error) { setError(error.message); setLoading(false) }
   }

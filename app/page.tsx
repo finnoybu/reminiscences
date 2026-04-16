@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getAllChapters } from '@/lib/chapters'
 import SearchBar from '@/components/SearchBar'
+import ReadingProgress from '@/components/ReadingProgress'
 import ChapterCard from '@/components/ChapterCard'
 
 export default function Home() {
@@ -106,6 +107,8 @@ export default function Home() {
             <SearchBar />
           </div>
         </div>
+
+        <ReadingProgress />
 
         {intro && (
           <Link

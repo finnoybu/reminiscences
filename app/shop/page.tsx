@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import BuyButton from '@/components/BuyButton'
+import DownloadButtons from '@/components/DownloadButtons'
 
 export const metadata: Metadata = {
   title: 'Shop',
@@ -39,7 +41,7 @@ const editions = [
     href: '#',
     badge: 'Direct',
     icon: '⬇',
-    comingSoon: true,
+    directPurchase: true,
   },
 ]
 
@@ -98,10 +100,11 @@ export default function ShopPage() {
               </p>
             </div>
             <div className="px-5 pb-5">
-              {ed.comingSoon ? (
-                <span className="block w-full text-center h-12 leading-[3rem] rounded-full border border-rule-soft text-ink-faint font-sans text-sm tracking-wider uppercase">
-                  Coming soon
-                </span>
+              {ed.directPurchase ? (
+                <>
+                  <BuyButton />
+                  <DownloadButtons />
+                </>
               ) : (
                 <a
                   href={ed.href}
