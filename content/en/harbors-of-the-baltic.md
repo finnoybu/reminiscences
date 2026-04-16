@@ -10,7 +10,7 @@ places:
   1: "Copenhagen, Denmark"
 slug: "harbors-of-the-baltic"
 hero:
-  image: "/images/harbors-of-the-baltic.jpg"
+  image: "/images/harbors-of-the-baltic.png"
 ---
 
 

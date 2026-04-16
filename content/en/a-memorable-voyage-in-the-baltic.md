@@ -3,7 +3,7 @@ title: "A Memorable Voyage in the Baltic"
 id: 48
 slug: "a-memorable-voyage-in-the-baltic"
 hero:
-  image: "/images/a-memorable-voyage-in-the-baltic.jpg"
+  image: "/images/a-memorable-voyage-in-the-baltic.png"
 ---
 
 

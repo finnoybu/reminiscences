@@ -8,7 +8,7 @@ places:
   0: "Brooklyn, New York, US"
 slug: "brooklyn-gangsters"
 hero:
-  image: "/images/brooklyn-gangsters.jpg"
+  image: "/images/brooklyn-gangsters.png"
 ---
 
 

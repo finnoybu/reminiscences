@@ -1,77 +1,58 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import { getChapterBySlug, getAdjacentChapters, getAllChapters } from '@/lib/chapters'
-import Hero from '@/components/Hero'
-import ReaderShell from '@/components/ReaderShell'
-import ReaderSettings from '@/components/ReaderSettings'
+import ChapterArticle from '@/components/ChapterArticle'
+import ChapterHero from '@/components/ChapterHero'
+import ChapterNav from '@/components/ChapterNav'
+import ChapterScrubber from '@/components/ChapterScrubber'
 import ReadingProgressTracker from '@/components/ReadingProgressTracker'
 
 interface ChapterPageProps {
-  params: {
-    slug: string
-  }
+  params: { slug: string }
 }
 
 export async function generateStaticParams() {
   const chapters = getAllChapters()
-  return chapters.map((chapter) => ({
-    slug: chapter.slug,
-  }))
+  return chapters.map((chapter) => ({ slug: chapter.slug }))
 }
 
-export const metadata = {
-  title: 'Sea Reader',
-  description: 'A governed reader platform',
+export function generateMetadata({ params }: ChapterPageProps) {
+  const chapter = getChapterBySlug(params.slug)
+  if (!chapter) return { title: 'Chapter not found' }
+  return {
+    title: chapter.title,
+    description: chapter.excerpt,
+  }
 }
 
 export default function ChapterPage({ params }: ChapterPageProps) {
   const chapter = getChapterBySlug(params.slug)
+  if (!chapter) notFound()
 
-  if (!chapter) {
-    notFound()
-  }
+  const all = getAllChapters()
+  const nonIntro = all.filter((c) => c.slug !== 'introduction')
+  const isPrologue = chapter.slug === 'introduction'
+  const ordinal = isPrologue
+    ? 0
+    : nonIntro.findIndex((c) => c.slug === chapter.slug) + 1
 
   const { prev, next } = getAdjacentChapters(params.slug)
 
   return (
     <>
+      <ChapterScrubber />
       <ReadingProgressTracker chapterSlug={params.slug} />
-      <ReaderShell>
-        <Hero title={chapter.title} />
-
-        <article className="prose prose-sm max-w-none mb-8">
-          <div dangerouslySetInnerHTML={{ __html: chapter.content }} />
-        </article>
-
-        <nav className="flex justify-between items-center border-t pt-6 mt-8">
-          {prev ? (
-            <Link
-              href={`/chapters/${prev.slug}`}
-              className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
-            >
-              ← {prev.title}
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          <Link href="/" className="text-sm text-slate-600 hover:text-slate-900">
-            Table of Contents
-          </Link>
-
-          {next ? (
-            <Link
-              href={`/chapters/${next.slug}`}
-              className="px-4 py-2 bg-slate-100 rounded hover:bg-slate-200"
-            >
-              {next.title} →
-            </Link>
-          ) : (
-            <div />
-          )}
-        </nav>
-      </ReaderShell>
-      <ReaderSettings />
+      <ChapterHero
+        title={chapter.title}
+        image={chapter.hero?.image}
+        ordinal={ordinal}
+        isPrologue={isPrologue}
+      />
+      <div className="max-w-shell mx-auto px-6 py-12 md:py-16">
+        <ChapterArticle html={chapter.content} />
+        <div className="max-w-measure mx-auto">
+          <ChapterNav prev={prev} next={next} />
+        </div>
+      </div>
     </>
   )
 }

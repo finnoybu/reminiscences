@@ -3,7 +3,7 @@ title: "In Tropical Seas"
 id: 18
 slug: "in-tropical-seas"
 hero:
-  image: "/images/in-tropical-seas.jpg"
+  image: "/images/in-tropical-seas.png"
 ---
 
 

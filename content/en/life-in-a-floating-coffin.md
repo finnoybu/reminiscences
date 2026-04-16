@@ -3,7 +3,7 @@ title: "Life in a Floating Coffin"
 id: 26
 slug: "life-in-a-floating-coffin"
 hero:
-  image: "/images/life-in-a-floating-coffin.jpg"
+  image: "/images/life-in-a-floating-coffin.png"
 ---
 
 

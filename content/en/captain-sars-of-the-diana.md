@@ -3,7 +3,7 @@ title: "Captain Sars of the 'Diana'"
 id: 35
 slug: "captain-sars-of-the-diana"
 hero:
-  image: "/images/captain-sars-of-the-diana.jpg"
+  image: "/images/captain-sars-of-the-diana.png"
 ---
 
 

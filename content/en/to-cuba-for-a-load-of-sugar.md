@@ -11,7 +11,7 @@ places:
   3: "Boston, MA, USA"
 slug: "to-cuba-for-a-load-of-sugar"
 hero:
-  image: "/images/to-cuba-for-a-load-of-sugar.jpg"
+  image: "/images/to-cuba-for-a-load-of-sugar.png"
 ---
 
 

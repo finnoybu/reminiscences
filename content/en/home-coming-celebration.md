@@ -3,7 +3,7 @@ title: "Home-coming Celebration"
 id: 10
 slug: "home-coming-celebration"
 hero:
-  image: "/images/home-coming-celebration.jpg"
+  image: "/images/home-coming-celebration.png"
 ---
 
 

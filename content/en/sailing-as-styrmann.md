@@ -10,7 +10,7 @@ places:
   1: "Stralsund, Germany"
 slug: "sailing-as-styrmann"
 hero:
-  image: "/images/sailing-as-styrmann.jpg"
+  image: "/images/sailing-as-styrmann.png"
 ---
 
 

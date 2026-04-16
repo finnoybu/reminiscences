@@ -3,7 +3,7 @@ title: "Gay Copenhagen"
 id: 47
 slug: "gay-copenhagen"
 hero:
-  image: "/images/gay-copenhagen.jpg"
+  image: "/images/gay-copenhagen.png"
 ---
 
 

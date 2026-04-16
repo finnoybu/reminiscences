@@ -3,7 +3,7 @@ title: "Off to the Tropics"
 id: 38
 slug: "off-to-the-tropics"
 hero:
-  image: "/images/off-to-the-tropics.jpg"
+  image: "/images/off-to-the-tropics.png"
 ---
 
 

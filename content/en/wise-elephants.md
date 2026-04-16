@@ -3,7 +3,7 @@ title: "Wise Elephants"
 id: 44
 slug: "wise-elephants"
 hero:
-  image: "/images/wise-elephants.jpg"
+  image: "/images/wise-elephants.png"
 ---
 
 

@@ -4,7 +4,7 @@ id: 1
 year: 1875
 slug: "the-first-lessons"
 hero:
-  image: "/images/the-first-lessons.jpg"
+  image: "/images/the-first-lessons.png"
 ---
 
 

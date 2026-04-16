@@ -3,7 +3,7 @@ title: "Summertime in Norway"
 id: 31
 slug: "summertime-in-norway"
 hero:
-  image: "/images/summertime-in-norway.jpg"
+  image: "/images/summertime-in-norway.png"
 ---
 
 

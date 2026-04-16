@@ -9,7 +9,7 @@ places:
   1: "Malmö, Sweden"
 slug: "with-president-daae"
 hero:
-  image: "/images/with-president-daae.jpg"
+  image: "/images/with-president-daae.png"
 ---
 
 

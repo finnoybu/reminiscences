@@ -3,7 +3,7 @@ title: "Captain – Able Seaman"
 id: 6
 slug: "captain-able-seaman"
 hero:
-  image: "/images/captain-able-seaman.jpg"
+  image: "/images/captain-able-seaman.png"
 ---
 
 

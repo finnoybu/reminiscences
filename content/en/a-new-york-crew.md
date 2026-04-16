@@ -11,7 +11,7 @@ places:
   3: "Danzig, Germany"
 slug: "a-new-york-crew"
 hero:
-  image: "/images/a-new-york-crew.jpg"
+  image: "/images/a-new-york-crew.png"
 ---
 
 

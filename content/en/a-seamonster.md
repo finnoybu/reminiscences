@@ -2,7 +2,7 @@
 title: "A Seamonster"
 id: 46
 hero:
-  image: "https://commons.wikimedia.org/wiki/File:Humpback_Whale_(Megaptera_novaeangliae)_-_Flickr_-_Gregory_%22Slobirdr%22_Smith.jpg"
+  image: "/images/a-seamonster.png"
 slug: "a-seamonster"
 ---
 
@@ -73,4 +73,4 @@ When we got to the hotel we were ushered into the dining-room, and big, find tod
 
 We returned to our ship in a small steamer, taking our own little gig in tow. Then the ship was brought into harbor. Here lay hundreds of ships of all sizes and descriptions, but even the Danes themselves admitted freely that that 'Semiramis' was the proudest and finest ship in the harbor. On the homeward voyage, as before stated, we had painted and polished her from the globes on top her masts to the waterline, and she appeared like a new ship. When she was moored to the pier and pumped dry, our time was up. We had been exactly a year on that voyage to East India.
 
->_(The last few pages of these reminiscenses were written aboard the [Norwegian-American Liner 'Stavangerfjord'](https://en.wikipedia.org/wiki/SS_Stavangerfjord_(1918)), on the way to Norway. We are now a few miles west of the Hebrides, and it Saturday afternoon, July 9, 1938. A gale of Northwest is blowing, and the Stavangerfjord is rolling and heaving considerably, especially noticeable fore and aft. Many of the passengers are seasick; some are feeding the fishes. But some of us think this is really enjoyable sailing. My nephew, B. O. Berge, of Ottawa, Illinois, who is my traveling companion, has been taking some pictures of some of us who enjoy sailing on a stormy sea, trying to get backgrounds of foamy waves and breakers. Tomorrow afternoon we are due in Bergen, Norway.)_
+>_(The last few pages of these reminiscenses were written aboard the [Norwegian-American Liner 'Stavangerfjord'](https://en.wikipedia.org/wiki/SS_Stavangerfjord_%281918%29), on the way to Norway. We are now a few miles west of the Hebrides, and it Saturday afternoon, July 9, 1938. A gale of Northwest is blowing, and the Stavangerfjord is rolling and heaving considerably, especially noticeable fore and aft. Many of the passengers are seasick; some are feeding the fishes. But some of us think this is really enjoyable sailing. My nephew, B. O. Berge, of Ottawa, Illinois, who is my traveling companion, has been taking some pictures of some of us who enjoy sailing on a stormy sea, trying to get backgrounds of foamy waves and breakers. Tomorrow afternoon we are due in Bergen, Norway.)_

@@ -3,7 +3,7 @@ title: "Bill and his Negro Boss"
 id: 15
 slug: "bill-and-his-negro-boss"
 hero:
-  image: "/images/bill-and-his-negro-boss.jpg"
+  image: "/images/bill-and-his-negro-boss.png"
 ---
 
 

@@ -3,7 +3,7 @@ title: "Threatening Clouds"
 id: 22
 slug: "threatening-clouds"
 hero:
-  image: "/images/threatening-clouds.jpg"
+  image: "/images/threatening-clouds.png"
 ---
 
 

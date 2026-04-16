@@ -3,7 +3,7 @@ title: "Boyish Carelessness"
 id: 14
 slug: "boyish-carelessness"
 hero:
-  image: "/images/boyish-carelessness.jpg"
+  image: "/images/boyish-carelessness.png"
 ---
 
 

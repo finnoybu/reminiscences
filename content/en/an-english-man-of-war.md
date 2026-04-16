@@ -3,7 +3,7 @@ title: "An English Man-of-War"
 id: 5
 slug: "an-english-man-of-war"
 hero:
-  image: "/images/an-english-man-of-war.jpg"
+  image: "/images/an-english-man-of-war.png"
 ---
 
 

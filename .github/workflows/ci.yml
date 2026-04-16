@@ -111,4 +111,11 @@ jobs:
           corepack prepare pnpm@9.0.0 --activate
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: Build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: placeholder
+          SUPABASE_SECRET_KEY: placeholder
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: placeholder
+          STRIPE_SECRET_KEY: placeholder
+        run: pnpm build

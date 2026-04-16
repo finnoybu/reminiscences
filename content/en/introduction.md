@@ -3,7 +3,7 @@ title: "Introduction"
 id: 0
 slug: "introduction"
 hero:
-  image: "/images/introduction.jpg"
+  image: "/images/introduction.png"
 ---
 
 

@@ -10,6 +10,7 @@ export interface ChapterMeta {
   hero: {
     image: string
   }
+  excerpt: string
 }
 
 export interface Chapter extends ChapterMeta {
@@ -17,6 +18,19 @@ export interface Chapter extends ChapterMeta {
 }
 
 const CONTENT_DIR = path.join(process.cwd(), 'content', 'en')
+
+function makeExcerpt(body: string, maxLen = 180): string {
+  const firstPara = body
+    .replace(/\r\n/g, '\n')
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .find((p) => p.length > 0) || ''
+  const clean = firstPara.replace(/\s+/g, ' ').trim()
+  if (clean.length <= maxLen) return clean
+  const cut = clean.slice(0, maxLen)
+  const lastSpace = cut.lastIndexOf(' ')
+  return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut) + '…'
+}
 
 export function getAllChapters(): ChapterMeta[] {
   if (!fs.existsSync(CONTENT_DIR)) {
@@ -28,12 +42,13 @@ export function getAllChapters(): ChapterMeta[] {
   const chapters: ChapterMeta[] = files
     .map((file) => {
       const raw = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8')
-      const { data } = matter(raw)
+      const { data, content: body } = matter(raw)
       return {
         id: data.id,
         title: data.title,
         slug: data.slug,
         hero: data.hero,
+        excerpt: makeExcerpt(body),
       } as ChapterMeta
     })
     .sort((a, b) => a.id - b.id)

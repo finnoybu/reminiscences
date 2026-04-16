@@ -3,7 +3,7 @@ title: "Festive Days in the Slaveship"
 id: 29
 slug: "festive-days-in-a-slaveship"
 hero:
-  image: "/images/festive-days-in-a-slaveship.jpg"
+  image: "/images/festive-days-in-a-slaveship.png"
 ---
 
 
