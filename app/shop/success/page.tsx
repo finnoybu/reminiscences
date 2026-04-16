@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Arrowhead from '@/components/Arrowhead'
 
 export const metadata: Metadata = {
   title: 'Purchase complete',
@@ -10,7 +11,7 @@ export default function SuccessPage() {
     <div className="max-w-shell mx-auto px-6 py-16 md:py-24">
       <div className="max-w-prose mx-auto text-center">
         <div className="rule-ornament font-display text-3xl mb-8" style={{ fontFeatureSettings: "'ss01'" }}>
-          <span>⚓</span>
+          <Arrowhead />
         </div>
         <h1
           className="font-display text-4xl md:text-5xl leading-tight text-ink mb-6"

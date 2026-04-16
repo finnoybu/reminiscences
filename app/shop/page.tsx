@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import Arrowhead from '@/components/Arrowhead'
 import BuyButton from '@/components/BuyButton'
 import DownloadButtons from '@/components/DownloadButtons'
 
@@ -122,7 +123,7 @@ export default function ShopPage() {
 
       <div className="max-w-measure mx-auto text-center mt-16">
         <div className="rule-ornament font-display text-xl mb-6" style={{ fontFeatureSettings: "'ss01'" }}>
-          <span>⚓</span>
+          <Arrowhead />
         </div>
         <p className="font-serif text-base text-ink-muted leading-relaxed">
           Prefer to read online? The complete memoir is{' '}

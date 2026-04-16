@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ChapterMeta } from '@/lib/chapters'
+import Arrowhead from './Arrowhead'
 
 export default function ChapterNav({
   prev,
@@ -64,7 +65,7 @@ export default function ChapterNav({
           href="/#chapters"
           className="font-sans text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors"
         >
-          ⚓ All chapters
+          <Arrowhead size={24} /> All chapters
         </Link>
       </div>
     </nav>

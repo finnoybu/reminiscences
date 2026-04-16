@@ -210,10 +210,11 @@ body::before {
   margin: 2.5em 0;
 }
 .prose-memoir hr::before {
-  content: '⚓';
-  color: var(--color-brass);
-  font-size: 1.25em;
-  letter-spacing: 0.5em;
+  content: '';
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: url('/images/finnoy_arrowhead_2026_mini-blue.png') center / contain no-repeat;
 }
 
 /* ───────────────────────────────────────────────────────────
