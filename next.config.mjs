@@ -6,6 +6,7 @@ const withMDX = nextMDX({
 
 export default withMDX({
   pageExtensions: ['ts', 'tsx', 'mdx'],
+  transpilePackages: ['@supabase/auth-js'],
   experimental: {
     typedRoutes: true
   }

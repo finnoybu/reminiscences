@@ -281,6 +281,48 @@ body::before {
   }
 }
 
+/* Toast notifications */
+.toast-enter { animation: toast-in 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+.toast-exit  { animation: toast-out 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+@keyframes toast-in  { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes toast-out { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, 8px); } }
+
+/* Bookmark ribbons in chapter prose */
+.prose-memoir p.has-bookmark {
+  position: relative;
+}
+.bookmark-ribbon {
+  position: absolute;
+  left: -2rem;
+  top: 0.15em;
+  opacity: 0.7;
+  transition: opacity 200ms ease;
+}
+.bookmark-ribbon:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .bookmark-ribbon {
+    left: -1.5rem;
+  }
+}
+
+/* Annotation highlights in chapter prose */
+.annotation-highlight {
+  background: color-mix(in srgb, var(--color-brass) 15%, transparent);
+  border-bottom: 2px solid var(--color-brass);
+  border-radius: 2px;
+  cursor: default;
+  transition: background 200ms ease;
+}
+.annotation-highlight.has-note {
+  background: color-mix(in srgb, var(--color-brass) 25%, transparent);
+}
+.annotation-highlight:hover {
+  background: color-mix(in srgb, var(--color-brass) 30%, transparent);
+}
+
 /* Style Wikipedia links in prose to hint they're hoverable */
 .prose-memoir a[href*="wikipedia.org"] {
   text-decoration-style: dotted;

@@ -10,6 +10,7 @@ interface Annotation {
   chapter_slug: string
   text_selection: string
   note: string
+  selection_start: number | null
   created_at: string
 }
 
@@ -77,10 +78,10 @@ export default function AnnotationsPage() {
               >
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <Link
-                    href={`/chapters/${ann.chapter_slug}` as any}
+                    href={`/chapters/${ann.chapter_slug}${ann.selection_start != null ? `?scrollToText=${ann.selection_start}` : ''}` as any}
                     className="eyebrow text-[10px] hover:text-accent transition-colors"
                   >
-                    {ann.chapter_slug.replace(/-/g, ' ')}
+                    {ann.chapter_slug.replace(/-/g, ' ')} ↗
                   </Link>
                   <button
                     type="button"
@@ -100,7 +101,7 @@ export default function AnnotationsPage() {
                   <p className="font-serif text-base text-ink">{ann.note}</p>
                 )}
                 <p className="font-sans text-xs text-ink-faint mt-3">
-                  {new Date(ann.created_at).toLocaleDateString()}
+                  {new Date(ann.created_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
                 </p>
               </div>
             ))}
