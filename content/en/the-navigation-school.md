@@ -3,7 +3,7 @@ title: "The Navigation School"
 id: 32
 slug: "the-navigation-school"
 hero:
-  image: "/images/the-navigation-school.jpg"
+  image: "/images/the-navigation-school.png"
 ---
 
 

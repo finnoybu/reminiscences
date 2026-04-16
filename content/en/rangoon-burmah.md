@@ -4,7 +4,7 @@ id: 41
 poi: "Shwedagon Zedi Daw"
 slug: "rangoon-burmah"
 hero:
-  image: "/images/rangoon-burmah.jpg"
+  image: "/images/rangoon-burmah.png"
 ---
 
 

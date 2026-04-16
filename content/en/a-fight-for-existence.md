@@ -3,7 +3,7 @@ title: "A Fight for Existence"
 id: 24
 slug: "a-fight-for-existence"
 hero:
-  image: "/images/a-fight-for-existence.jpg"
+  image: "/images/a-fight-for-existence.png"
 ---
 
 

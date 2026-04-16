@@ -3,7 +3,7 @@ title: "Crossing the Atlantic in a Hurricane"
 id: 16
 slug: "crossing-the-atlantic-in-a-hurricane"
 hero:
-  image: "/images/crossing-the-atlantic-in-a-hurricane.jpg"
+  image: "/images/crossing-the-atlantic-in-a-hurricane.png"
 ---
 
 

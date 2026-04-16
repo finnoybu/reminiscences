@@ -9,7 +9,7 @@ places:
   1: "Karlshamn, Sweden"
 slug: "the-atlantic-ocean-in-fair-weather"
 hero:
-  image: "/images/the-atlantic-ocean-in-fair-weather.jpg"
+  image: "/images/the-atlantic-ocean-in-fair-weather.png"
 ---
 
 

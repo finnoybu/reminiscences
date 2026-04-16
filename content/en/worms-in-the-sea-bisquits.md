@@ -3,7 +3,7 @@ title: "Worms in the sea-bisquits"
 id: 21
 slug: "worms-in-the-sea-bisquits"
 hero:
-  image: "/images/worms-in-the-sea-bisquits.jpg"
+  image: "/images/worms-in-the-sea-bisquits.png"
 ---
 
 

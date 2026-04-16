@@ -3,7 +3,7 @@ title: "A Fight with Tuberculosis"
 id: 34
 slug: "a-fight-with-tuberculosis"
 hero:
-  image: "/images/a-fight-with-tuberculosis.jpg"
+  image: "/images/a-fight-with-tuberculosis.png"
 ---
 
 

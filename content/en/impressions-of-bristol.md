@@ -3,7 +3,7 @@ title: "Impressions of Bristol"
 id: 17
 slug: "impressions-of-bristol"
 hero:
-  image: "/images/impressions-of-bristol.jpg"
+  image: "/images/impressions-of-bristol.png"
 ---
 
 

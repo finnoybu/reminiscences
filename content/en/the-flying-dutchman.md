@@ -3,7 +3,7 @@ title: "The Flying Dutchman"
 id: 40
 slug: "the-flying-dutchman"
 hero:
-  image: "/images/the-flying-dutchman.jpg"
+  image: "/images/the-flying-dutchman.png"
 ---
 
 

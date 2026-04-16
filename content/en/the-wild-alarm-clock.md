@@ -8,7 +8,7 @@ places:
   0: "Boston, MA, USA"
 slug: "the-wild-alarm-clock"
 hero:
-  image: "/images/the-wild-alarm-clock.jpg"
+  image: "/images/the-wild-alarm-clock.png"
 ---
 
 

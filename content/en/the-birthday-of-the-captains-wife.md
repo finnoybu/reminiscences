@@ -3,7 +3,7 @@ title: "The Birthday of the Captain's Wife"
 id: 37
 slug: "the-birthday-of-the-captains-wife"
 hero:
-  image: "/images/the-birthday-of-the-captains-wife.jpg"
+  image: "/images/the-birthday-of-the-captains-wife.png"
 ---
 
 

@@ -3,7 +3,7 @@ title: "Neptune - A Barber"
 id: 39
 slug: "neptune-as-barber"
 hero:
-  image: "/images/neptune-as-barber.jpg"
+  image: "/images/neptune-as-barber.png"
 ---
 
 

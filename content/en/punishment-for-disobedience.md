@@ -3,7 +3,7 @@ title: "Punishment for Disobedience"
 id: 7
 slug: "punishment-for-disobedience"
 hero:
-  image: "/images/punishment-for-disobedience.jpg"
+  image: "/images/punishment-for-disobedience.png"
 ---
 
 
