@@ -79,6 +79,30 @@ export default function AboutPage() {
             a sprawling family tree that continues to honor his journey.
           </p>
         </div>
+
+        <hr className="my-16 border-none text-center before:content-['⚓'] before:text-brass before:text-xl" />
+
+        <div className="prose-memoir">
+          <h2>About the Contributors</h2>
+
+          <p>
+            <strong>Bernhard O. &ldquo;B. O.&rdquo; Berge</strong> was a prominent figure in
+            the Norwegian-American community of Illinois, known for his leadership in legal
+            and fraternal organizations. He was the son of Ole B. Berge and Gunhild Bjornson,
+            making him a direct grandson of Olaus Wullum Bjornsen Westbo&rsquo;s parents (and
+            thus Olaus&rsquo;s nephew, though often linked as a &ldquo;grandson&rdquo; in broader
+            family contexts due to the close multi-generational ties of the Berge and Westbo
+            families).
+          </p>
+
+          <p>
+            <strong>Kenneth Tannenbaum</strong> is a fifth-generation Norwegian-American and a
+            great-great-grandson of the pioneer Olaus Wullum Bjornsen Westbo. Carrying forward
+            a family legacy of exploration and structural building that began on the Vestb&oslash;
+            farm in Norway and moved to the shores of the Pacific Northwest, Kenneth now
+            navigates the digital frontiers of Silicon Valley.
+          </p>
+        </div>
       </div>
     </div>
   )
