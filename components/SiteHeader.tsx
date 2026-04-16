@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useReader, Theme } from '@/lib/reader-context'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
 import AuthButton from './AuthButton'
 
 const cycle: Record<Theme, Theme> = {
@@ -33,7 +35,17 @@ const navLinks: { href: string; label: string; accent?: boolean }[] = [
 export default function SiteHeader() {
   const { preferences, setTheme } = useReader()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
   const pathname = usePathname()
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [supabase.auth])
 
   useEffect(() => {
     setMenuOpen(false)
@@ -138,16 +150,38 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <div className="mt-2 pt-3 border-t border-rule-soft flex items-center gap-3 px-3">
-              <span className="font-sans text-xs uppercase tracking-widest text-ink-faint">Theme</span>
-              <button
-                type="button"
-                onClick={() => setTheme(cycle[preferences.theme])}
-                className="font-sans text-sm text-ink-muted hover:text-accent transition-colors"
-              >
-                {icons[preferences.theme]} {preferences.theme.charAt(0).toUpperCase() + preferences.theme.slice(1)}
-              </button>
-            </div>
+            {user ? (
+              <div className="mt-2 pt-3 border-t border-rule-soft flex flex-col gap-1">
+                <Link
+                  href={"/account" as any}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center h-12 px-3 font-sans text-base text-ink-muted hover:text-ink rounded transition-colors"
+                >
+                  My account
+                </Link>
+                <Link
+                  href={"/account/bookmarks" as any}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center h-12 px-3 font-sans text-base text-ink-muted hover:text-ink rounded transition-colors"
+                >
+                  Bookmarks
+                </Link>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await supabase.auth.signOut()
+                    setMenuOpen(false)
+                  }}
+                  className="flex items-center h-12 px-3 font-sans text-base text-ink-muted hover:text-ink rounded transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <div className="mt-2 pt-3 border-t border-rule-soft">
+                <AuthButton />
+              </div>
+            )}
           </nav>
         </div>
       )}
