@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'About this digital edition of A Sailor\'s Reminiscences from the Days of the Sailships.',
+  description: 'About Olavus Vullum Bjørnson Vestbø and this digital edition of A Sailor\'s Reminiscences.',
 }
 
 export default function AboutPage() {
@@ -36,6 +37,46 @@ export default function AboutPage() {
             The illustrations accompanying each chapter were gathered to evoke the world
             Olavus inhabited &mdash; the ships, the ports, the storms, and the quiet
             moments between.
+          </p>
+        </div>
+
+        <hr className="my-16 border-none text-center before:content-['⚓'] before:text-brass before:text-xl" />
+
+        <div className="flex flex-col items-center mb-10">
+          <div className="relative w-64 h-80 rounded-lg overflow-hidden shadow-lift">
+            <Image
+              src="/images/olavus-portrait.PNG"
+              alt="Olaus Wullum Bjornsen Westbo holding a model ship"
+              fill
+              sizes="256px"
+              className="object-cover grayscale sepia-[.15]"
+            />
+          </div>
+          <p className="mt-4 font-sans text-xs uppercase tracking-widest text-ink-faint">
+            Olaus Wullum Bjornsen Westbo, 1859&ndash;1940
+          </p>
+        </div>
+
+        <div className="prose-memoir">
+          <h2>The Author</h2>
+
+          <p>
+            Olaus Wullum Bjornsen Westbo (1859&ndash;1940) was a Norwegian-born pioneer
+            and family patriarch who helped shape the Scandinavian-American community
+            in the Pacific Northwest. Born in Norway as one of twelve children to
+            Bj&oslash;rn Nilson Vestb&oslash; and Gunhild Olsdatter Berge, Olaus
+            carried his family&rsquo;s heritage across the Atlantic, eventually settling
+            in Tacoma, Washington.
+          </p>
+
+          <p>
+            A central figure in the Westbo lineage, Olaus established a lasting legacy
+            alongside his wife, Bertha Olava, raising a family that bridged Old World
+            traditions with New World opportunities. His life story is one of migration,
+            resilience, and the quiet strength of the immigrant experience. He is
+            remembered today by his descendants for his role in anchoring the Westbo
+            name in American soil. He rests at the Old Tacoma Cemetery, leaving behind
+            a sprawling family tree that continues to honor his journey.
           </p>
         </div>
       </div>
