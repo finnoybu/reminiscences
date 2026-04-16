@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Arrowhead from './Arrowhead'
 
 function toRoman(num: number): string {
   if (num <= 0) return ''
@@ -57,7 +58,7 @@ export default function ChapterHero({
           </h1>
           <div className="mt-8 flex items-center justify-center gap-3 text-brass">
             <span className="block w-16 h-px bg-rule" />
-            <span aria-hidden>⚓</span>
+            <Arrowhead />
             <span className="block w-16 h-px bg-rule" />
           </div>
         </div>

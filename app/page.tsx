@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getAllChapters } from '@/lib/chapters'
 import SearchBar from '@/components/SearchBar'
+import Arrowhead from '@/components/Arrowhead'
 import ReadingProgress from '@/components/ReadingProgress'
 import ChapterCard from '@/components/ChapterCard'
 
@@ -79,7 +80,7 @@ export default function Home() {
       <section className="max-w-shell mx-auto px-6 py-20">
         <div className="max-w-measure mx-auto text-center">
           <div className="rule-ornament font-display text-2xl mb-8" style={{ fontFeatureSettings: "'ss01'" }}>
-            <span>⚓</span>
+            <Arrowhead />
           </div>
           <p className="font-serif text-lg md:text-xl leading-relaxed text-ink-muted">
             Olavus set out from Norway as a boy, bound for the endless horizon. His voyages

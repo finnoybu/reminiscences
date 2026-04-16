@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Arrowhead from '@/components/Arrowhead'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -40,7 +41,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <hr className="my-16 border-none text-center before:content-['⚓'] before:text-brass before:text-xl" />
+        <div className="my-16 flex justify-center"><Arrowhead /></div>
 
         <div className="flex flex-col items-center mb-10">
           <div className="relative w-64 h-80 rounded-lg overflow-hidden shadow-lift">
@@ -80,7 +81,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <hr className="my-16 border-none text-center before:content-['⚓'] before:text-brass before:text-xl" />
+        <div className="my-16 flex justify-center"><Arrowhead /></div>
 
         <div className="prose-memoir">
           <h2>About the Contributors</h2>
