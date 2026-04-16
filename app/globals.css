@@ -124,7 +124,7 @@ body::before {
    ─────────────────────────────────────────────────────────── */
 .prose-memoir {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: 1.1875rem;
+  font-size: 1.25rem;
   line-height: 1.75;
   color: var(--color-ink);
   font-feature-settings: 'liga', 'kern', 'onum';

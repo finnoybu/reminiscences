@@ -1,7 +1,10 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useReader, Theme } from '@/lib/reader-context'
+import AuthButton from './AuthButton'
 
 const cycle: Record<Theme, Theme> = {
   light: 'dark',
@@ -21,8 +24,29 @@ const labels: Record<Theme, string> = {
   'high-contrast': 'High-contrast theme',
 }
 
+const navLinks: { href: string; label: string; accent?: boolean }[] = [
+  { href: '/#chapters', label: 'Chapters' },
+  { href: '/chapters/introduction', label: 'Read' },
+  { href: '/shop', label: 'Shop', accent: true },
+]
+
 export default function SiteHeader() {
   const { preferences, setTheme } = useReader()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
 
   return (
     <header className="sticky top-0 z-40 border-b border-rule-soft bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70">
@@ -32,29 +56,25 @@ export default function SiteHeader() {
           className="group flex items-baseline gap-2 text-ink hover:text-accent transition-colors"
         >
           <span className="font-display text-xl tracking-wide" style={{ fontFeatureSettings: "'ss01'" }}>
-            A Sailor&rsquo;s Reminiscences
+            <span className="hidden min-[420px]:inline">A Sailor&rsquo;s Reminiscences</span>
+            <span className="min-[420px]:hidden">Reminiscences</span>
           </span>
         </Link>
 
         <nav className="ml-auto flex items-center gap-1">
-          <Link
-            href="/#chapters"
-            className="hidden md:inline-flex items-center h-9 px-3 font-sans text-sm text-ink-muted hover:text-ink transition-colors rounded"
-          >
-            Chapters
-          </Link>
-          <Link
-            href="/chapters/introduction"
-            className="hidden md:inline-flex items-center h-9 px-3 font-sans text-sm text-ink-muted hover:text-ink transition-colors rounded"
-          >
-            Read
-          </Link>
-          <Link
-            href="/shop"
-            className="hidden md:inline-flex items-center h-9 px-3 font-sans text-sm text-brass hover:text-accent transition-colors rounded"
-          >
-            Shop
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href as any}
+              className={`hidden md:inline-flex items-center h-9 px-3 font-sans text-sm transition-colors rounded ${
+                link.accent
+                  ? 'text-brass hover:text-accent'
+                  : 'text-ink-muted hover:text-ink'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
 
           <button
             type="button"
@@ -64,8 +84,73 @@ export default function SiteHeader() {
           >
             <span aria-hidden className="text-base leading-none">{icons[preferences.theme]}</span>
           </button>
+
+          <span className="hidden md:inline-flex ml-3 pl-3 border-l border-rule-soft"><AuthButton /></span>
+
+          <button
+            type="button"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden ml-1 inline-flex items-center justify-center w-9 h-9 rounded border border-rule-soft text-ink-muted hover:text-accent hover:border-rule transition-colors"
+          >
+            <svg
+              aria-hidden
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              {menuOpen ? (
+                <>
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </>
+              ) : (
+                <>
+                  <path d="M4 6h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                </>
+              )}
+            </svg>
+          </button>
         </nav>
       </div>
+
+      {menuOpen && (
+        <div className="md:hidden border-t border-rule-soft bg-bg/95 backdrop-blur-md">
+          <nav className="max-w-shell mx-auto px-6 py-4 flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href as any}
+                onClick={() => setMenuOpen(false)}
+                className={`flex items-center h-12 px-3 font-sans text-base rounded transition-colors ${
+                  link.accent
+                    ? 'text-brass hover:text-accent'
+                    : 'text-ink-muted hover:text-ink'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="mt-2 pt-3 border-t border-rule-soft flex items-center gap-3 px-3">
+              <span className="font-sans text-xs uppercase tracking-widest text-ink-faint">Theme</span>
+              <button
+                type="button"
+                onClick={() => setTheme(cycle[preferences.theme])}
+                className="font-sans text-sm text-ink-muted hover:text-accent transition-colors"
+              >
+                {icons[preferences.theme]} {preferences.theme.charAt(0).toUpperCase() + preferences.theme.slice(1)}
+              </button>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

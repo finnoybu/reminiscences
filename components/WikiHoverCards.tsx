@@ -144,18 +144,18 @@ export default function WikiHoverCards({ containerRef }: { containerRef: React.R
       )}
       <div className="p-4">
         <h4
-          className="font-display text-base leading-tight text-ink mb-2"
+          className="font-display text-[1.125rem] leading-tight text-ink mb-2"
           style={{ fontFeatureSettings: "'ss01'" }}
           dangerouslySetInnerHTML={{ __html: summary.title }}
         />
-        <p className="font-serif text-sm leading-relaxed text-ink-muted line-clamp-4">
+        <p className="font-serif text-base leading-relaxed text-ink-muted line-clamp-4">
           {summary.extract}
         </p>
         <a
           href={summary.pageUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-widest text-accent hover:text-accent-hi transition-colors"
+          className="mt-3 inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-widest text-accent hover:text-accent-hi transition-colors"
         >
           Read on Wikipedia
           <span aria-hidden>↗</span>
