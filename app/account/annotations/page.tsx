@@ -1,9 +1,21 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+
+function formatChapterTitle(slug: string): string {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function buildCitation(ann: Annotation): string {
+  const chapter = formatChapterTitle(ann.chapter_slug)
+  const quote = ann.text_selection.length > 120
+    ? ann.text_selection.slice(0, 120) + '\u2026'
+    : ann.text_selection
+  return `"\u200A${quote}\u200A" \u2014 Olavus Tannenbaum, A Sailor\u2019s Reminiscences from the Days of the Sailships, \u201C${chapter}.\u201D Finn\u00F8ybu Press, 2026.`
+}
 
 interface Annotation {
   id: string
@@ -12,6 +24,38 @@ interface Annotation {
   note: string
   selection_start: number | null
   created_at: string
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      aria-label={copied ? 'Copied' : 'Copy citation'}
+      className="flex-shrink-0 text-ink-faint hover:text-accent transition-colors"
+    >
+      {copied ? (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="14" height="14" x="8" y="8" rx="2" />
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+        </svg>
+      )}
+    </button>
+  )
 }
 
 export default function AnnotationsPage() {
@@ -100,7 +144,15 @@ export default function AnnotationsPage() {
                 {ann.note && (
                   <p className="font-serif text-base text-ink">{ann.note}</p>
                 )}
-                <p className="font-sans text-xs text-ink-faint mt-3">
+                <div className="mt-3 p-3 bg-bg-sunk rounded border border-rule-soft">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-serif text-xs text-ink-faint italic leading-relaxed">
+                      {buildCitation(ann)}
+                    </p>
+                    <CopyButton text={buildCitation(ann)} />
+                  </div>
+                </div>
+                <p className="font-sans text-xs text-ink-faint mt-2">
                   {new Date(ann.created_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
                 </p>
               </div>
