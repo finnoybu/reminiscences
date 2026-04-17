@@ -103,6 +103,35 @@ export default function SelectionToolbar({
     return p?.classList.contains('has-bookmark') ?? false
   }
 
+  // ── Check if selection overlaps an existing annotation ───
+  const getOverlappingAnnotation = (): { id: string; element: Element } | null => {
+    if (!info || !articleRef.current) return null
+    const marks = articleRef.current.querySelectorAll('mark.annotation-highlight')
+    for (const mark of marks) {
+      const id = mark.getAttribute('data-annotation-id')
+      if (!id) continue
+      // Check if the selected text is within or overlaps an annotated range
+      if (mark.textContent && info.text && mark.textContent.includes(info.text.slice(0, 20))) {
+        return { id, element: mark }
+      }
+    }
+    // Also check by seeing if the selection start falls within any highlight
+    const sel = window.getSelection()
+    if (sel && sel.rangeCount > 0) {
+      let node: Node | null = sel.getRangeAt(0).startContainer
+      while (node && node !== articleRef.current) {
+        if (node instanceof HTMLElement && node.classList.contains('annotation-highlight')) {
+          const id = node.getAttribute('data-annotation-id')
+          if (id) return { id, element: node }
+        }
+        node = node.parentNode
+      }
+    }
+    return null
+  }
+
+  const hasExistingNote = () => getOverlappingAnnotation() !== null
+
   // ── Toggle bookmark ──────────────────────────────────────
   const toggleBookmark = async () => {
     if (!user || !info || !articleRef.current) return
@@ -144,7 +173,25 @@ export default function SelectionToolbar({
     }
   }
 
-  // ── Save annotation ──────────────────────────────────────
+  // ── Toggle annotation ─────────────────────────────────────
+  const toggleAnnotation = async () => {
+    if (!user || !info) return
+
+    const existing = getOverlappingAnnotation()
+    if (existing) {
+      setSaving(true)
+      await supabase.from('annotations').delete().eq('id', existing.id)
+      setSaving(false)
+      window.getSelection()?.removeAllRanges()
+      dismiss()
+      window.dispatchEvent(new Event('annotation-saved'))
+      flash('Note removed')
+      return
+    }
+
+    setMode('note-form')
+  }
+
   const saveAnnotation = async () => {
     if (!user || !info) return
     setSaving(true)
@@ -205,11 +252,12 @@ export default function SelectionToolbar({
                     </button>
                     <div className="w-px bg-rule-soft" />
                     <button
-                      onClick={() => setMode('note-form')}
-                      className="flex-1 flex items-center justify-center gap-2 h-11 px-4 font-sans text-xs uppercase tracking-widest whitespace-nowrap text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors"
+                      onClick={toggleAnnotation}
+                      disabled={saving}
+                      className="flex-1 flex items-center justify-center gap-2 h-11 px-4 font-sans text-xs uppercase tracking-widest whitespace-nowrap text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors disabled:opacity-50"
                     >
                       <NoteIcon />
-                      Add note
+                      {hasExistingNote() ? 'Remove' : 'Add note'}
                     </button>
                   </>
                 ) : (
