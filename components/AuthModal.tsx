@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import PasswordStrength, { usePasswordStrength } from './PasswordStrength'
 
 type View = 'sign_in' | 'sign_up' | 'forgot_password' | 'check_email'
 
@@ -13,6 +14,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const supabase = createClient()
+  const strength = usePasswordStrength(password)
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,6 +22,11 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
     setError(null)
 
     if (view === 'sign_up') {
+      if (!strength || strength.score < 3) {
+        setError('Please choose a stronger password.')
+        setLoading(false)
+        return
+      }
       if (password !== confirmPassword) {
         setError('Passwords do not match.')
         setLoading(false)
@@ -152,6 +159,10 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
                       placeholder="At least 8 characters"
                     />
                   </div>
+                )}
+
+                {view === 'sign_up' && (
+                  <PasswordStrength password={password} />
                 )}
 
                 {view === 'sign_up' && (
