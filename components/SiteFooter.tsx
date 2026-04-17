@@ -8,6 +8,7 @@ export default function SiteFooter() {
           <Link href="/about" className="text-ink-muted hover:text-accent transition-colors">About</Link>
           <Link href="/contact" className="text-ink-muted hover:text-accent transition-colors">Contact</Link>
           <Link href="/legal" className="text-ink-muted hover:text-accent transition-colors">Legal</Link>
+          <Link href="/legal#privacy-policy" className="text-ink-muted hover:text-accent transition-colors">Privacy Policy</Link>
         </nav>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-ink-faint">
           <p>
