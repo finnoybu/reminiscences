@@ -5,11 +5,11 @@ import zxcvbn from 'zxcvbn'
 
 const LABELS = ['Very weak', 'Weak', 'Fair', 'Strong', 'Very strong'] as const
 const COLORS = [
-  'bg-red-500',
-  'bg-orange-500',
-  'bg-yellow-500',
-  'bg-green-500',
-  'bg-emerald-500',
+  'bg-[#8b4049]',  // muted burgundy
+  'bg-[#9e6a3a]',  // warm amber
+  'bg-[#8a7e3e]',  // dusty gold
+  'bg-[#4a7a5c]',  // slate green
+  'bg-[#2a6b5a]',  // deep teal
 ]
 
 interface PasswordStrengthProps {
@@ -42,7 +42,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
           />
         ))}
       </div>
-      <p className={`font-sans text-xs ${score >= 3 ? 'text-green-600' : 'text-ink-faint'}`}>
+      <p className={`font-sans text-xs ${score >= 3 ? 'text-[#4a7a5c]' : 'text-ink-faint'}`}>
         {LABELS[score]}
         {result.feedback.warning && (
           <span className="text-ink-faint"> — {result.feedback.warning}</span>
