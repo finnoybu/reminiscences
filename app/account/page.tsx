@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 interface Stats {
@@ -14,7 +15,50 @@ interface Stats {
 export default function AccountPage() {
   const { user } = useReader()
   const [stats, setStats] = useState<Stats | null>(null)
+  const [newEmail, setNewEmail] = useState('')
+  const [emailSaving, setEmailSaving] = useState(false)
+  const [emailMessage, setEmailMessage] = useState<string | null>(null)
+  const [passwordSaving, setPasswordSaving] = useState(false)
+  const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
   const supabase = createClient()
+  const router = useRouter()
+
+  const handleChangeEmail = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newEmail.trim()) return
+    setEmailSaving(true)
+    setEmailMessage(null)
+    const { error } = await supabase.auth.updateUser({
+      email: newEmail,
+    })
+    setEmailSaving(false)
+    if (error) {
+      setEmailMessage(error.message)
+    } else {
+      setEmailMessage('Check your new email for a confirmation link.')
+      setNewEmail('')
+    }
+  }, [newEmail, supabase.auth])
+
+  const handleResetPassword = useCallback(async () => {
+    if (!user?.email) return
+    setPasswordSaving(true)
+    setPasswordMessage(null)
+    const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+      redirectTo: `${window.location.origin}/auth/callback?next=/account/update-password`,
+    })
+    setPasswordSaving(false)
+    if (error) {
+      setPasswordMessage(error.message)
+    } else {
+      setPasswordMessage('Check your email for a reset link.')
+    }
+  }, [user, supabase.auth])
+
+  const handleSignOut = useCallback(async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }, [supabase.auth, router])
 
   useEffect(() => {
     if (!user) return
@@ -116,6 +160,74 @@ export default function AccountPage() {
             </div>
             <span className="text-ink-faint group-hover:text-accent transition-colors">→</span>
           </Link>
+        </div>
+
+        {/* Account settings */}
+        <div className="mt-12 pt-12 border-t border-rule-soft space-y-8">
+          <h2
+            className="font-display text-2xl text-ink"
+            style={{ fontFeatureSettings: "'ss01'" }}
+          >
+            Settings
+          </h2>
+
+          {/* Change email */}
+          <div>
+            <h3 className="font-sans text-sm font-medium text-ink mb-1">Change email</h3>
+            <p className="font-sans text-sm text-ink-faint mb-3">
+              Currently: {user.email}
+            </p>
+            <form onSubmit={handleChangeEmail} className="flex gap-3">
+              <input
+                type="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                placeholder="New email address"
+                required
+                className="flex-1 h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={emailSaving}
+                className="h-11 px-5 rounded-md bg-accent text-bg font-sans text-xs uppercase tracking-widest hover:bg-accent-hi transition-colors disabled:opacity-50"
+              >
+                {emailSaving ? 'Sending\u2026' : 'Update'}
+              </button>
+            </form>
+            {emailMessage && (
+              <p className="mt-2 font-sans text-sm text-ink-muted">{emailMessage}</p>
+            )}
+          </div>
+
+          {/* Reset password */}
+          <div>
+            <h3 className="font-sans text-sm font-medium text-ink mb-1">Reset password</h3>
+            <p className="font-sans text-sm text-ink-faint mb-3">
+              We&rsquo;ll send a reset link to {user.email}.
+            </p>
+            <button
+              type="button"
+              onClick={handleResetPassword}
+              disabled={passwordSaving}
+              className="h-11 px-5 rounded-md border border-rule-soft font-sans text-xs uppercase tracking-widest text-ink-muted hover:border-rule hover:text-ink transition-colors disabled:opacity-50"
+            >
+              {passwordSaving ? 'Sending\u2026' : 'Send reset link'}
+            </button>
+            {passwordMessage && (
+              <p className="mt-2 font-sans text-sm text-ink-muted">{passwordMessage}</p>
+            )}
+          </div>
+
+          {/* Sign out */}
+          <div className="pt-4 border-t border-rule-soft">
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="h-11 px-5 rounded-md border border-rule-soft font-sans text-xs uppercase tracking-widest text-ink-faint hover:border-red-300 hover:text-red-600 transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </div>
     </div>
