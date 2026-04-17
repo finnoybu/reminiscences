@@ -26,7 +26,8 @@ export default function BookmarksPage() {
       .from('bookmarks')
       .select('*')
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .order('chapter_slug', { ascending: true })
+      .order('scroll_position', { ascending: true })
       .then(({ data }) => {
         setBookmarks(data ?? [])
         setLoading(false)
@@ -76,14 +77,19 @@ export default function BookmarksPage() {
                 className="flex items-center gap-4 p-4 bg-bg-elev border border-rule-soft rounded-lg"
               >
                 <Link
-                  href={`/chapters/${bm.chapter_slug}` as any}
+                  href={`/chapters/${bm.chapter_slug}?scrollTo=${Math.round(bm.scroll_position)}` as any}
                   className="flex-1 min-w-0"
                 >
-                  <p className="font-display text-base text-ink hover:text-accent transition-colors" style={{ fontFeatureSettings: "'ss01'" }}>
-                    {bm.label || bm.chapter_slug.replace(/-/g, ' ')}
+                  <p className="eyebrow text-[10px] mb-1">
+                    {bm.chapter_slug.replace(/-/g, ' ')}
+                  </p>
+                  <p className="font-display text-lg text-ink hover:text-accent transition-colors" style={{ fontFeatureSettings: "'ss01'" }}>
+                    {bm.label
+                      ? bm.label.split(/\s+/).slice(0, 8).join(' ') + '\u2026'
+                      : bm.chapter_slug.replace(/-/g, ' ')}
                   </p>
                   <p className="font-sans text-xs text-ink-faint mt-1">
-                    {new Date(bm.created_at).toLocaleDateString()}
+                    {new Date(bm.created_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
                   </p>
                 </Link>
                 <button

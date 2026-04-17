@@ -48,7 +48,7 @@ export default function ChapterPage({ params }: ChapterPageProps) {
         isPrologue={isPrologue}
       />
       <div className="max-w-shell mx-auto px-6 py-12 md:py-16">
-        <ChapterArticle html={chapter.content} />
+        <ChapterArticle html={chapter.content} chapterSlug={params.slug} />
         <div className="max-w-measure mx-auto">
           <ChapterNav prev={prev} next={next} />
         </div>
