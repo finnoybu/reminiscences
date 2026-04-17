@@ -26,8 +26,9 @@ export default function SelectionToolbar({
   const supabase = createClient()
 
   const [info, setInfo] = useState<SelectionInfo | null>(null)
-  const [mode, setMode] = useState<'toolbar' | 'note-form' | null>(null)
+  const [mode, setMode] = useState<'toolbar' | 'note-form' | 'errata-form' | null>(null)
   const [note, setNote] = useState('')
+  const [errataDesc, setErrataDesc] = useState('')
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState<{ message: string; key: number } | null>(
     null
@@ -49,6 +50,7 @@ export default function SelectionToolbar({
     setMode(null)
     setInfo(null)
     setNote('')
+    setErrataDesc('')
   }, [])
 
   // ── Listen for text selection ────────────────────────────
@@ -69,6 +71,7 @@ export default function SelectionToolbar({
           setInfo(sel)
           setMode('toolbar')
           setNote('')
+          setErrataDesc('')
         } else {
           dismiss()
         }
@@ -110,12 +113,10 @@ export default function SelectionToolbar({
     for (const mark of marks) {
       const id = mark.getAttribute('data-annotation-id')
       if (!id) continue
-      // Check if the selected text is within or overlaps an annotated range
       if (mark.textContent && info.text && mark.textContent.includes(info.text.slice(0, 20))) {
         return { id, element: mark }
       }
     }
-    // Also check by seeing if the selection start falls within any highlight
     const sel = window.getSelection()
     if (sel && sel.rangeCount > 0) {
       let node: Node | null = sel.getRangeAt(0).startContainer
@@ -140,7 +141,6 @@ export default function SelectionToolbar({
     const paragraph = getBookmarkParagraph()
 
     if (paragraph?.classList.contains('has-bookmark')) {
-      // Remove existing bookmark
       const ribbon = paragraph.querySelector('.bookmark-ribbon')
       const bookmarkId = ribbon?.getAttribute('data-bookmark-id')
       if (bookmarkId) {
@@ -152,7 +152,6 @@ export default function SelectionToolbar({
       window.dispatchEvent(new Event('bookmark-saved'))
       flash('Bookmark removed')
     } else {
-      // Create new bookmark using paragraph's first words as label
       let label = info.text.slice(0, 80)
       if (paragraph?.textContent) {
         const words = paragraph.textContent.trim().split(/\s+/)
@@ -163,6 +162,7 @@ export default function SelectionToolbar({
         user_id: user.id,
         chapter_slug: chapterSlug,
         scroll_position: info.scrollPosition,
+        selection_start: info.selectionStart,
         label,
       })
       setSaving(false)
@@ -210,6 +210,22 @@ export default function SelectionToolbar({
     flash('Note saved')
   }
 
+  // ── Report errata ─────────────────────────────────────────
+  const submitErrata = async () => {
+    if (!user || !info) return
+    setSaving(true)
+    await supabase.from('errata_reports').insert({
+      user_id: user.id,
+      chapter_slug: chapterSlug,
+      text_selection: info.text,
+      description: errataDesc,
+    })
+    setSaving(false)
+    window.getSelection()?.removeAllRanges()
+    dismiss()
+    flash('Errata reported — thank you')
+  }
+
   // ── Render ───────────────────────────────────────────────
   if (!mode || !info) {
     return (
@@ -220,10 +236,13 @@ export default function SelectionToolbar({
     )
   }
 
-  const isNoteForm = mode === 'note-form'
-  const popoverWidth = isNoteForm ? 320 : 300
-  const popoverHeight = isNoteForm ? 220 : 44
+  const isForm = mode === 'note-form' || mode === 'errata-form'
+  const popoverWidth = isForm ? 320 : 200
+  const popoverHeight = isForm ? 220 : 126
   const pos = computePopoverPosition(info.rect, popoverWidth, popoverHeight)
+
+  const menuItemClass =
+    'w-full flex items-center gap-2.5 h-10 px-4 font-sans text-xs uppercase tracking-widest whitespace-nowrap text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors disabled:opacity-50 text-left'
 
   return (
     <>
@@ -239,25 +258,33 @@ export default function SelectionToolbar({
         >
           <div className="bg-bg-elev border border-rule-soft rounded-lg shadow-lg overflow-hidden">
             {mode === 'toolbar' && (
-              <div className="flex">
+              <div className="flex flex-col py-1">
                 {user ? (
                   <>
                     <button
                       onClick={toggleBookmark}
                       disabled={saving}
-                      className="flex-1 flex items-center justify-center gap-2 h-11 px-4 font-sans text-xs uppercase tracking-widest whitespace-nowrap text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors disabled:opacity-50"
+                      className={menuItemClass}
                     >
                       <BookmarkIcon filled={paragraphHasBookmark()} />
                       {paragraphHasBookmark() ? 'Remove' : 'Bookmark'}
                     </button>
-                    <div className="w-px bg-rule-soft" />
                     <button
                       onClick={toggleAnnotation}
                       disabled={saving}
-                      className="flex-1 flex items-center justify-center gap-2 h-11 px-4 font-sans text-xs uppercase tracking-widest whitespace-nowrap text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors disabled:opacity-50"
+                      className={menuItemClass}
                     >
                       <NoteIcon />
-                      {hasExistingNote() ? 'Remove' : 'Add note'}
+                      {hasExistingNote() ? 'Remove note' : 'Add note'}
+                    </button>
+                    <div className="mx-3 h-px bg-rule-soft" />
+                    <button
+                      onClick={() => setMode('errata-form')}
+                      disabled={saving}
+                      className={menuItemClass}
+                    >
+                      <ErrataIcon />
+                      Report errata
                     </button>
                   </>
                 ) : (
@@ -266,7 +293,7 @@ export default function SelectionToolbar({
                       dismiss()
                       setShowAuth(true)
                     }}
-                    className="w-full flex items-center justify-center gap-2 h-11 font-sans text-xs uppercase tracking-widest text-ink-muted hover:text-accent hover:bg-bg-sunk transition-colors"
+                    className={menuItemClass}
                   >
                     Sign in to save
                   </button>
@@ -302,6 +329,39 @@ export default function SelectionToolbar({
                     className="h-9 px-4 bg-accent text-bg font-sans text-xs uppercase tracking-widest rounded-md hover:bg-accent-hi transition-colors disabled:opacity-50"
                   >
                     {saving ? 'Saving\u2026' : 'Save'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {mode === 'errata-form' && (
+              <div className="p-4 space-y-3">
+                <blockquote className="font-serif text-sm italic text-ink-muted border-l-2 border-brass pl-3 line-clamp-3">
+                  &ldquo;{info.text}&rdquo;
+                </blockquote>
+                <textarea
+                  id="errata-description"
+                  name="errata-description"
+                  value={errataDesc}
+                  onChange={(e) => setErrataDesc(e.target.value)}
+                  placeholder="What needs correcting?"
+                  rows={3}
+                  className="w-full border border-rule-soft bg-bg rounded-md px-3 py-2 font-serif text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-accent resize-none"
+                  autoFocus
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() => setMode('toolbar')}
+                    className="h-9 px-3 font-sans text-xs uppercase tracking-widest text-ink-muted hover:text-ink transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={submitErrata}
+                    disabled={saving || !errataDesc.trim()}
+                    className="h-9 px-4 bg-accent text-bg font-sans text-xs uppercase tracking-widest rounded-md hover:bg-accent-hi transition-colors disabled:opacity-50"
+                  >
+                    {saving ? 'Sending\u2026' : 'Report'}
                   </button>
                 </div>
               </div>
@@ -348,6 +408,25 @@ function NoteIcon() {
     >
       <path d="M12 20h9" />
       <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  )
+}
+
+function ErrataIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
     </svg>
   )
 }

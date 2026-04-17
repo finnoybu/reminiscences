@@ -1,0 +1,222 @@
+<!--
+  Supabase Auth Email Templates — Finnoybu Press
+  ================================================
+  Paste each section into the corresponding template in:
+  Supabase Dashboard > Authentication > Email Templates
+
+  Available variables:
+    {{ .ConfirmationURL }}  — confirm signup, change email
+    {{ .Token }}            — OTP code (if enabled)
+    {{ .SiteURL }}          — your site URL
+    {{ .Email }}            — recipient email
+
+  Subject lines (set in the dashboard):
+    Confirm signup:   Confirm Your Email Address
+    Magic link:       Your Sign-In Link
+    Reset password:   Reset Your Password
+    Change email:     Confirm Your New Email Address
+-->
+
+
+<!-- ============================================================
+     1. CONFIRM SIGNUP
+     ============================================================ -->
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
+  <tr>
+    <td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+        <!-- Body -->
+        <tr>
+          <td style="padding:40px 36px 32px;">
+            <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
+              Confirm your email address
+            </h1>
+            <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.6;color:#5a4f3f;">
+              Thank you for signing up for access to
+              <em>A Sailor&rsquo;s Reminiscences from the Days of the Sailships</em>.
+              Please confirm your email to get started.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+              <tr>
+                <td style="background-color:#1d3a52;border-radius:6px;padding:12px 28px;">
+                  <a href="{{ .ConfirmationURL }}" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:0.05em;text-transform:uppercase;color:#fbf7ec;text-decoration:none;">
+                    Confirm email
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.5;color:#8a7e6a;">
+              If the button doesn&rsquo;t work, copy and paste this link into your browser:
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#8a7e6a;word-break:break-all;">
+              {{ .ConfirmationURL }}
+            </p>
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="padding:20px 36px 28px;border-top:1px solid #dfd5bb;text-align:center;">
+            <img src="https://memoirs.finnoybu.com/images/finnoy_arrowhead_2026_mini-blue.png" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-bottom:8px;" />
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              Finnoybu Press &middot; <a href="https://memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">memoirs.finnoybu.com</a>
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              You received this because you signed up for the Reminiscences reader.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<!-- ============================================================
+     2. MAGIC LINK
+     ============================================================ -->
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
+  <tr>
+    <td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+        <tr>
+          <td style="padding:40px 36px 32px;">
+            <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
+              Your sign-in link
+            </h1>
+            <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.6;color:#5a4f3f;">
+              Click the button below to sign in to the Reminiscences reader. This link expires in 24 hours.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+              <tr>
+                <td style="background-color:#1d3a52;border-radius:6px;padding:12px 28px;">
+                  <a href="{{ .ConfirmationURL }}" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:0.05em;text-transform:uppercase;color:#fbf7ec;text-decoration:none;">
+                    Sign in
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.5;color:#8a7e6a;">
+              If the button doesn&rsquo;t work, copy and paste this link into your browser:
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#8a7e6a;word-break:break-all;">
+              {{ .ConfirmationURL }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 36px 28px;border-top:1px solid #dfd5bb;text-align:center;">
+            <img src="https://memoirs.finnoybu.com/images/finnoy_arrowhead_2026_mini-blue.png" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-bottom:8px;" />
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              Finnoybu Press &middot; <a href="https://memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">memoirs.finnoybu.com</a>
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              You received this because you requested a sign-in link.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<!-- ============================================================
+     3. RESET PASSWORD
+     ============================================================ -->
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
+  <tr>
+    <td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+        <tr>
+          <td style="padding:40px 36px 32px;">
+            <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
+              Reset your password
+            </h1>
+            <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.6;color:#5a4f3f;">
+              We received a request to reset the password for your account. Click below to choose a new one.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+              <tr>
+                <td style="background-color:#1d3a52;border-radius:6px;padding:12px 28px;">
+                  <a href="{{ .ConfirmationURL }}" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:0.05em;text-transform:uppercase;color:#fbf7ec;text-decoration:none;">
+                    Reset password
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.5;color:#8a7e6a;">
+              If you didn&rsquo;t request this, you can safely ignore this email.
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#8a7e6a;word-break:break-all;">
+              {{ .ConfirmationURL }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 36px 28px;border-top:1px solid #dfd5bb;text-align:center;">
+            <img src="https://memoirs.finnoybu.com/images/finnoy_arrowhead_2026_mini-blue.png" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-bottom:8px;" />
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              Finnoybu Press &middot; <a href="https://memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">memoirs.finnoybu.com</a>
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              You received this because a password reset was requested for your account.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<!-- ============================================================
+     4. CHANGE EMAIL
+     ============================================================ -->
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
+  <tr>
+    <td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+        <tr>
+          <td style="padding:40px 36px 32px;">
+            <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
+              Confirm your new email address
+            </h1>
+            <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.6;color:#5a4f3f;">
+              You requested to change the email address on your Reminiscences reader account. Please confirm your new address by clicking below.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+              <tr>
+                <td style="background-color:#1d3a52;border-radius:6px;padding:12px 28px;">
+                  <a href="{{ .ConfirmationURL }}" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:0.05em;text-transform:uppercase;color:#fbf7ec;text-decoration:none;">
+                    Confirm new email
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.5;color:#8a7e6a;">
+              If you didn&rsquo;t request this change, please contact us immediately.
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#8a7e6a;word-break:break-all;">
+              {{ .ConfirmationURL }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 36px 28px;border-top:1px solid #dfd5bb;text-align:center;">
+            <img src="https://memoirs.finnoybu.com/images/finnoy_arrowhead_2026_mini-blue.png" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-bottom:8px;" />
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              Finnoybu Press &middot; <a href="https://memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">memoirs.finnoybu.com</a>
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              You received this because an email change was requested for your account.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
