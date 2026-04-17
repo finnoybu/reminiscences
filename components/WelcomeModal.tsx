@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
 
@@ -10,6 +11,7 @@ export default function WelcomeModal() {
   const [show, setShow] = useState(false)
   const [dontShowAgain, setDontShowAgain] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
@@ -19,6 +21,8 @@ export default function WelcomeModal() {
     const supabase = createClient()
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
+        // Don't show on the confirmation page (transient session before sign-out)
+        if (window.location.pathname === '/auth/confirmed') return
         try {
           if (localStorage.getItem(DISMISSED_KEY)) return
         } catch {}
@@ -26,7 +30,7 @@ export default function WelcomeModal() {
       }
     })
     return () => subscription.unsubscribe()
-  }, [])
+  }, [pathname])
 
   const close = useCallback(() => {
     if (dontShowAgain) {
