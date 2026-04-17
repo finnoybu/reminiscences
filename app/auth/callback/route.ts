@@ -10,10 +10,10 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/'
   const origin = new URL(request.url).origin
 
-  // Default redirect: wherever `next` points, or error page
+  // Start with a default redirect; we may override the Location header below
   const hasAuth = code || token_hash
-  const redirectTo = hasAuth ? `${origin}${next}` : `${origin}/?auth_error=true`
-  const response = NextResponse.redirect(redirectTo)
+  const defaultRedirect = hasAuth ? `${origin}${next}` : `${origin}/?auth_error=true`
+  const response = NextResponse.redirect(defaultRedirect)
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -33,22 +33,32 @@ export async function GET(request: NextRequest) {
   )
 
   if (code) {
-    // PKCE flow (signup confirmation, magic link, OAuth)
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    // PKCE flow (signup confirmation, magic link, OAuth, recovery)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       console.error('Auth callback error:', error.message)
-      return NextResponse.redirect(`${origin}/?auth_error=true`)
+      response.headers.set('Location', `${origin}/?auth_error=true`)
+      return response
+    }
+    // Detect recovery session: if recovery_sent_at is within the last hour,
+    // redirect to update-password regardless of what `next` says
+    const recoverySentAt = data.user?.recovery_sent_at
+    if (recoverySentAt) {
+      const elapsed = Date.now() - new Date(recoverySentAt).getTime()
+      if (elapsed < 60 * 60 * 1000) {
+        response.headers.set('Location', `${origin}/account/update-password`)
+      }
     }
   } else if (token_hash && type) {
     // Token hash flow (password recovery, email change)
     const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as any })
     if (error) {
       console.error('Auth callback OTP error:', error.message)
-      return NextResponse.redirect(`${origin}/?auth_error=true`)
+      response.headers.set('Location', `${origin}/?auth_error=true`)
+      return response
     }
-    // For recovery, override redirect to the password update page
     if (type === 'recovery') {
-      return NextResponse.redirect(`${origin}/account/update-password`)
+      response.headers.set('Location', `${origin}/account/update-password`)
     }
   }
 
