@@ -8,6 +8,7 @@ type View = 'sign_in' | 'sign_up' | 'forgot_password' | 'check_email'
 export default function AuthModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<View>('sign_in')
   const [email, setEmail] = useState('')
+  const [confirmEmail, setConfirmEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -19,10 +20,15 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
     setError(null)
 
     if (view === 'sign_up') {
+      if (email !== confirmEmail) {
+        setError('Email addresses do not match.')
+        setLoading(false)
+        return
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname)}` },
+        options: { emailRedirectTo: `${window.location.origin}/auth/confirmed` },
       })
       if (error) { setError(error.message); setLoading(false); return }
       setView('check_email')
@@ -129,6 +135,23 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
                     placeholder="you@example.com"
                   />
                 </div>
+
+                {view === 'sign_up' && (
+                  <div>
+                    <label htmlFor="auth-confirm-email" className="block font-sans text-xs uppercase tracking-widest text-ink-faint mb-1.5">
+                      Confirm email
+                    </label>
+                    <input
+                      id="auth-confirm-email"
+                      type="email"
+                      required
+                      value={confirmEmail}
+                      onChange={(e) => setConfirmEmail(e.target.value)}
+                      className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
+                      placeholder="Re-enter your email"
+                    />
+                  </div>
+                )}
 
                 {view !== 'forgot_password' && (
                   <div>
