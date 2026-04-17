@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
 
 const DISMISSED_KEY = 'sea-reader-welcome-dismissed'
+const SESSION_SHOWN_KEY = 'sea-reader-welcome-shown'
 
 export default function WelcomeModal() {
   const [show, setShow] = useState(false)
@@ -37,7 +38,9 @@ export default function WelcomeModal() {
           if (window.location.pathname === '/auth/confirmed') return
           try {
             if (localStorage.getItem(DISMISSED_KEY)) return
+            if (sessionStorage.getItem(SESSION_SHOWN_KEY)) return
           } catch {}
+          try { sessionStorage.setItem(SESSION_SHOWN_KEY, '1') } catch {}
           setShow(true)
         }, 500)
       }
