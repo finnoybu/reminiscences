@@ -170,7 +170,9 @@ export default function SiteHeader() {
                   type="button"
                   onClick={async () => {
                     await supabase.auth.signOut()
+                    localStorage.removeItem('sea-reader-preferences')
                     setMenuOpen(false)
+                    window.location.href = '/'
                   }}
                   className="flex items-center h-12 px-3 font-sans text-base text-ink-muted hover:text-ink rounded transition-colors"
                 >

@@ -57,8 +57,9 @@ export default function AccountPage() {
 
   const handleSignOut = useCallback(async () => {
     await supabase.auth.signOut()
-    router.push('/')
-  }, [supabase.auth, router])
+    localStorage.removeItem('sea-reader-preferences')
+    window.location.href = '/'
+  }, [supabase.auth])
 
   useEffect(() => {
     if (!user) return
