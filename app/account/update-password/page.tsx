@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import PasswordStrength, { usePasswordStrength } from '@/components/PasswordStrength'
 
 export default function UpdatePasswordPage() {
   const { user } = useReader()
@@ -15,6 +16,7 @@ export default function UpdatePasswordPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+  const strength = usePasswordStrength(password)
 
   if (!user) {
     return (
@@ -31,8 +33,8 @@ export default function UpdatePasswordPage() {
     e.preventDefault()
     setError(null)
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
+    if (!strength || strength.score < 3) {
+      setError('Please choose a stronger password.')
       return
     }
     if (password !== confirm) {
@@ -96,6 +98,7 @@ export default function UpdatePasswordPage() {
               autoFocus
             />
           </div>
+          <PasswordStrength password={password} />
           <div>
             <label htmlFor="confirm-password" className="block font-sans text-xs uppercase tracking-widest text-ink-faint mb-1.5">
               Confirm password
