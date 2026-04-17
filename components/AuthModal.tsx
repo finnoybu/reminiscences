@@ -8,8 +8,8 @@ type View = 'sign_in' | 'sign_up' | 'forgot_password' | 'check_email'
 export default function AuthModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<View>('sign_in')
   const [email, setEmail] = useState('')
-  const [confirmEmail, setConfirmEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const supabase = createClient()
@@ -20,8 +20,8 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
     setError(null)
 
     if (view === 'sign_up') {
-      if (email !== confirmEmail) {
-        setError('Email addresses do not match.')
+      if (password !== confirmPassword) {
+        setError('Passwords do not match.')
         setLoading(false)
         return
       }
@@ -136,23 +136,6 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
                   />
                 </div>
 
-                {view === 'sign_up' && (
-                  <div>
-                    <label htmlFor="auth-confirm-email" className="block font-sans text-xs uppercase tracking-widest text-ink-faint mb-1.5">
-                      Confirm email
-                    </label>
-                    <input
-                      id="auth-confirm-email"
-                      type="email"
-                      required
-                      value={confirmEmail}
-                      onChange={(e) => setConfirmEmail(e.target.value)}
-                      className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
-                      placeholder="Re-enter your email"
-                    />
-                  </div>
-                )}
-
                 {view !== 'forgot_password' && (
                   <div>
                     <label htmlFor="auth-password" className="block font-sans text-xs uppercase tracking-widest text-ink-faint mb-1.5">
@@ -162,11 +145,29 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
                       id="auth-password"
                       type="password"
                       required
-                      minLength={6}
+                      minLength={8}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
-                      placeholder="At least 6 characters"
+                      placeholder="At least 8 characters"
+                    />
+                  </div>
+                )}
+
+                {view === 'sign_up' && (
+                  <div>
+                    <label htmlFor="auth-confirm-password" className="block font-sans text-xs uppercase tracking-widest text-ink-faint mb-1.5">
+                      Confirm password
+                    </label>
+                    <input
+                      id="auth-confirm-password"
+                      type="password"
+                      required
+                      minLength={8}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
+                      placeholder="Re-enter your password"
                     />
                   </div>
                 )}
