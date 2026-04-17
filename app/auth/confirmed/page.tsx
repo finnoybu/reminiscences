@@ -1,10 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import AuthModal from '@/components/AuthModal'
 
 export default function ConfirmedPage() {
   const [showAuth, setShowAuth] = useState(false)
+
+  // Sign out so the user must explicitly sign in
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.signOut()
+  }, [])
 
   return (
     <div className="max-w-shell mx-auto px-6 py-16 md:py-24 text-center">
