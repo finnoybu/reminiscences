@@ -22,25 +22,16 @@ export default function BookmarksPage() {
   useEffect(() => {
     if (!user) { setLoading(false); return }
 
-    Promise.all([
-      supabase
-        .from('bookmarks')
-        .select('*')
-        .eq('user_id', user.id),
-      fetch('/api/chapters').then((r) => r.json()),
-    ]).then(([{ data }, chapters]) => {
-      const chapterOrder = new Map<string, number>()
-      ;(chapters as { slug: string }[]).forEach((c, i) => chapterOrder.set(c.slug, i))
-
-      const sorted = (data ?? []).sort((a, b) => {
-        const chapterDiff = (chapterOrder.get(a.chapter_slug) ?? 999) - (chapterOrder.get(b.chapter_slug) ?? 999)
-        if (chapterDiff !== 0) return chapterDiff
-        return a.scroll_position - b.scroll_position
+    supabase
+      .from('bookmarks')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('chapter_slug', { ascending: true })
+      .order('scroll_position', { ascending: true })
+      .then(({ data }) => {
+        setBookmarks(data ?? [])
+        setLoading(false)
       })
-
-      setBookmarks(sorted)
-      setLoading(false)
-    })
   }, [user, supabase])
 
   const removeBookmark = async (id: string) => {

@@ -5,8 +5,13 @@ import Link from 'next/link'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
 
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to'])
+
 function formatChapterTitle(slug: string): string {
-  return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+  return slug
+    .split('-')
+    .map((w, i) => (i === 0 || !SMALL_WORDS.has(w)) ? w.charAt(0).toUpperCase() + w.slice(1) : w)
+    .join(' ')
 }
 
 function buildCitation(ann: Annotation): string {
@@ -14,7 +19,7 @@ function buildCitation(ann: Annotation): string {
   const quote = ann.text_selection.length > 120
     ? ann.text_selection.slice(0, 120) + '\u2026'
     : ann.text_selection
-  return `"\u200A${quote}\u200A" \u2014 Olavus Tannenbaum, A Sailor\u2019s Reminiscences from the Days of the Sailships, \u201C${chapter}.\u201D Finn\u00F8ybu Press, 2026.`
+  return `"\u200A${quote}\u200A" \u2014 Olavus V. B. Vestb\u00F8, A Sailor\u2019s Reminiscences from the Days of the Sailships, \u201C${chapter}.\u201D Finn\u00F8ybu Press, 2026.`
 }
 
 interface Annotation {
@@ -138,21 +143,18 @@ export default function AnnotationsPage() {
                     </svg>
                   </button>
                 </div>
-                <blockquote className="font-serif text-sm italic text-ink-muted border-l-2 border-brass pl-4 mb-3">
-                  &ldquo;{ann.text_selection}&rdquo;
-                </blockquote>
-                {ann.note && (
-                  <p className="font-serif text-base text-ink">{ann.note}</p>
-                )}
-                <div className="mt-3 p-3 bg-bg-sunk rounded border border-rule-soft">
+                <div className="p-3 bg-bg-sunk rounded border border-rule-soft mb-3">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-serif text-xs text-ink-faint italic leading-relaxed">
+                    <p className="font-serif text-md text-ink-muted italic leading-relaxed">
                       {buildCitation(ann)}
                     </p>
                     <CopyButton text={buildCitation(ann)} />
                   </div>
                 </div>
-                <p className="font-sans text-xs text-ink-faint mt-2">
+                {ann.note && (
+                  <p className="font-serif text-lg text-ink">{ann.note}</p>
+                )}
+                <p className="font-sans text-xs text-ink-faint mt-3">
                   {new Date(ann.created_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
                 </p>
               </div>
