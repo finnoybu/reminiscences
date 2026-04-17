@@ -31,8 +31,8 @@ export default function UpdatePasswordPage() {
     e.preventDefault()
     setError(null)
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.')
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters.')
       return
     }
     if (password !== confirm) {
@@ -88,11 +88,11 @@ export default function UpdatePasswordPage() {
               id="new-password"
               type="password"
               required
-              minLength={6}
+              minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
-              placeholder="At least 6 characters"
+              placeholder="At least 8 characters"
               autoFocus
             />
           </div>
@@ -104,7 +104,7 @@ export default function UpdatePasswordPage() {
               id="confirm-password"
               type="password"
               required
-              minLength={6}
+              minLength={8}
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none transition-colors"
