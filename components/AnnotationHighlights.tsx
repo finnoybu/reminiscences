@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { getParagraphAtOffset } from '@/lib/selection-utils'
 
 interface AnnotationHighlightsProps {
   articleRef: React.RefObject<HTMLElement | null>
@@ -12,24 +13,39 @@ interface AnnotationHighlightsProps {
 interface SavedBookmark {
   id: string
   scroll_position: number
+  selection_start: number | null
 }
 
 /**
- * Find the paragraph closest to a document-relative Y position
- * and add a bookmark ribbon to its left margin.
+ * Find the paragraph containing the bookmark and add a ribbon to its left margin.
+ * Uses character offset (selection_start) when available for precision;
+ * falls back to scroll-position proximity for legacy bookmarks.
  */
-function addBookmarkRibbon(article: HTMLElement, scrollPos: number, id: string) {
-  const paragraphs = article.querySelectorAll('p')
+function addBookmarkRibbon(
+  article: HTMLElement,
+  scrollPos: number,
+  selectionStart: number | null,
+  id: string
+) {
   let closest: Element | null = null
-  let closestDist = Infinity
 
-  for (const p of paragraphs) {
-    const rect = p.getBoundingClientRect()
-    const docTop = rect.top + window.scrollY
-    const dist = Math.abs(docTop - scrollPos)
-    if (dist < closestDist) {
-      closestDist = dist
-      closest = p
+  if (selectionStart != null) {
+    // Precise: walk text nodes to find the paragraph containing this offset
+    closest = getParagraphAtOffset(article, selectionStart)
+  }
+
+  if (!closest) {
+    // Legacy fallback: find paragraph closest to the Y coordinate
+    const paragraphs = article.querySelectorAll('p')
+    let closestDist = Infinity
+    for (const p of paragraphs) {
+      const rect = p.getBoundingClientRect()
+      const docTop = rect.top + window.scrollY
+      const dist = Math.abs(docTop - scrollPos)
+      if (dist < closestDist) {
+        closestDist = dist
+        closest = p
+      }
     }
   }
 
@@ -64,12 +80,40 @@ interface SavedAnnotation {
  * Walks text nodes in the article to find the DOM position for a character offset,
  * then wraps the annotated range with a <mark> element.
  */
+function attachNoteHover(mark: HTMLElement, noteText: string) {
+  let card: HTMLElement | null = null
+
+  mark.addEventListener('mouseenter', () => {
+    card = document.createElement('div')
+    card.className = 'annotation-hover-card'
+    card.textContent = noteText
+
+    const rect = mark.getBoundingClientRect()
+    card.style.left = `${rect.left + rect.width / 2}px`
+    card.style.top = `${rect.top - 8}px`
+    document.body.appendChild(card)
+
+    // Nudge if it overflows the viewport
+    const cardRect = card.getBoundingClientRect()
+    if (cardRect.left < 8) card.style.left = '8px'
+    if (cardRect.right > window.innerWidth - 8) {
+      card.style.left = `${window.innerWidth - cardRect.width - 8}px`
+    }
+  })
+
+  mark.addEventListener('mouseleave', () => {
+    card?.remove()
+    card = null
+  })
+}
+
 function highlightRange(
   article: HTMLElement,
   start: number,
   end: number,
   id: string,
-  hasNote: boolean
+  hasNote: boolean,
+  noteText?: string
 ): void {
   const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT)
   let charCount = 0
@@ -109,6 +153,7 @@ function highlightRange(
     mark.className = `annotation-highlight${hasNote ? ' has-note' : ''}`
     mark.dataset.annotationId = id
     range.surroundContents(mark)
+    if (noteText) attachNoteHover(mark, noteText)
   } catch {
     // surroundContents fails if the range crosses element boundaries
     // Fall back to highlighting just the start node
@@ -123,6 +168,7 @@ function highlightRange(
       startNode.textContent = beforeText
       mark.textContent = highlightText
       startNode.parentNode?.insertBefore(mark, startNode.nextSibling)
+      if (noteText) attachNoteHover(mark, noteText)
     }
   }
 }
@@ -150,7 +196,8 @@ export default function AnnotationHighlights({
 
     const article = articleRef.current
 
-    // Remove existing highlights and ribbons before re-applying
+    // Remove existing highlights, ribbons, and orphaned hover cards before re-applying
+    document.querySelectorAll('.annotation-hover-card').forEach((c) => c.remove())
     article.querySelectorAll('mark.annotation-highlight').forEach((mark) => {
       const parent = mark.parentNode
       if (parent) {
@@ -172,7 +219,7 @@ export default function AnnotationHighlights({
         .eq('chapter_slug', chapterSlug),
       supabase
         .from('bookmarks')
-        .select('id, scroll_position')
+        .select('id, scroll_position, selection_start')
         .eq('user_id', user.id)
         .eq('chapter_slug', chapterSlug),
     ]).then(([annResult, bmResult]) => {
@@ -189,13 +236,14 @@ export default function AnnotationHighlights({
           ann.selection_start,
           ann.selection_end,
           ann.id,
-          !!ann.note
+          !!ann.note,
+          ann.note || undefined
         )
       }
 
       // Apply bookmark ribbons
       for (const bm of bmResult.data ?? []) {
-        addBookmarkRibbon(articleRef.current, bm.scroll_position, bm.id)
+        addBookmarkRibbon(articleRef.current, bm.scroll_position, bm.selection_start, bm.id)
       }
     })
   }, [user, articleRef, chapterSlug, version])

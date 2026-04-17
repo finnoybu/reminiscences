@@ -111,10 +111,53 @@ export default function LegalPage() {
 
           <Section id="cookie-policy" title="Cookie Policy">
             <p>
-              This site uses local storage to persist your reading preferences,
-              bookmarks, and scroll position. No tracking cookies are used. If
-              third-party services are added in the future (analytics, authentication),
-              this policy will be updated accordingly.
+              This site uses cookies and browser local storage to provide and
+              improve the reading experience. Below is a summary of what we store
+              and why.
+            </p>
+            <h3>Essential (always active)</h3>
+            <ul>
+              <li>
+                <strong>Authentication cookies</strong> &mdash; set by our
+                authentication provider (Supabase) to keep you signed in across
+                pages and sessions.
+              </li>
+              <li>
+                <strong>Local storage</strong> &mdash; your reading preferences
+                (theme, font size), scroll position, bookmark/annotation state,
+                and cookie-consent acknowledgement are stored in your browser so
+                they persist between visits.
+              </li>
+            </ul>
+            <h3>Analytics (non-identifying)</h3>
+            <ul>
+              <li>
+                <strong>Vercel Web Analytics</strong> &mdash; collects anonymous,
+                aggregated page-view data (page URL, referrer, browser, country).
+                No cookies are set; data is not linked to individual users.
+              </li>
+              <li>
+                <strong>Google Analytics</strong> &mdash; when enabled, Google
+                Analytics may set cookies (e.g.&nbsp;<code>_ga</code>,{' '}
+                <code>_gid</code>) to distinguish unique visitors and track
+                session activity. This data is used solely to understand how
+                readers use the site and is not shared with third parties for
+                advertising. You can opt out via{' '}
+                <a
+                  href="https://tools.google.com/dlpage/gaoptout"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google&rsquo;s browser add-on
+                </a>
+                .
+              </li>
+            </ul>
+            <p>
+              We do not use cookies for advertising, retargeting, or cross-site
+              tracking. If our use of cookies changes, this policy will be updated
+              and the &ldquo;last updated&rdquo; date at the top of this page will
+              reflect the change.
             </p>
           </Section>
 

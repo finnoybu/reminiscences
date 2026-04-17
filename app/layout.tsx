@@ -4,6 +4,9 @@ import { Fraunces, EB_Garamond, Inter, Caveat } from 'next/font/google'
 import { ReaderProvider } from '@/lib/reader-context'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import WelcomeModal from '@/components/WelcomeModal'
+import PromoModal from '@/components/PromoModal'
+import CookieBanner from '@/components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 
 const fraunces = Fraunces({
@@ -72,6 +75,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SiteHeader />
           <main id="main">{children}</main>
           <SiteFooter />
+          <WelcomeModal />
+          <PromoModal />
+          <CookieBanner />
           <Analytics />
         </ReaderProvider>
       </body>
