@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
@@ -12,6 +12,7 @@ export default function WelcomeModal() {
   const [dontShowAgain, setDontShowAgain] = useState(false)
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
+  const initialLoad = useRef(true)
 
   useEffect(() => {
     setMounted(true)
@@ -20,13 +21,25 @@ export default function WelcomeModal() {
   useEffect(() => {
     const supabase = createClient()
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'INITIAL_SESSION') {
+        // Mark initial session restore as handled — not a real sign-in
+        initialLoad.current = false
+        return
+      }
       if (event === 'SIGNED_IN') {
-        // Don't show on the confirmation page (transient session before sign-out)
-        if (window.location.pathname === '/auth/confirmed') return
-        try {
-          if (localStorage.getItem(DISMISSED_KEY)) return
-        } catch {}
-        setShow(true)
+        // Skip the first SIGNED_IN if INITIAL_SESSION didn't fire (older Supabase)
+        if (initialLoad.current) {
+          initialLoad.current = false
+          return
+        }
+        // Defer so the router navigates away from /auth/confirmed first
+        setTimeout(() => {
+          if (window.location.pathname === '/auth/confirmed') return
+          try {
+            if (localStorage.getItem(DISMISSED_KEY)) return
+          } catch {}
+          setShow(true)
+        }, 500)
       }
     })
     return () => subscription.unsubscribe()
