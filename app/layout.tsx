@@ -38,6 +38,9 @@ export const metadata: Metadata = {
   },
   description:
     "A Sailor's Reminiscences from the Days of the Sailships — a Norwegian sailor recounting his youth aboard the proud sailships of a vanished age.",
+  icons: {
+    icon: '/images/blue-arrowhead.svg',
+  },
 }
 
 const themeScript = `
