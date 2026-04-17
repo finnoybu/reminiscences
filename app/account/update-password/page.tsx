@@ -5,6 +5,7 @@ import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import PasswordStrength, { usePasswordStrength } from '@/components/PasswordStrength'
+import AuthModal from '@/components/AuthModal'
 
 export default function UpdatePasswordPage() {
   const { user } = useReader()
@@ -16,6 +17,7 @@ export default function UpdatePasswordPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+  const [showAuth, setShowAuth] = useState(false)
   const strength = usePasswordStrength(password)
 
   if (!user) {
@@ -82,11 +84,12 @@ export default function UpdatePasswordPage() {
         </p>
         <button
           type="button"
-          onClick={() => router.push('/?sign_in=true')}
+          onClick={() => setShowAuth(true)}
           className="inline-block h-11 px-8 rounded-md bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"
         >
           Sign in
         </button>
+        {showAuth && <AuthModal onClose={() => router.push('/')} />}
       </div>
     )
   }
