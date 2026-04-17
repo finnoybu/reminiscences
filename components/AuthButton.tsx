@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 import AuthModal from './AuthModal'
@@ -10,6 +11,14 @@ export default function AuthButton() {
   const [user, setUser] = useState<User | null>(null)
   const [showModal, setShowModal] = useState(false)
   const supabase = createClient()
+  const searchParams = useSearchParams()
+
+  // Auto-open sign-in modal when ?sign_in=true is in the URL
+  useEffect(() => {
+    if (searchParams.get('sign_in') === 'true' && !user) {
+      setShowModal(true)
+    }
+  }, [searchParams, user])
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))

@@ -43,14 +43,28 @@ export default function UpdatePasswordPage() {
     }
 
     setSaving(true)
-    const { error } = await supabase.auth.updateUser({ password })
-    setSaving(false)
 
+    // Check for password reuse: try signing in with the new password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email!,
+      password,
+    })
+    if (!signInError) {
+      // Sign-in succeeded — new password matches the old one
+      setSaving(false)
+      setError('New password must be different from your current password.')
+      return
+    }
+
+    const { error } = await supabase.auth.updateUser({ password })
     if (error) {
+      setSaving(false)
       setError(error.message)
     } else {
+      // Sign out so the user must sign in with their new password
+      await supabase.auth.signOut()
+      setSaving(false)
       setDone(true)
-      setTimeout(() => router.push('/account'), 2000)
     }
   }
 
@@ -63,9 +77,16 @@ export default function UpdatePasswordPage() {
         >
           Password updated
         </h1>
-        <p className="font-serif text-base text-ink-muted">
-          Redirecting to your account&hellip;
+        <p className="font-serif text-base text-ink-muted mb-6">
+          Your password has been changed. Please sign in with your new password.
         </p>
+        <button
+          type="button"
+          onClick={() => router.push('/?sign_in=true')}
+          className="inline-block h-11 px-8 rounded-md bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"
+        >
+          Sign in
+        </button>
       </div>
     )
   }
