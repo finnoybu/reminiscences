@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthModal from '@/components/AuthModal'
 
 export default function ConfirmedPage() {
   const [showAuth, setShowAuth] = useState(false)
+  const router = useRouter()
 
   // Sign out so the user must explicitly sign in
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function ConfirmedPage() {
         </button>
       </div>
 
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      {showAuth && <AuthModal onClose={() => router.push('/')} />}
     </div>
   )
 }
