@@ -20,6 +20,7 @@ interface ReaderContextType {
   setFontSize: (size: FontSize) => void
   updateReadingPosition: (chapter: string, position: number) => void
   user: User | null
+  isRecoverySession: boolean
 }
 
 const ReaderContext = createContext<ReaderContextType | undefined>(undefined)
@@ -39,6 +40,7 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState<ReaderPreferences>(DEFAULT_PREFERENCES)
   const [hydrated, setHydrated] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [isRecoverySession, setIsRecoverySession] = useState(false)
   const supabase = createClient()
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -53,9 +55,22 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    // Check session for recovery amr on initial load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      if (session) {
+        const amr = (session as any).amr as Array<{ method: string }> | undefined
+        setIsRecoverySession(amr?.some((e) => e.method === 'recovery') ?? false)
+      }
+    })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      if (session) {
+        const amr = (session as any).amr as Array<{ method: string }> | undefined
+        setIsRecoverySession(amr?.some((e) => e.method === 'recovery') ?? false)
+      } else {
+        setIsRecoverySession(false)
+      }
     })
     return () => subscription.unsubscribe()
   }, [supabase.auth])
@@ -147,7 +162,7 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <ReaderContext.Provider value={{ preferences, setTheme, setFontSize, updateReadingPosition, user }}>
+    <ReaderContext.Provider value={{ preferences, setTheme, setFontSize, updateReadingPosition, user, isRecoverySession }}>
       {children}
     </ReaderContext.Provider>
   )

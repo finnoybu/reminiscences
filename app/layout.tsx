@@ -4,6 +4,7 @@ import { Fraunces, EB_Garamond, Inter, Caveat } from 'next/font/google'
 import { ReaderProvider } from '@/lib/reader-context'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import RecoveryGuard from '@/components/RecoveryGuard'
 import WelcomeModal from '@/components/WelcomeModal'
 import PasswordRecoveryModal from '@/components/PasswordRecoveryModal'
 import PromoModal from '@/components/PromoModal'
@@ -73,9 +74,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             Skip to content
           </a>
-          <SiteHeader />
-          <main id="main">{children}</main>
-          <SiteFooter />
+          <RecoveryGuard>
+            <SiteHeader />
+            <main id="main">{children}</main>
+            <SiteFooter />
+          </RecoveryGuard>
           <WelcomeModal />
           <PasswordRecoveryModal />
           <PromoModal />
