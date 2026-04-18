@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
+import { useReader } from '@/lib/reader-context'
 
 const DISMISSED_KEY = 'sea-reader-welcome-dismissed'
 const SESSION_SHOWN_KEY = 'sea-reader-welcome-shown'
@@ -12,6 +13,7 @@ export default function WelcomeModal() {
   const [show, setShow] = useState(false)
   const [dontShowAgain, setDontShowAgain] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const { isRecoverySession } = useReader()
   const pathname = usePathname()
   const initialLoad = useRef(true)
 
@@ -56,7 +58,7 @@ export default function WelcomeModal() {
     setShow(false)
   }, [dontShowAgain])
 
-  if (!mounted || !show) return null
+  if (!mounted || !show || isRecoverySession) return null
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] p-4">

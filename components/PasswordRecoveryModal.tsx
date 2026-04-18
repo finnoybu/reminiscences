@@ -23,12 +23,21 @@ export default function PasswordRecoveryModal() {
   const { user, isRecoverySession } = useReader()
   const supabase = createClient()
 
+  // Show modal when recovery is detected via context (async getUser)
   useEffect(() => {
     if (isRecoverySession && user) {
       sessionStorage.removeItem('password-reset-pending')
       setShow(true)
     }
   }, [isRecoverySession, user])
+
+  // Fast-path: show modal immediately if URL has ?recovery=true
+  // (don't wait for async getUser to resolve)
+  useEffect(() => {
+    if (window.location.search.includes('recovery=true')) {
+      setShow(true)
+    }
+  }, [])
 
   // Countdown timer — starts when modal shows, stops on completion
   useEffect(() => {
