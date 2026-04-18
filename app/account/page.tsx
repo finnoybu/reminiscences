@@ -20,6 +20,7 @@ export default function AccountPage() {
   const [emailMessage, setEmailMessage] = useState<string | null>(null)
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
   const supabase = createClient()
   const router = useRouter()
 
@@ -45,14 +46,17 @@ export default function AccountPage() {
     setPasswordSaving(true)
     setPasswordMessage(null)
     const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/account/update-password`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/?recovery=true`,
     })
-    setPasswordSaving(false)
     if (error) {
+      setPasswordSaving(false)
       setPasswordMessage(error.message)
-    } else {
-      setPasswordMessage('Check your email for a reset link.')
+      return
     }
+    // Sign out and redirect to landing page
+    await supabase.auth.signOut()
+    localStorage.removeItem('sea-reader-preferences')
+    window.location.href = '/'
   }, [user, supabase.auth])
 
   const handleSignOut = useCallback(async () => {
@@ -208,7 +212,7 @@ export default function AccountPage() {
             </p>
             <button
               type="button"
-              onClick={handleResetPassword}
+              onClick={() => setShowResetConfirm(true)}
               disabled={passwordSaving}
               className="h-11 px-5 rounded-md border border-rule-soft font-sans text-xs uppercase tracking-widest text-ink-muted hover:border-rule hover:text-ink transition-colors disabled:opacity-50"
             >
@@ -218,6 +222,48 @@ export default function AccountPage() {
               <p className="mt-2 font-sans text-sm text-ink-muted">{passwordMessage}</p>
             )}
           </div>
+
+          {/* Reset password confirmation modal */}
+          {showResetConfirm && (
+            <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] p-4">
+              <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" onClick={() => setShowResetConfirm(false)} />
+              <div className="relative w-full max-w-sm bg-bg-elev border border-rule-soft rounded-lg shadow-lift overflow-hidden animate-in">
+                <div className="px-6 pt-6">
+                  <h2
+                    className="font-display text-2xl text-ink"
+                    style={{ fontFeatureSettings: "'ss01'" }}
+                  >
+                    Reset your password?
+                  </h2>
+                </div>
+                <div className="px-6 pb-6 pt-4">
+                  <p className="font-serif text-base text-ink-muted leading-relaxed mb-6">
+                    You will be signed out and a reset link will be sent to <strong className="text-ink">{user.email}</strong>. You&rsquo;ll need to sign back in after setting your new password.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowResetConfirm(false)}
+                      className="flex-1 h-11 rounded-md border border-rule-soft font-sans text-sm uppercase tracking-wider text-ink-muted hover:border-rule hover:text-ink transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowResetConfirm(false)
+                        handleResetPassword()
+                      }}
+                      disabled={passwordSaving}
+                      className="flex-1 h-11 rounded-md bg-accent text-bg font-sans text-sm uppercase tracking-wider hover:bg-accent-hi transition-colors disabled:opacity-50"
+                    >
+                      {passwordSaving ? 'Sending\u2026' : 'Continue'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Sign out */}
           <div className="pt-4 border-t border-rule-soft">
