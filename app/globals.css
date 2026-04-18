@@ -190,6 +190,32 @@ body::before {
   color: var(--color-ink-muted);
 }
 
+.prose-memoir ul {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+.prose-memoir ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+.prose-memoir li {
+  margin: 0.35em 0;
+}
+.prose-memoir li p {
+  text-indent: 0;
+}
+.prose-memoir h4 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 1.5em 0 0.5em;
+  color: var(--color-ink-muted);
+}
+
 .prose-memoir em { font-style: italic; }
 .prose-memoir strong { font-weight: 600; color: var(--color-ink); }
 
