@@ -266,24 +266,33 @@ export default function LegalPage() {
           </Section>
 
           <Section id="data-deletion" title="Data Deletion">
+            <h3>Self-service deletion</h3>
             <p>
-              You may request complete deletion of your account and personal data at any
-              time by emailing{' '}
-              <a href="mailto:finnoybu@gmail.com">finnoybu@gmail.com</a> with the subject
-              line &ldquo;Delete my account.&rdquo; Please send the request from the email
-              address associated with your account.
+              You can delete your account at any time from your{' '}
+              <a href="/account">account settings page</a>. Click{' '}
+              &ldquo;Delete my account,&rdquo; type &ldquo;delete&rdquo; to confirm,
+              and your account will be removed immediately. This will:
             </p>
-            <p>Upon receiving your request, we will:</p>
             <ol>
               <li>Delete your user account and authentication credentials</li>
               <li>Delete all reading progress, bookmarks, annotations, and errata reports associated with your account</li>
               <li>Anonymize any purchase records (retaining only the transaction amount and date for accounting purposes)</li>
-              <li>Remove your data from all third-party services where technically possible (Supabase, Stripe)</li>
             </ol>
             <p>
-              Data deletion is permanent and cannot be reversed. We will process your
-              request within <strong>30 days</strong> and confirm by email once complete.
+              Data deletion is permanent and cannot be reversed.
             </p>
+
+            <h3>Deletion by request</h3>
+            <p>
+              If you are unable to sign in or prefer not to use the self-service option,
+              you may request deletion by emailing{' '}
+              <a href="mailto:finnoybu@gmail.com">finnoybu@gmail.com</a> with the subject
+              line &ldquo;Delete my account.&rdquo; Please send the request from the email
+              address associated with your account. We will process your request
+              within <strong>30 days</strong> and confirm by email once complete.
+            </p>
+
+            <h3>Third-party accounts</h3>
             <p>
               If you signed in with Google or Facebook, deleting your account on our Site does
               not affect your Google or Facebook account. To revoke our app&rsquo;s access to your
