@@ -34,20 +34,13 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     // PKCE flow (signup confirmation, magic link, OAuth, recovery)
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    // Recovery sessions are detected and restricted by the middleware via
+    // the JWT's amr claim — no special handling needed here.
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       console.error('Auth callback error:', error.message)
       response.headers.set('Location', `${origin}/?auth_error=true`)
       return response
-    }
-    // Detect recovery session: if recovery_sent_at is within the last hour,
-    // redirect to update-password regardless of what `next` says
-    const recoverySentAt = data.user?.recovery_sent_at
-    if (recoverySentAt) {
-      const elapsed = Date.now() - new Date(recoverySentAt).getTime()
-      if (elapsed < 60 * 60 * 1000) {
-        response.headers.set('Location', `${origin}/?recovery=true`)
-      }
     }
   } else if (token_hash && type) {
     // Token hash flow (password recovery, email change)
