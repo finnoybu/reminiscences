@@ -22,6 +22,9 @@ export default function AccountPage() {
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [showEmailConfirm, setShowEmailConfirm] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteConfirmText, setDeleteConfirmText] = useState('')
+  const [deleting, setDeleting] = useState(false)
   const supabase = createClient()
   const router = useRouter()
 
@@ -68,6 +71,18 @@ export default function AccountPage() {
   }, [user, supabase.auth])
 
   const handleSignOut = useCallback(async () => {
+    await supabase.auth.signOut()
+    localStorage.removeItem('sea-reader-preferences')
+    window.location.href = '/'
+  }, [supabase.auth])
+
+  const handleDeleteAccount = useCallback(async () => {
+    setDeleting(true)
+    const res = await fetch('/api/account/delete', { method: 'POST' })
+    if (!res.ok) {
+      setDeleting(false)
+      return
+    }
     await supabase.auth.signOut()
     localStorage.removeItem('sea-reader-preferences')
     window.location.href = '/'
@@ -322,6 +337,73 @@ export default function AccountPage() {
               Sign out
             </button>
           </div>
+
+          {/* Delete account */}
+          <div className="pt-4 border-t border-rule-soft">
+            <h3 className="font-sans text-sm font-medium text-red-600 dark:text-red-400 mb-1">Delete account</h3>
+            <p className="font-sans text-sm text-ink-faint mb-3">
+              Permanently delete your account and all associated data including reading progress,
+              bookmarks, annotations, and errata reports. This action cannot be undone.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowDeleteConfirm(true)}
+              className="h-11 px-5 rounded-md border border-red-300 dark:border-red-800 font-sans text-xs uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+            >
+              Delete my account
+            </button>
+          </div>
+
+          {/* Delete account confirmation modal */}
+          {showDeleteConfirm && (
+            <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] p-4">
+              <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" onClick={() => { setShowDeleteConfirm(false); setDeleteConfirmText('') }} />
+              <div className="relative w-full max-w-sm bg-bg-elev border border-rule-soft rounded-lg shadow-lift overflow-hidden animate-in">
+                <div className="px-6 pt-6">
+                  <h2
+                    className="font-display text-2xl text-red-600 dark:text-red-400"
+                    style={{ fontFeatureSettings: "'ss01'" }}
+                  >
+                    Delete your account?
+                  </h2>
+                </div>
+                <div className="px-6 pb-6 pt-4">
+                  <p className="font-serif text-base text-ink-muted leading-relaxed mb-4">
+                    This will permanently delete your account, reading progress, bookmarks,
+                    annotations, and errata reports. This cannot be undone.
+                  </p>
+                  <p className="font-sans text-sm text-ink-muted mb-3">
+                    Type <strong className="text-ink">delete</strong> to confirm:
+                  </p>
+                  <input
+                    type="text"
+                    value={deleteConfirmText}
+                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                    placeholder="delete"
+                    className="w-full h-11 px-3 rounded-md border border-rule-soft bg-bg font-serif text-base text-ink placeholder:text-ink-faint focus:border-red-400 focus:outline-none transition-colors mb-4"
+                    autoComplete="off"
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => { setShowDeleteConfirm(false); setDeleteConfirmText('') }}
+                      className="flex-1 h-11 rounded-md border border-rule-soft font-sans text-sm uppercase tracking-wider text-ink-muted hover:border-rule hover:text-ink transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDeleteAccount}
+                      disabled={deleteConfirmText !== 'delete' || deleting}
+                      className="flex-1 h-11 rounded-md bg-red-600 text-white font-sans text-sm uppercase tracking-wider hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {deleting ? 'Deleting\u2026' : 'Delete forever'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
