@@ -32,18 +32,16 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   // Block recovery sessions from accessing anything except the password reset flow.
-  // The JWT's amr (Authentication Methods Reference) claim contains { method: "recovery" }
-  // for sessions created via a password reset link. Without this check, clicking a reset
-  // link grants full app access — a known Supabase issue (supabase/supabase#32681).
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session) {
-    const amr = (session as any).amr as Array<{ method: string }> | undefined
-    console.log('[middleware] session amr:', JSON.stringify(amr))
-    const isRecovery = amr?.some((entry) => entry.method === 'recovery')
-    if (isRecovery) {
+  // Supabase does not expose the JWT amr claim on the session object, so we detect
+  // recovery sessions via recovery_sent_at on the user. If it's within the last hour,
+  // this is an active recovery — block all routes except the password reset flow.
+  // This mitigates supabase/supabase#32681.
+  if (user?.recovery_sent_at) {
+    const elapsed = Date.now() - new Date(user.recovery_sent_at).getTime()
+    if (elapsed < 60 * 60 * 1000) {
       const pathname = request.nextUrl.pathname
       if (!RECOVERY_ALLOWED.includes(pathname)) {
         const url = request.nextUrl.clone()
