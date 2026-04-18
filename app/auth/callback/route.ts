@@ -36,12 +36,14 @@ export async function GET(request: NextRequest) {
     // PKCE flow (signup confirmation, magic link, OAuth, recovery)
     // Recovery sessions are detected and restricted by the middleware via
     // the JWT's amr claim — no special handling needed here.
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       console.error('Auth callback error:', error.message)
       response.headers.set('Location', `${origin}/?auth_error=true`)
       return response
     }
+    console.log('[callback] session amr:', JSON.stringify((data.session as any)?.amr))
+    console.log('[callback] user recovery_sent_at:', data.user?.recovery_sent_at)
   } else if (token_hash && type) {
     // Token hash flow (password recovery, email change)
     const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as any })
