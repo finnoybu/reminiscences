@@ -8,13 +8,15 @@
     {{ .ConfirmationURL }}  — confirm signup, change email
     {{ .Token }}            — OTP code (if enabled)
     {{ .SiteURL }}          — your site URL
-    {{ .Email }}            — recipient email
+    {{ .Email }}            — recipient email (current email after change)
+    {{ .OldEmail }}         — previous email (security notifications only)
 
   Subject lines (set in the dashboard):
-    Confirm signup:   Confirm Your Email Address
-    Magic link:       Your Sign-In Link
-    Reset password:   Reset Your Password
-    Change email:     Confirm Your New Email Address
+    Confirm signup:       Confirm Your Email Address
+    Magic link:           Your Sign-In Link
+    Reset password:       Reset Your Password
+    Change email:         Confirm Your New Email Address
+    Email addr changed:   Your Email Address Has Been Changed (Security notification)
 -->
 
 
@@ -25,7 +27,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
   <tr>
     <td align="center">
-      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+      <table width="720" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
         <!-- Body -->
         <tr>
           <td style="padding:40px 36px 32px;">
@@ -79,7 +81,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
   <tr>
     <td align="center">
-      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+      <table width="720" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
         <tr>
           <td style="padding:40px 36px 32px;">
             <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
@@ -129,7 +131,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
   <tr>
     <td align="center">
-      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+      <table width="720" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
         <tr>
           <td style="padding:40px 36px 32px;">
             <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
@@ -179,7 +181,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
   <tr>
     <td align="center">
-      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+      <table width="720" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
         <tr>
           <td style="padding:40px 36px 32px;">
             <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
@@ -213,6 +215,47 @@
             </p>
             <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
               You received this because an email change was requested for your account.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<!-- ============================================================
+     5. EMAIL ADDRESS CHANGED (Security notification)
+     Dashboard: Authentication > Email > Security > Email address changed
+     Sent to the OLD email address after a change completes.
+     ============================================================ -->
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f1e4;padding:40px 0;">
+  <tr>
+    <td align="center">
+      <table width="720" cellpadding="0" cellspacing="0" style="background-color:#fbf7ec;border:1px solid #dfd5bb;border-radius:8px;overflow:hidden;">
+        <tr>
+          <td style="padding:40px 36px 32px;">
+            <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:normal;color:#1a1611;">
+              Your email address has been changed
+            </h1>
+            <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.6;color:#5a4f3f;">
+              The email address for your Reminiscences reader account has been changed from <strong>{{ .OldEmail }}</strong> to <strong>{{ .Email }}</strong>.
+            </p>
+            <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.5;color:#8a7e6a;">
+              If you did not make this change, please contact us immediately at
+              <a href="mailto:accounts@memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">accounts@memoirs.finnoybu.com</a>.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 36px 28px;border-top:1px solid #dfd5bb;text-align:center;">
+            <img src="https://memoirs.finnoybu.com/images/finnoy_arrowhead_2026_mini-blue.png" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-bottom:8px;" />
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              Finnoybu Press &middot; <a href="https://memoirs.finnoybu.com" style="color:#a8763e;text-decoration:none;">memoirs.finnoybu.com</a>
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8a7e6a;">
+              You received this because the email address on your account was changed.
             </p>
           </td>
         </tr>

@@ -21,25 +21,30 @@ export default function AccountPage() {
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [showEmailConfirm, setShowEmailConfirm] = useState(false)
   const supabase = createClient()
   const router = useRouter()
 
-  const handleChangeEmail = useCallback(async (e: React.FormEvent) => {
+  const handleChangeEmailSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     if (!newEmail.trim()) return
-    setEmailSaving(true)
     setEmailMessage(null)
-    // No emailRedirectTo — Supabase handles the email change server-side
-    // during token verification. PKCE code exchange isn't needed (and fails
-    // because updateUser doesn't generate a code verifier).
+    setShowEmailConfirm(true)
+  }, [newEmail])
+
+  const handleChangeEmailConfirm = useCallback(async () => {
+    setShowEmailConfirm(false)
+    setEmailSaving(true)
     const { error } = await supabase.auth.updateUser({ email: newEmail })
-    setEmailSaving(false)
     if (error) {
+      setEmailSaving(false)
       setEmailMessage(error.message)
-    } else {
-      setEmailMessage('Check your new email for a confirmation link.')
-      setNewEmail('')
+      return
     }
+    // Sign out and redirect — forces re-authentication after email change
+    await supabase.auth.signOut()
+    localStorage.removeItem('sea-reader-preferences')
+    window.location.href = '/'
   }, [newEmail, supabase.auth])
 
   const handleResetPassword = useCallback(async () => {
@@ -185,7 +190,7 @@ export default function AccountPage() {
             <p className="font-sans text-sm text-ink-faint mb-3">
               Currently: {user.email}
             </p>
-            <form onSubmit={handleChangeEmail} className="flex gap-3">
+            <form onSubmit={handleChangeEmailSubmit} className="flex gap-3">
               <input
                 type="email"
                 value={newEmail}
@@ -206,6 +211,45 @@ export default function AccountPage() {
               <p className="mt-2 font-sans text-sm text-ink-muted">{emailMessage}</p>
             )}
           </div>
+
+          {/* Email change confirmation modal */}
+          {showEmailConfirm && (
+            <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] p-4">
+              <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" onClick={() => setShowEmailConfirm(false)} />
+              <div className="relative w-full max-w-sm bg-bg-elev border border-rule-soft rounded-lg shadow-lift overflow-hidden animate-in">
+                <div className="px-6 pt-6">
+                  <h2
+                    className="font-display text-2xl text-ink"
+                    style={{ fontFeatureSettings: "'ss01'" }}
+                  >
+                    Change your email address?
+                  </h2>
+                </div>
+                <div className="px-6 pb-6 pt-4">
+                  <p className="font-serif text-base text-ink-muted leading-relaxed mb-6">
+                    You will be signed out and a confirmation link will be sent to <strong className="text-ink">{newEmail}</strong>. You&rsquo;ll need to sign back in after changing your email address.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowEmailConfirm(false)}
+                      className="flex-1 h-11 rounded-md border border-rule-soft font-sans text-sm uppercase tracking-wider text-ink-muted hover:border-rule hover:text-ink transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleChangeEmailConfirm}
+                      disabled={emailSaving}
+                      className="flex-1 h-11 rounded-md bg-accent text-bg font-sans text-sm uppercase tracking-wider hover:bg-accent-hi transition-colors disabled:opacity-50"
+                    >
+                      {emailSaving ? 'Sending\u2026' : 'Continue'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Reset password */}
           <div>
