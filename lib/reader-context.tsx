@@ -55,22 +55,19 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    // Check session for recovery amr on initial load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      if (session) {
-        const amr = (session as any).amr as Array<{ method: string }> | undefined
-        setIsRecoverySession(amr?.some((e) => e.method === 'recovery') ?? false)
-      }
+    function checkRecovery(user: User | null) {
+      if (!user?.recovery_sent_at) { setIsRecoverySession(false); return }
+      const elapsed = Date.now() - new Date(user.recovery_sent_at).getTime()
+      setIsRecoverySession(elapsed < 60 * 60 * 1000)
+    }
+
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+      checkRecovery(data.user)
     })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (session) {
-        const amr = (session as any).amr as Array<{ method: string }> | undefined
-        setIsRecoverySession(amr?.some((e) => e.method === 'recovery') ?? false)
-      } else {
-        setIsRecoverySession(false)
-      }
+      checkRecovery(session?.user ?? null)
     })
     return () => subscription.unsubscribe()
   }, [supabase.auth])
