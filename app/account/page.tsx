@@ -29,9 +29,10 @@ export default function AccountPage() {
     if (!newEmail.trim()) return
     setEmailSaving(true)
     setEmailMessage(null)
-    const { error } = await supabase.auth.updateUser({
-      email: newEmail,
-    })
+    const { error } = await supabase.auth.updateUser(
+      { email: newEmail },
+      { emailRedirectTo: `${window.location.origin}/auth/callback?next=/account` }
+    )
     setEmailSaving(false)
     if (error) {
       setEmailMessage(error.message)
