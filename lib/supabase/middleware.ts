@@ -41,6 +41,7 @@ export async function updateSession(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession()
   if (session) {
     const amr = (session as any).amr as Array<{ method: string }> | undefined
+    console.log('[middleware] session amr:', JSON.stringify(amr))
     const isRecovery = amr?.some((entry) => entry.method === 'recovery')
     if (isRecovery) {
       const pathname = request.nextUrl.pathname
