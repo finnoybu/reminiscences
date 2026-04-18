@@ -150,7 +150,7 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            {user ? (
+            {user && !sessionStorage.getItem('password-reset-pending') ? (
               <div className="mt-2 pt-3 border-t border-rule-soft flex flex-col gap-1">
                 <Link
                   href={"/account" as any}

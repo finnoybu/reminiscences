@@ -25,6 +25,7 @@ export default function PasswordRecoveryModal() {
 
   useEffect(() => {
     if (window.location.search.includes('recovery=true') && user) {
+      sessionStorage.removeItem('password-reset-pending')
       setShow(true)
     }
   }, [user])

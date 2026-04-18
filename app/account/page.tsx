@@ -57,6 +57,7 @@ export default function AccountPage() {
     // it destroys the PKCE code verifier cookie that the reset link needs.
     // The auth session will be replaced when the user clicks the reset link.
     localStorage.removeItem('sea-reader-preferences')
+    sessionStorage.setItem('password-reset-pending', '1')
     window.location.href = '/'
   }, [user, supabase.auth])
 
