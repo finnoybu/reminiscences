@@ -1,18 +1,29 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useReader } from '@/lib/reader-context'
 
 /**
  * Blocks page content rendering during recovery sessions.
- * Even if the PasswordRecoveryModal is removed from the DOM via browser
- * DevTools, this component prevents the underlying page from showing
- * any content. The recovery state comes from the JWT's amr claim,
- * not from the DOM — it cannot be bypassed client-side.
+ * Uses two signals:
+ * 1. isRecoverySession from context (authoritative, async)
+ * 2. ?recovery=true in the URL (fast-path, synchronous)
+ *
+ * The fast-path prevents content from flashing before getUser() resolves.
+ * Even if the PasswordRecoveryModal is removed via DevTools, this
+ * component prevents the page from rendering.
  */
 export default function RecoveryGuard({ children }: { children: React.ReactNode }) {
   const { isRecoverySession } = useReader()
+  const [urlRecovery, setUrlRecovery] = useState(false)
 
-  if (isRecoverySession) {
+  useEffect(() => {
+    if (window.location.search.includes('recovery=true')) {
+      setUrlRecovery(true)
+    }
+  }, [])
+
+  if (isRecoverySession || urlRecovery) {
     return null
   }
 

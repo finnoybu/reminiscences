@@ -58,7 +58,7 @@ export default function AccountPage() {
     // The auth session will be replaced when the user clicks the reset link.
     localStorage.removeItem('sea-reader-preferences')
     sessionStorage.setItem('password-reset-pending', '1')
-    window.location.href = '/'
+    window.location.href = '/?recovery=true'
   }, [user, supabase.auth])
 
   const handleSignOut = useCallback(async () => {
