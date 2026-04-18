@@ -63,17 +63,9 @@ export default function PasswordRecoveryModal() {
 
     setSaving(true)
 
-    // Check for password reuse
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: user!.email!,
-      password,
-    })
-    if (!signInError) {
-      setSaving(false)
-      setError('New password must be different from your current password.')
-      return
-    }
-
+    // Note: we intentionally do NOT check for password reuse here.
+    // The signInWithPassword probe creates a real session as a side effect,
+    // which replaces the recovery session and bypasses the middleware lockdown.
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
       setSaving(false)

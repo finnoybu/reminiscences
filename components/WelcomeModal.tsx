@@ -36,6 +36,7 @@ export default function WelcomeModal() {
         // Defer so the router navigates away from /auth/confirmed first
         setTimeout(() => {
           if (window.location.pathname === '/auth/confirmed') return
+          if (window.location.search.includes('recovery=true')) return
           try {
             if (localStorage.getItem(DISMISSED_KEY)) return
             if (sessionStorage.getItem(SESSION_SHOWN_KEY)) return
