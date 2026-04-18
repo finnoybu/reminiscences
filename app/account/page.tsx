@@ -29,13 +29,10 @@ export default function AccountPage() {
     if (!newEmail.trim()) return
     setEmailSaving(true)
     setEmailMessage(null)
-    // Don't route through /auth/callback — updateUser doesn't generate
-    // a PKCE code verifier, so exchangeCodeForSession would fail.
-    // Supabase handles the email change server-side during token verification.
-    const { error } = await supabase.auth.updateUser(
-      { email: newEmail },
-      { emailRedirectTo: `${window.location.origin}/account` }
-    )
+    // No emailRedirectTo — Supabase handles the email change server-side
+    // during token verification. PKCE code exchange isn't needed (and fails
+    // because updateUser doesn't generate a code verifier).
+    const { error } = await supabase.auth.updateUser({ email: newEmail })
     setEmailSaving(false)
     if (error) {
       setEmailMessage(error.message)
