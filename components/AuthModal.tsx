@@ -45,7 +45,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
       onClose()
     } else if (view === 'forgot_password') {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname)}`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/account/update-password`,
       })
       if (error) { setError(error.message); setLoading(false); return }
       setView('check_email')

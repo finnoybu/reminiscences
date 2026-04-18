@@ -80,7 +80,9 @@ export default function UserMenu() {
               type="button"
               onClick={async () => {
                 await supabase.auth.signOut()
+                localStorage.removeItem('sea-reader-preferences')
                 setOpen(false)
+                window.location.href = '/'
               }}
               className="block w-full text-left px-4 py-2 font-sans text-sm text-ink-muted hover:text-ink hover:bg-bg-sunk transition-colors"
             >
