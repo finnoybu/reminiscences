@@ -45,19 +45,6 @@ export default function UpdatePasswordPage() {
     }
 
     setSaving(true)
-
-    // Check for password reuse: try signing in with the new password
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: user.email!,
-      password,
-    })
-    if (!signInError) {
-      // Sign-in succeeded — new password matches the old one
-      setSaving(false)
-      setError('New password must be different from your current password.')
-      return
-    }
-
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
       setSaving(false)
