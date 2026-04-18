@@ -53,8 +53,9 @@ export default function AccountPage() {
       setPasswordMessage(error.message)
       return
     }
-    // Sign out and redirect to landing page
-    await supabase.auth.signOut()
+    // Clear user data and redirect — don't call signOut() here because
+    // it destroys the PKCE code verifier cookie that the reset link needs.
+    // The auth session will be replaced when the user clicks the reset link.
     localStorage.removeItem('sea-reader-preferences')
     window.location.href = '/'
   }, [user, supabase.auth])
