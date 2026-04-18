@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useReader } from '@/lib/reader-context'
 import PasswordStrength, { usePasswordStrength } from './PasswordStrength'
 import AuthModal from './AuthModal'
+
+const TIMEOUT_SECONDS = 5 * 60 // 5 minutes
 
 export default function PasswordRecoveryModal() {
   const [show, setShow] = useState(false)
@@ -13,7 +15,10 @@ export default function PasswordRecoveryModal() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+  const [expired, setExpired] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
+  const [secondsLeft, setSecondsLeft] = useState(TIMEOUT_SECONDS)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const strength = usePasswordStrength(password)
   const { user } = useReader()
   const supabase = createClient()
@@ -23,6 +28,22 @@ export default function PasswordRecoveryModal() {
       setShow(true)
     }
   }, [user])
+
+  // Countdown timer — starts when modal shows, stops on completion
+  useEffect(() => {
+    if (!show || done || expired) return
+    timerRef.current = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current!)
+          setExpired(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [show, done, expired])
 
   if (!show) return null
 
@@ -85,7 +106,24 @@ export default function PasswordRecoveryModal() {
         </div>
 
         <div className="px-6 pb-6 pt-4">
-          {done ? (
+          {expired ? (
+            <div>
+              <p className="font-serif text-base text-ink-muted leading-relaxed mb-6">
+                This password reset has expired. Please request a new reset link.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  supabase.auth.signOut()
+                  localStorage.removeItem('sea-reader-preferences')
+                  window.location.href = '/'
+                }}
+                className="w-full h-11 rounded-md bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"
+              >
+                Return to home
+              </button>
+            </div>
+          ) : done ? (
             <div>
               <p className="font-serif text-base text-ink-muted leading-relaxed mb-6">
                 Your password has been changed. Please sign in with your new password.
@@ -144,6 +182,9 @@ export default function PasswordRecoveryModal() {
               >
                 {saving ? 'Updating\u2026' : 'Update password'}
               </button>
+              <p className={`text-center font-sans text-xs ${secondsLeft <= 60 ? 'text-red-600 dark:text-red-400' : 'text-ink-faint'}`}>
+                {Math.floor(secondsLeft / 60)}:{String(secondsLeft % 60).padStart(2, '0')} remaining
+              </p>
             </form>
           )}
         </div>
