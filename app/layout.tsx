@@ -5,6 +5,7 @@ import { ReaderProvider } from '@/lib/reader-context'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import WelcomeModal from '@/components/WelcomeModal'
+import PasswordRecoveryModal from '@/components/PasswordRecoveryModal'
 import PromoModal from '@/components/PromoModal'
 import CookieBanner from '@/components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main">{children}</main>
           <SiteFooter />
           <WelcomeModal />
+          <PasswordRecoveryModal />
           <PromoModal />
           <CookieBanner />
           <Analytics />

@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     if (recoverySentAt) {
       const elapsed = Date.now() - new Date(recoverySentAt).getTime()
       if (elapsed < 60 * 60 * 1000) {
-        response.headers.set('Location', `${origin}/account/update-password`)
+        response.headers.set('Location', `${origin}/?recovery=true`)
       }
     }
   } else if (token_hash && type) {
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       return response
     }
     if (type === 'recovery') {
-      response.headers.set('Location', `${origin}/account/update-password`)
+      response.headers.set('Location', `${origin}/?recovery=true`)
     }
   }
 
