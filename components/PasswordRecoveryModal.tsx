@@ -88,8 +88,9 @@ export default function PasswordRecoveryModal() {
 
   if (done && showAuth) {
     return <AuthModal onClose={() => {
-      setShow(false)
-      window.history.replaceState({}, '', '/')
+      // Hard reload to clear recovery state and let middleware
+      // evaluate the fresh (non-recovery) session
+      window.location.href = '/'
     }} />
   }
 
@@ -114,8 +115,8 @@ export default function PasswordRecoveryModal() {
               </p>
               <button
                 type="button"
-                onClick={() => {
-                  supabase.auth.signOut()
+                onClick={async () => {
+                  await supabase.auth.signOut()
                   localStorage.removeItem('sea-reader-preferences')
                   window.location.href = '/'
                 }}
