@@ -20,15 +20,15 @@ export default function PasswordRecoveryModal() {
   const [secondsLeft, setSecondsLeft] = useState(TIMEOUT_SECONDS)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const strength = usePasswordStrength(password)
-  const { user } = useReader()
+  const { user, isRecoverySession } = useReader()
   const supabase = createClient()
 
   useEffect(() => {
-    if (window.location.search.includes('recovery=true') && user) {
+    if (isRecoverySession && user) {
       sessionStorage.removeItem('password-reset-pending')
       setShow(true)
     }
-  }, [user])
+  }, [isRecoverySession, user])
 
   // Countdown timer — starts when modal shows, stops on completion
   useEffect(() => {
