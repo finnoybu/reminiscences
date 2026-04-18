@@ -21,7 +21,9 @@ export default function AuthButton() {
     return () => subscription.unsubscribe()
   }, [supabase.auth])
 
-  if (user) return <UserMenu />
+  // Hide signed-in UI during pending password reset (PKCE cookie must survive)
+  const pendingReset = typeof window !== 'undefined' && sessionStorage.getItem('password-reset-pending')
+  if (user && !pendingReset) return <UserMenu />
 
   return (
     <>
