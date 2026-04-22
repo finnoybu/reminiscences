@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { getBookId } from '@/lib/book'
 import path from 'path'
 import fs from 'fs'
 
@@ -22,10 +23,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Sign in required' }, { status: 401 })
   }
 
+  const bookId = await getBookId(supabase)
   const { data: purchases } = await supabase
     .from('purchases')
     .select('id')
     .eq('user_id', user.id)
+    .eq('book_id', bookId)
     .eq('product_id', 'pdf-epub')
     .limit(1)
 

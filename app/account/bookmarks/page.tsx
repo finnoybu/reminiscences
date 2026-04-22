@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 
 interface Bookmark {
   id: string
@@ -22,16 +23,18 @@ export default function BookmarksPage() {
   useEffect(() => {
     if (!user) { setLoading(false); return }
 
-    supabase
-      .from('bookmarks')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('chapter_slug', { ascending: true })
-      .order('scroll_position', { ascending: true })
-      .then(({ data }) => {
-        setBookmarks(data ?? [])
-        setLoading(false)
-      })
+    getBookId(supabase).then((bookId) =>
+      supabase
+        .from('bookmarks')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('book_id', bookId)
+        .order('chapter_slug', { ascending: true })
+        .order('scroll_position', { ascending: true })
+    ).then(({ data }) => {
+      setBookmarks(data ?? [])
+      setLoading(false)
+    })
   }, [user, supabase])
 
   const removeBookmark = async (id: string) => {

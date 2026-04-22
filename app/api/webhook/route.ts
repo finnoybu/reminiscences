@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createServerClient } from '@supabase/ssr'
+import { getBookId } from '@/lib/book'
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -29,8 +30,10 @@ export async function POST(request: NextRequest) {
         { cookies: { getAll: () => [], setAll: () => {} } }
       )
 
+      const bookId = await getBookId(supabase)
       await supabase.from('purchases').insert({
         user_id: userId,
+        book_id: bookId,
         product_id: productId,
         stripe_session_id: session.id,
         amount_cents: session.amount_total,

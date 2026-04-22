@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 import { getParagraphAtOffset } from '@/lib/selection-utils'
 
 interface AnnotationHighlightsProps {
@@ -210,19 +211,21 @@ export default function AnnotationHighlights({
 
     const supabase = createClient()
 
-    // Fetch annotations and bookmarks in parallel
-    Promise.all([
+    // Fetch annotations and bookmarks in parallel, scoped to this book.
+    getBookId(supabase).then((bookId) => Promise.all([
       supabase
         .from('annotations')
         .select('id, selection_start, selection_end, text_selection, note')
         .eq('user_id', user.id)
+        .eq('book_id', bookId)
         .eq('chapter_slug', chapterSlug),
       supabase
         .from('bookmarks')
         .select('id, scroll_position, selection_start')
         .eq('user_id', user.id)
+        .eq('book_id', bookId)
         .eq('chapter_slug', chapterSlug),
-    ]).then(([annResult, bmResult]) => {
+    ])).then(([annResult, bmResult]) => {
       if (!articleRef.current) return
 
       // Apply annotation highlights

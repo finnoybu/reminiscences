@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -92,9 +93,10 @@ export default function AccountPage() {
     if (!user) return
 
     async function load() {
+      const bookId = await getBookId(supabase)
       const [progressRes, purchaseRes] = await Promise.all([
-        supabase.from('reading_progress').select('chapter_slug').eq('user_id', user!.id),
-        supabase.from('purchases').select('id').eq('user_id', user!.id).eq('product_id', 'pdf-epub').limit(1),
+        supabase.from('reading_progress').select('chapter_slug').eq('user_id', user!.id).eq('book_id', bookId),
+        supabase.from('purchases').select('id').eq('user_id', user!.id).eq('book_id', bookId).eq('product_id', 'pdf-epub').limit(1),
       ])
 
       setStats({

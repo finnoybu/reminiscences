@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useCallback, useEffect, useState, useRef, ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 import type { User } from '@supabase/supabase-js'
 
 export type Theme = 'light' | 'dark' | 'high-contrast'
@@ -77,9 +78,11 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
     if (!user || !hydrated) return
 
     async function mergeFromCloud() {
+      const bookId = await getBookId(supabase)
       const { data } = await supabase
         .from('reading_progress')
         .select('chapter_slug, scroll_position, last_read_at')
+        .eq('book_id', bookId)
         .order('last_read_at', { ascending: false })
         .limit(1)
 
@@ -114,16 +117,18 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
         const doc = document.documentElement
         const max = doc.scrollHeight - doc.clientHeight
         const percent = max > 0 ? Math.min(1, position / max) : 0
+        const bookId = await getBookId(supabase)
 
         await supabase.from('reading_progress').upsert(
           {
             user_id: user.id,
+            book_id: bookId,
             chapter_slug: chapter,
             scroll_position: position,
             percent,
             last_read_at: new Date().toISOString(),
           },
-          { onConflict: 'user_id,chapter_slug' }
+          { onConflict: 'user_id,book_id,chapter_slug' }
         )
       }, 3000)
     },
