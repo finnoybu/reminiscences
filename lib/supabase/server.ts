@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+const cookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN
+
 export function createClient() {
   const cookieStore = cookies()
 
@@ -15,7 +17,11 @@ export function createClient() {
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.set(
+                name,
+                value,
+                cookieDomain ? { ...options, domain: cookieDomain } : options
+              )
             )
           } catch {
             // Called from Server Component — ignore
