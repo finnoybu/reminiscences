@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useReader } from '@/lib/reader-context'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 
 const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to'])
 
@@ -72,15 +73,17 @@ export default function AnnotationsPage() {
   useEffect(() => {
     if (!user) { setLoading(false); return }
 
-    supabase
-      .from('annotations')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .then(({ data }) => {
-        setAnnotations(data ?? [])
-        setLoading(false)
-      })
+    getBookId(supabase).then((bookId) =>
+      supabase
+        .from('annotations')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('book_id', bookId)
+        .order('created_at', { ascending: false })
+    ).then(({ data }) => {
+      setAnnotations(data ?? [])
+      setLoading(false)
+    })
   }, [user, supabase])
 
   const removeAnnotation = async (id: string) => {

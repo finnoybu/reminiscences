@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { getBookId } from '@/lib/book'
 
 export default function DownloadButtons() {
   const [purchased, setPurchased] = useState(false)
@@ -12,10 +13,12 @@ export default function DownloadButtons() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
+      const bookId = await getBookId(supabase)
       const { data } = await supabase
         .from('purchases')
         .select('id')
         .eq('user_id', user.id)
+        .eq('book_id', bookId)
         .eq('product_id', 'pdf-epub')
         .limit(1)
 

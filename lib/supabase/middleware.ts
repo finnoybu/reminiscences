@@ -4,6 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes that recovery sessions are allowed to access
 const RECOVERY_ALLOWED = ['/', '/auth/callback']
 
+const cookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
@@ -25,7 +27,11 @@ export async function updateSession(request: NextRequest) {
           )
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(
+              name,
+              value,
+              cookieDomain ? { ...options, domain: cookieDomain } : options
+            )
           )
         },
       },
