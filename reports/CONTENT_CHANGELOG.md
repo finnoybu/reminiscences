@@ -1,5 +1,12 @@
 # Content Changelog
 
+## v0.1.6 (2026-04-23)
+
+### Rehash after typo-only edit
+- PR #78 fixed a single typo in `content/en/coming-home.md` without regenerating `reports/content_hashes.sha256`, which caused content-validate to fail on every subsequent PR with "Hash mismatch: content/en/coming-home.md".
+- No manuscript body changes intended in this patch beyond the already-landed typo; this entry records the hash regeneration to re-baseline the integrity check.
+- `node scripts/hash-content.mjs` regenerated `reports/content_hashes.sha256` against the current `content/en/` tree.
+
 ## v0.1.1 (2026-03-03)
 
 ### Hashing Policy Update (Determinism + Metadata Tolerance)
