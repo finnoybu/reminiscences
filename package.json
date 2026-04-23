@@ -42,7 +42,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@types/node": "20.12.7",
+    "@types/node": "25.6.0",
     "@types/react": "18.3.3",
     "@types/react-dom": "^18.3.7",
     "@types/zxcvbn": "^4.4.5",
