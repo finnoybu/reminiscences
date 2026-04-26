@@ -5,49 +5,70 @@ import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 
-const SESSION_START_KEY = 'sea-reader-session-start'
-const PROMO_SHOWN_KEY = 'sea-reader-promo-shown'
-const THRESHOLD_MS = 10 * 60 * 1000 // 10 minutes
+const VISITED_KEY = 'sea-reader-visited-slugs'
+const SEEN_KEY = 'sea-reader-promo-seen'
 
-export default function PromoModal() {
+interface PromoModalProps {
+  totalChapters: number
+}
+
+function readVisited(): Set<string> {
+  try {
+    const raw = localStorage.getItem(VISITED_KEY)
+    if (!raw) return new Set()
+    const parsed = JSON.parse(raw)
+    return new Set(Array.isArray(parsed) ? parsed : [])
+  } catch {
+    return new Set()
+  }
+}
+
+function writeVisited(set: Set<string>) {
+  try {
+    localStorage.setItem(VISITED_KEY, JSON.stringify(Array.from(set)))
+  } catch {}
+}
+
+export default function PromoModal({ totalChapters }: PromoModalProps) {
   const [show, setShow] = useState(false)
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const prevPathname = useRef(pathname)
 
-  // Record session start time on mount
   useEffect(() => {
     setMounted(true)
-    try {
-      if (!sessionStorage.getItem(SESSION_START_KEY)) {
-        sessionStorage.setItem(SESSION_START_KEY, String(Date.now()))
-      }
-    } catch {}
   }, [])
 
-  // Watch for chapter-to-chapter navigation
   useEffect(() => {
     if (!mounted) return
+    if (totalChapters <= 0) return
+
     const prev = prevPathname.current
     prevPathname.current = pathname
 
-    // Only trigger on navigation TO a chapter page (not the initial load)
     if (!pathname.startsWith('/chapters/')) return
     if (prev === pathname) return
 
-    try {
-      if (sessionStorage.getItem(PROMO_SHOWN_KEY)) return
-      const start = Number(sessionStorage.getItem(SESSION_START_KEY))
-      if (!start || Date.now() - start < THRESHOLD_MS) return
+    const slug = pathname.replace(/^\/chapters\//, '').split(/[/?#]/)[0]
+    if (!slug) return
 
-      // Delay slightly so the new chapter content loads first
-      const timer = setTimeout(() => {
-        setShow(true)
-        sessionStorage.setItem(PROMO_SHOWN_KEY, '1')
-      }, 1500)
-      return () => clearTimeout(timer)
+    try {
+      const visited = readVisited()
+      if (!visited.has(slug)) {
+        visited.add(slug)
+        writeVisited(visited)
+      }
+
+      const percent = visited.size / totalChapters
+      const seen = localStorage.getItem(SEEN_KEY) === '1'
+
+      if (percent >= 0.1 && !seen) {
+        localStorage.setItem(SEEN_KEY, '1')
+        const timer = setTimeout(() => setShow(true), 1500)
+        return () => clearTimeout(timer)
+      }
     } catch {}
-  }, [pathname, mounted])
+  }, [pathname, mounted, totalChapters])
 
   if (!mounted || !show) return null
 
