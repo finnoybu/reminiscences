@@ -2,7 +2,7 @@
 title: "A Seamonster"
 id: 46
 hero:
-  image: "/images/a-seamonster.png"
+  image: "/images/a-seamonster.webp"
 slug: "a-seamonster"
 ---
 

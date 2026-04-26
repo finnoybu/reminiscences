@@ -3,7 +3,7 @@ title: "The Bay of Biscay in Uproar"
 id: 3
 slug: "the-bay-of-biscay-in-uproar"
 hero:
-  image: "/images/the-bay-of-biscay-in-uproar.png"
+  image: "/images/the-bay-of-biscay-in-uproar.webp"
 ---
 
 

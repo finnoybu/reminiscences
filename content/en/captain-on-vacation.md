@@ -8,7 +8,7 @@ places:
   0: "Brooklyn, New York, US"
 slug: "captain-on-vacation"
 hero:
-  image: "/images/captain-on-vacation.png"
+  image: "/images/captain-on-vacation.webp"
 ---
 
 

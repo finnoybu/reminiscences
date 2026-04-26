@@ -3,7 +3,7 @@ title: "My First Voyage to America"
 id: 13
 slug: "my-first-voyage-to-america"
 hero:
-  image: "/images/my-first-voyage-to-america.png"
+  image: "/images/my-first-voyage-to-america.webp"
 ---
 
 

@@ -3,7 +3,7 @@ title: "Two Dudes in Bordeaux"
 id: 30
 slug: "two-dudes-in-bordeaux"
 hero:
-  image: "/images/two-dudes-in-bordeaux.png"
+  image: "/images/two-dudes-in-bordeaux.webp"
 ---
 
 

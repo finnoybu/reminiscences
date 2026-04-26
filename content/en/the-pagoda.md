@@ -3,7 +3,7 @@ title: "The Pagoda"
 id: 43
 slug: "the-pagoda"
 hero:
-  image: "/images/the-pagoda.png"
+  image: "/images/the-pagoda.webp"
 ---
 
 

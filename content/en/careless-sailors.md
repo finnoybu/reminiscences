@@ -8,7 +8,7 @@ places:
   0: "Karlshamn, Sweden"
 slug: "careless-sailors"
 hero:
-  image: "/images/careless-sailors.png"
+  image: "/images/careless-sailors.webp"
 ---
 
 

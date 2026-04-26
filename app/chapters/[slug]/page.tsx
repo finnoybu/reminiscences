@@ -18,9 +18,33 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: ChapterPageProps) {
   const chapter = getChapterBySlug(params.slug)
   if (!chapter) return { title: 'Chapter not found' }
+  const url = `/chapters/${chapter.slug}`
+  const image = chapter.hero?.image
   return {
     title: chapter.title,
     description: chapter.excerpt,
+    openGraph: {
+      type: 'article',
+      locale: 'en_US',
+      url,
+      siteName: "A Sailor's Reminiscences",
+      title: `${chapter.title} · A Sailor's Reminiscences`,
+      description: chapter.excerpt,
+      ...(image && {
+        images: [
+          {
+            url: image,
+            alt: `${chapter.title} — chapter illustration`,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${chapter.title} · A Sailor's Reminiscences`,
+      description: chapter.excerpt,
+      ...(image && { images: [image] }),
+    },
   }
 }
 

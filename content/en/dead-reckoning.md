@@ -3,7 +3,7 @@ title: "Dead Reckoning"
 id: 9
 slug: "dead-reckoning"
 hero:
-  image: "/images/dead-reckoning.png"
+  image: "/images/dead-reckoning.webp"
 ---
 
 

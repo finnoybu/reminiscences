@@ -3,7 +3,7 @@ title: "Low Pressure"
 id: 23
 slug: "low-pressure"
 hero:
-  image: "/images/low-pressure.png"
+  image: "/images/low-pressure.webp"
 ---
 
 

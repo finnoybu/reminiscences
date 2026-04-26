@@ -3,7 +3,7 @@ title: "Peaceful Hindoos"
 id: 42
 slug: "peaceful-hindoos"
 hero:
-  image: "/images/peaceful-hindoos.png"
+  image: "/images/peaceful-hindoos.webp"
 ---
 
 

@@ -8,7 +8,7 @@ places:
   0: "Brooklyn, New York, US"
 slug: "mates-responsibilities"
 hero:
-  image: "/images/mates-responsibilities.png"
+  image: "/images/mates-responsibilities.webp"
 ---
 
 

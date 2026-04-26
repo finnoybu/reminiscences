@@ -3,7 +3,7 @@ title: "Now Back to Europe"
 id: 45
 slug: "now-back-to-europe"
 hero:
-  image: "/images/now-back-to-europe.png"
+  image: "/images/now-back-to-europe.webp"
 ---
 
 
