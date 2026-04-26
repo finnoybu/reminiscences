@@ -14,7 +14,7 @@ export default function ChapterCard({
       href={`/chapters/${chapter.slug}`}
       className="chapter-card group relative block overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule focus-visible:border-accent"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-bg-sunk">
+      <div className="relative aspect-[1200/630] overflow-hidden bg-bg-sunk">
         {chapter.hero?.image && (
           <Image
             src={chapter.hero.image}
