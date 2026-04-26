@@ -23,7 +23,7 @@ export default function Home() {
               fill
               priority
               sizes="100vw"
-              className="object-cover opacity-25 dark:opacity-30 grayscale sepia-[.15]"
+              className="object-cover object-[center_25%] opacity-25 dark:opacity-30 grayscale sepia-[.15]"
             />
           )}
           <div
