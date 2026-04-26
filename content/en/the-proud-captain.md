@@ -3,7 +3,7 @@ title: "The Proud Captain"
 id: 4
 slug: "the-proud-captain"
 hero:
-  image: "/images/the-proud-captain.png"
+  image: "/images/the-proud-captain.webp"
 ---
 
 

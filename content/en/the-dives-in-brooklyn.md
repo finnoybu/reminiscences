@@ -8,7 +8,7 @@ places:
   0: "Brooklyn, New York, US"
 slug: "the-dives-in-brooklyn"
 hero:
-  image: "/images/the-dives-in-brooklyn.png"
+  image: "/images/the-dives-in-brooklyn.webp"
 ---
 
 

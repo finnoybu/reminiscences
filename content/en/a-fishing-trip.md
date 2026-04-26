@@ -3,7 +3,7 @@ title: "A Fishing Trip"
 id: 33
 slug: "a-fishing-trip"
 hero:
-  image: "/images/a-fishing-trip.png"
+  image: "/images/a-fishing-trip.webp"
 ---
 
 

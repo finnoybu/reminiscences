@@ -3,7 +3,7 @@ title: "Sailing in the Gulf Stream, with Scorpions"
 id: 20
 slug: "sailing-in-the-gulf-stream-with-scorpions"
 hero:
-  image: "/images/sailing-in-the-gulf-stream-with-scorpions.png"
+  image: "/images/sailing-in-the-gulf-stream-with-scorpions.webp"
 ---
 
 

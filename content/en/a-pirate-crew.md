@@ -3,7 +3,7 @@ title: "A Pirate Crew"
 id: 28
 slug: "a-pirate-crew"
 hero:
-  image: "/images/a-pirate-crew.png"
+  image: "/images/a-pirate-crew.webp"
 ---
 
 

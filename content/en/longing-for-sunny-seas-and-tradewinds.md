@@ -11,7 +11,7 @@ places:
   2: "Glasgow, Scotland"
 slug: "longing-for-sunny-seas-and-tradewinds"
 hero:
-  image: "/images/longing-for-sunny-seas-and-tradewinds.png"
+  image: "/images/longing-for-sunny-seas-and-tradewinds.webp"
 ---
 
 

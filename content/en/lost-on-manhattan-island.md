@@ -8,7 +8,7 @@ places:
   0: "Hoboken, New Jersey, US"
 slug: "lost-on-manhattan-island"
 hero:
-  image: "/images/lost-on-manhattan-island.png"
+  image: "/images/lost-on-manhattan-island.webp"
 ---
 
 

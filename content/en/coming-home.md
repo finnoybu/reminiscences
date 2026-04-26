@@ -4,7 +4,7 @@ id: 2
 year: 1876
 slug: "coming-home"
 hero:
-  image: "/images/coming-home.png"
+  image: "/images/coming-home.webp"
 ---
 
 

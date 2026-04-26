@@ -37,14 +37,43 @@ const caveat = Caveat({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://memoirs.finnoybu.com'),
   title: {
     default: "A Sailor's Reminiscences from the Days of the Sailships",
     template: "%s · A Sailor's Reminiscences",
   },
   description:
     "A Sailor's Reminiscences from the Days of the Sailships — a Norwegian sailor recounting his youth aboard the proud sailships of a vanished age.",
+  authors: [{ name: 'Olavus Vullum Bjørnson Vestbø' }],
   icons: {
     icon: '/images/blue-arrowhead.svg',
+  },
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'book',
+    locale: 'en_US',
+    url: '/',
+    siteName: "A Sailor's Reminiscences",
+    title: "A Sailor's Reminiscences from the Days of the Sailships",
+    description:
+      'A Norwegian sailor recounting his youth aboard the proud sailships of a vanished age — Olavus Vullum Bjørnson Vestbø, in his own voice.',
+    images: [
+      {
+        url: '/images/introduction.webp',
+        width: 1200,
+        height: 630,
+        alt: "A Sailor's Reminiscences",
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "A Sailor's Reminiscences from the Days of the Sailships",
+    description:
+      'A Norwegian sailor recounting his youth aboard the proud sailships of a vanished age.',
+    images: ['/images/introduction.webp'],
   },
 }
 

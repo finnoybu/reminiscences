@@ -7,7 +7,7 @@ places:
   0: "Copenhagen, Denmark"
 slug: "sailing-in-fear-of-shipwreck"
 hero:
-  image: "/images/sailing-in-fear-of-shipwreck.png"
+  image: "/images/sailing-in-fear-of-shipwreck.webp"
 ---
 
 

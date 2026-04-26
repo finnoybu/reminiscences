@@ -3,7 +3,7 @@ title: "To Archangel"
 id: 12
 slug: "to-archangel"
 hero:
-  image: "/images/to-archangel.png"
+  image: "/images/to-archangel.webp"
 ---
 
 

@@ -3,7 +3,7 @@ title: "In Hamburg"
 id: 27
 slug: "in-hamburg"
 hero:
-  image: "/images/in-hamburg.png"
+  image: "/images/in-hamburg.webp"
 ---
 
 

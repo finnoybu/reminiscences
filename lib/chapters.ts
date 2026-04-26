@@ -78,6 +78,7 @@ export function getChapterBySlug(slug: string): Chapter | null {
     title: data.title,
     slug: data.slug,
     hero: data.hero,
+    excerpt: makeExcerpt(markdown),
     content,
   } as Chapter
 }

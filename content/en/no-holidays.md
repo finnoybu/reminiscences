@@ -3,7 +3,7 @@ title: "No Holidays"
 id: 8
 slug: "no-holidays"
 hero:
-  image: "/images/no-holidays.png"
+  image: "/images/no-holidays.webp"
 ---
 
 

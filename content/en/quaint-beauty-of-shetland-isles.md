@@ -9,7 +9,7 @@ places:
   1: "Orkney Islands"
 slug: "quaint-beauty-of-shetland-isles"
 hero:
-  image: "/images/quaint-beauty-of-shetland-isles.png"
+  image: "/images/quaint-beauty-of-shetland-isles.webp"
 ---
 
 

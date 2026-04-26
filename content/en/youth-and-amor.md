@@ -3,7 +3,7 @@ title: "Youth and Amor"
 id: 11
 slug: "youth-and-amor"
 hero:
-  image: "/images/youth-and-amor.png"
+  image: "/images/youth-and-amor.webp"
 ---
 
 

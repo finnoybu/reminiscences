@@ -3,7 +3,7 @@ title: "To India, in the 'Semiramis'"
 id: 36
 slug: "to-india-in-the-semiramis"
 hero:
-  image: "/images/to-india-in-the-semiramis.png"
+  image: "/images/to-india-in-the-semiramis.webp"
 ---
 
 

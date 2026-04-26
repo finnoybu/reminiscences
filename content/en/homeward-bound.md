@@ -8,7 +8,7 @@ places:
   0: "Tvedestrand, Norway"
 slug: "homeward-bound"
 hero:
-  image: "/images/homeward-bound.png"
+  image: "/images/homeward-bound.webp"
 ---
 
 

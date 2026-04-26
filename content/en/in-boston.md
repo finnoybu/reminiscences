@@ -9,7 +9,7 @@ places:
   1: "Karlshamn, Sweden"
 slug: "in-boston"
 hero:
-  image: "/images/in-boston.png"
+  image: "/images/in-boston.webp"
 ---
 
 

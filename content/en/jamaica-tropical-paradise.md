@@ -3,7 +3,7 @@ title: "Jamaica, Tropical Paradise"
 id: 19
 slug: "jamaica-tropical-paradise"
 hero:
-  image: "/images/jamaica-tropical-paradise.png"
+  image: "/images/jamaica-tropical-paradise.webp"
 ---
 
 

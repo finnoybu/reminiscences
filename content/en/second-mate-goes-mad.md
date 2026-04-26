@@ -8,7 +8,7 @@ places:
   0: "Brooklyn, New York, US"
 slug: "second-mate-goes-mad"
 hero:
-  image: "/images/second-mate-goes-mad.png"
+  image: "/images/second-mate-goes-mad.webp"
 ---
 
 

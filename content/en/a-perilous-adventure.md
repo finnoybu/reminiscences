@@ -9,7 +9,7 @@ places:
 note: "N.N. denotes \"Nomen nominadum\" - not named"
 slug: "a-perilous-adventure"
 hero:
-  image: "/images/a-perilous-adventure.png"
+  image: "/images/a-perilous-adventure.webp"
 ---
 
 

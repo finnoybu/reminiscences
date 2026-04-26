@@ -3,7 +3,7 @@ title: "Ups and Downs of a Deserter"
 id: 25
 slug: "ups-and-downs-of-a-deserter"
 hero:
-  image: "/images/ups-and-downs-of-a-deserter.png"
+  image: "/images/ups-and-downs-of-a-deserter.webp"
 ---
 
 
