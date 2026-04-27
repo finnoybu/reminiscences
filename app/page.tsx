@@ -152,6 +152,36 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ───────── Salt and Silence promo ───────── */}
+      <section className="max-w-shell mx-auto px-6 pb-24">
+        <a
+          href="https://fiction.finnoybu.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="chapter-card group relative block overflow-hidden rounded-lg border border-rule-soft bg-bg-sunk hover:border-rule"
+        >
+          <div className="p-8 md:p-12 md:pr-16">
+            <p className="eyebrow mb-3">Also from Finnoybu &middot; the novel</p>
+            <h3
+              className="font-display text-3xl md:text-4xl text-ink group-hover:text-accent transition-colors"
+              style={{ fontFeatureSettings: "'ss01'" }}
+            >
+              Salt and Silence
+            </h3>
+            <p className="mt-4 font-serif text-base md:text-lg leading-relaxed text-ink-muted max-w-2xl">
+              A queer historical romance reimagining the same voyages &mdash; a
+              young Norwegian sailor at the close of the age of sail, torn
+              between the woman he has promised himself to and the men who share
+              his watches. Book I of the Finnoybu trilogy by E.&thinsp;A. Westbo.
+            </p>
+            <div className="mt-6 inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-brass">
+              Read the novel at fiction.finnoybu.com
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">↗</span>
+            </div>
+          </div>
+        </a>
+      </section>
     </>
   )
 }
