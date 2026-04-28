@@ -113,14 +113,20 @@ def build_combined_markdown(chapters):
 
 
 def write_metadata_yaml(path):
+    # Pandoc's default EPUB title-page template lists each creator by
+    # `text` value with no role label. To get "Translated by ..." and
+    # "Transcribed by ..." on the rendered title page, the labels are
+    # prefixed into the text values directly.
     meta = {
         "title": BOOK_TITLE,
         "creator": [
             {"role": "author", "text": AUTHOR},
-            {"role": "translator", "text": TRANSLATOR},
-            {"role": "editor", "text": EDITOR},
+            {"role": "translator", "text": f"Translated from Norwegian by {TRANSLATOR}"},
         ],
-        "publisher": PUBLISHER,
+        "contributor": [
+            {"role": "trc", "text": f"Transcribed by {EDITOR}"},
+        ],
+        "publisher": f"Published by {PUBLISHER}",
         "lang": LANGUAGE,
         "date": DATE,
         "rights": f"© {DATE} {PUBLISHER}. All rights reserved.",
