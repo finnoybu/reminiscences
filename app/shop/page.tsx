@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Arrowhead from '@/components/Arrowhead'
 import BuyButton from '@/components/BuyButton'
-import DownloadButtons from '@/components/DownloadButtons'
+import PurchasePrice from '@/components/PurchasePrice'
 
 export const metadata: Metadata = {
   title: 'Shop',
@@ -96,16 +96,17 @@ export default function ShopPage() {
                 {ed.format}
               </h2>
               <p className="font-serif text-sm text-ink-muted mb-4">{ed.description}</p>
-              <p className="font-display text-3xl text-ink" style={{ fontFeatureSettings: "'ss01'" }}>
-                {ed.price}
-              </p>
+              {ed.directPurchase ? (
+                <PurchasePrice price={ed.price} />
+              ) : (
+                <p className="font-display text-3xl text-ink" style={{ fontFeatureSettings: "'ss01'" }}>
+                  {ed.price}
+                </p>
+              )}
             </div>
             <div className="px-5 pb-5">
               {ed.directPurchase ? (
-                <>
-                  <BuyButton />
-                  <DownloadButtons />
-                </>
+                <BuyButton />
               ) : (
                 <a
                   href={ed.href}
