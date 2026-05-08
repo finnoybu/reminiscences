@@ -1,5 +1,13 @@
 # Content Changelog
 
+## v0.1.7 (2026-05-08)
+
+### Spelling corrections from print.docx
+- 198 word-level spelling fixes propagated from the corrected `output/a-sailors-reminiscences-print.docx` back to source markdown across 23 chapters in `content/en/`.
+- 1 hand correction in `a-perilous-adventure.md` (`aggreable` → `agreeable`); a Word-autocorrect-introduced misspelling (`aggregable`) was excluded from the bulk-apply and resolved manually.
+- Markdown links, italics, and straight typography preserved; Word's autocorrect noise (curly quotes, NBSP, em-dashes) was filtered out so only letter-level edits landed in source.
+- `node scripts/hash-content.mjs` regenerated `reports/content_hashes.sha256` against the corrected tree.
+
 ## v0.1.6 (2026-04-23)
 
 ### Rehash after typo-only edit
