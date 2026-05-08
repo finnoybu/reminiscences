@@ -1,0 +1,249 @@
+Source: D:\dev\sea-reader\output\a-sailors-reminiscences-print.docx
+Mode:   APPLY
+Paragraphs changed: 113
+Word changes:       198
+======================================================================
+
+--- content\en\a-memorable-voyage-in-the-baltic.md ---
+  'dimploma,' -> 'diploma,'
+  'sailer,' -> 'sailor,'
+  'sourth' -> 'south'
+  'dnager' -> 'danger'
+  'clfifs.' -> 'cliffs.'
+  'sourtheast,' -> 'southeast,'
+  'Bornhom.' -> 'Bornholm.'
+  'aginst' -> 'against'
+  'coule' -> 'could'
+  'farthes' -> 'farthest'
+  'ontables' -> 'notables'
+  'ans' -> 'and'
+  'Flasterbo' -> 'Falsterbo'
+  'ahve' -> 'have'
+  'rotn' -> 'torn'
+  'gret' -> 'great'
+
+--- content\en\a-new-york-crew.md ---
+  'captin' -> 'captain'
+  'captin' -> 'captain'
+  'maneurering' -> 'maneuvering'
+  'sean' -> 'seen'
+  'mugh.' -> 'mug.'
+  'interio' -> 'interior'
+  'heared' -> 'heard'
+  'lwoer' -> 'lower'
+  'ahd' -> 'had'
+  'navigato.' -> 'navigator.'
+  'deliverd' -> 'delivered'
+  'dischargte.' -> 'discharge.'
+  'netierh' -> 'neither'
+  'Enlgishman.' -> 'Englishman.'
+  'dnager' -> 'danger'
+  'out' -> 'our'
+  'dones' -> 'done'
+  'attemtion' -> 'attention'
+  'runk' -> 'drunk'
+  'thre' -> 'threw'
+  'surpirsed' -> 'surprised'
+  'cloethes.' -> 'clothes.'
+  'hight,' -> 'white,'
+  'roacks' -> 'rocks'
+
+--- content\en\a-perilous-adventure.md ---
+  'strwahat' -> 'straw-hat'
+  'bacause' -> 'because'
+  'wekk.' -> 'week.'
+  'elese' -> 'else'
+  'distringuish' -> 'distinguish'
+  'whome' -> 'whom'
+  'dnagers' -> 'dangers'
+
+--- content\en\a-seamonster.md ---
+  'approaced' -> 'approached'
+  'albatroses,' -> 'albatross,'
+  'diretions,' -> 'directions,'
+  'meorable' -> 'memorable'
+  'therby' -> 'thereby'
+  'fo' -> 'of'
+  'piereced' -> 'pierced'
+  'hight,' -> 'high,'
+  'numberous' -> 'numerous'
+  'loathesome' -> 'loathsome'
+  'supremem' -> 'supreme'
+  'thinkgs' -> 'things'
+  'wwife' -> 'wife'
+  'attmept' -> 'attempt'
+  'selet' -> 'select'
+  'mvoing' -> 'moving'
+  'reminiscenses' -> 'reminiscences'
+
+--- content\en\brooklyn-gangsters.md ---
+  'tighet,' -> 'tight,'
+  'ofwhcih' -> 'of which'
+  'experince' -> 'experience'
+  'crewe' -> 'crew'
+  'reconsdier,' -> 'reconsider,'
+  'outght' -> 'ought'
+
+--- content\en\careless-sailors.md ---
+  'whell' -> 'wheel'
+  'bagan' -> 'began'
+  'bagan' -> 'began'
+
+--- content\en\gay-copenhagen.md ---
+  'brnady' -> 'brandy'
+  'tkae' -> 'take'
+  'thgout' -> 'thought'
+  'ahearty' -> 'hearty'
+  'Jackobson' -> 'Jacobson'
+
+--- content\en\harbors-of-the-baltic.md ---
+  'cloethes' -> 'clothes'
+
+--- content\en\homeward-bound.md ---
+  'ry,' -> 'dry,'
+  'everyboy' -> 'everybody'
+  'nost' -> 'most'
+  'ther' -> 'there'
+  'anchros.' -> 'anchors.'
+  'anchros' -> 'anchors'
+  'rought,' -> 'rough,'
+  'Whereever' -> 'Wherever'
+  'mentioing,' -> 'mentioning,'
+  'compan' -> 'company'
+  'frien' -> 'friend'
+  'Stavanager' -> 'Stavanger'
+  'needd' -> 'needed'
+  'comforable' -> 'comfortable'
+  'siad,' -> 'said,'
+  'throroughly' -> 'thoroughly'
+  'strandaed' -> 'stranded'
+  'alsoo' -> 'also'
+  'spirites,' -> 'spirits,'
+  'greates' -> 'greatest'
+
+--- content\en\in-boston.md ---
+  'remeained' -> 'remained'
+  'sugard' -> 'sugar'
+  'siad' -> 'said'
+  'sugard' -> 'sugar'
+  'pciture' -> 'picture'
+  'occureence.' -> 'occurrence.'
+
+--- content\en\longing-for-sunny-seas-and-tradewinds.md ---
+  'ahve' -> 'have'
+  'discarge;' -> 'discharge;'
+  'Flamouth,' -> 'Falmouth,'
+  'dod' -> 'did'
+  'ahve' -> 'have'
+
+--- content\en\lost-on-manhattan-island.md ---
+  'finaly,' -> 'finally,'
+  'reobbers' -> 'robbers'
+  'whereever' -> 'wherever'
+
+--- content\en\now-back-to-europe.md ---
+  'southwardd' -> 'southward'
+  'norhtern' -> 'northern'
+  'mgith' -> 'might'
+  'eventaually' -> 'eventually'
+  'infe' -> 'fine'
+  'suppoed' -> 'supposed'
+  'rusy' -> 'rusty'
+  'doscovers' -> 'discovers'
+  'chorals' -> 'choral'
+  'humntunes' -> 'hymn tunes'
+  'Kristaian' -> 'Kristian'
+  'humntunes' -> 'hymn tunes'
+  'elader' -> 'leader'
+  'promosed' -> 'promised'
+  'Kritian,' -> 'Kristian,'
+
+--- content\en\quaint-beauty-of-shetland-isles.md ---
+  'whereever' -> 'wherever'
+  'hom' -> 'home'
+  'stratis,' -> 'straits,'
+
+--- content\en\sailing-as-styrmann.md ---
+  'appearanc' -> 'appearance'
+  'pleasureable' -> 'pleasurable'
+  'croseed;' -> 'crossed;'
+  'rought' -> 'rough'
+  'Whou' -> 'Who'
+  'nigth' -> 'night'
+  'calme,' -> 'calm,'
+  'ssuddenly' -> 'suddenly'
+  'tehy' -> 'they'
+  'eck' -> 'deck'
+  'ssaing' -> 'saying'
+  'oaccasionally' -> 'occasionally'
+  'tump' -> 'thump'
+  'teh' -> 'the'
+  'winesses' -> 'witnesses'
+  'behaviour' -> 'behavior'
+
+--- content\en\sailing-in-fear-of-shipwreck.md ---
+  'vessles,' -> 'vessels,'
+  'sailers,' -> 'sailors,'
+  'sailer,' -> 'sailor,'
+
+--- content\en\second-mate-goes-mad.md ---
+  'overbaord,' -> 'overboard,'
+
+--- content\en\the-birthday-of-the-captains-wife.md ---
+  'unexepected,' -> 'unexpected,'
+  'criticised' -> 'criticized'
+  'oppresive;' -> 'oppressive;'
+  'comradship' -> 'comradeship'
+  'ahve' -> 'have'
+
+--- content\en\the-pagoda.md ---
+  'wreatch' -> 'wreath'
+  'stemps' -> 'steps'
+  'stome.' -> 'stone.'
+  'geathers' -> 'feathers'
+  'strnage' -> 'strange'
+  'darkenss' -> 'darkness'
+  'docot' -> 'doctor'
+  'sickenss' -> 'sickness'
+  'frun' -> 'run'
+  'ngiht.' -> 'night.'
+
+--- content\en\the-wild-alarm-clock.md ---
+  'bacck' -> 'back'
+  'gnawin' -> 'gnawing'
+  'fetaures' -> 'features'
+
+--- content\en\to-cuba-for-a-load-of-sugar.md ---
+  'Englan,' -> 'England,'
+  'cropse.' -> 'corpse.'
+  'aginst' -> 'against'
+  'overalss.' -> 'overalls.'
+  'NEgroes' -> 'Negros'
+  'severl' -> 'several'
+  'teh' -> 'the'
+  'empahsis,' -> 'emphasis,'
+  'nothig' -> 'nothing'
+
+--- content\en\wise-elephants.md ---
+  'abset' -> 'absent'
+  'furtunate,' -> 'fortunate,'
+  'beserk,' -> 'berserk,'
+  'teh' -> 'the'
+  'whihc' -> 'which'
+  'platfoms' -> 'platforms'
+  'platfoms' -> 'platforms'
+  'beatiful,' -> 'beautiful,'
+  'pagper.' -> 'paper.'
+  'idead' -> 'idea'
+  'becuase' -> 'because'
+  'no' -> 'not'
+  'handty' -> 'handy'
+  'cnetered' -> 'centered'
+  'examinatino' -> 'examination'
+  'bambook' -> 'bamboo'
+  'lowerd' -> 'lowered'
+  'norht' -> 'north'
+
+--- content\en\with-president-daae.md ---
+  'wa' -> 'was'
+  'captin' -> 'captain'
