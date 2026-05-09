@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 
-const ACCEPTED_KEY = 'sea-reader-cookies-accepted'
+const ACCEPTED_KEY = 'reminiscences-cookies-accepted'
 
 export default function CookieBanner() {
   const [show, setShow] = useState(false)

@@ -170,7 +170,7 @@ export default function SiteHeader() {
                   type="button"
                   onClick={async () => {
                     await supabase.auth.signOut()
-                    localStorage.removeItem('sea-reader-preferences')
+                    localStorage.removeItem('reminiscences-preferences')
                     setMenuOpen(false)
                     window.location.href = '/'
                   }}

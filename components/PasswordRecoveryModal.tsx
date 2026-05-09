@@ -81,7 +81,7 @@ export default function PasswordRecoveryModal() {
       setError(error.message)
     } else {
       await supabase.auth.signOut()
-      localStorage.removeItem('sea-reader-preferences')
+      localStorage.removeItem('reminiscences-preferences')
       setSaving(false)
       setDone(true)
     }
@@ -118,7 +118,7 @@ export default function PasswordRecoveryModal() {
                 type="button"
                 onClick={async () => {
                   await supabase.auth.signOut()
-                  localStorage.removeItem('sea-reader-preferences')
+                  localStorage.removeItem('reminiscences-preferences')
                   window.location.href = '/'
                 }}
                 className="w-full h-11 rounded-md bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"

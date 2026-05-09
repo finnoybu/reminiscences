@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 
-const VISITED_KEY = 'sea-reader-visited-slugs'
-const SEEN_KEY = 'sea-reader-promo-seen'
+const VISITED_KEY = 'reminiscences-visited-slugs'
+const SEEN_KEY = 'reminiscences-promo-seen'
 
 interface PromoModalProps {
   totalChapters: number

@@ -80,7 +80,7 @@ export default function UserMenu() {
               type="button"
               onClick={async () => {
                 await supabase.auth.signOut()
-                localStorage.removeItem('sea-reader-preferences')
+                localStorage.removeItem('reminiscences-preferences')
                 setOpen(false)
                 window.location.href = '/'
               }}

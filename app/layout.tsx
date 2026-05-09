@@ -78,9 +78,24 @@ export const metadata: Metadata = {
   },
 }
 
+// One-time migration of legacy `sea-reader-*` keys to `reminiscences-*` (repo rename, v0.3.0).
+// Idempotent: after migration the loop sees nothing to copy. Safe to remove once telemetry shows
+// no remaining legacy keys in the wild.
 const themeScript = `
   try {
-    var stored = JSON.parse(localStorage.getItem('sea-reader-preferences') || '{}');
+    var legacy = ['preferences','cookies-accepted','visited-slugs','promo-seen','welcome-dismissed'];
+    for (var i = 0; i < legacy.length; i++) {
+      var oldK = 'sea-reader-' + legacy[i];
+      var newK = 'reminiscences-' + legacy[i];
+      var v = localStorage.getItem(oldK);
+      if (v && !localStorage.getItem(newK)) {
+        localStorage.setItem(newK, v);
+        localStorage.removeItem(oldK);
+      }
+    }
+  } catch (e) {}
+  try {
+    var stored = JSON.parse(localStorage.getItem('reminiscences-preferences') || '{}');
     var theme = stored.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.classList.add(theme);
   } catch (e) {}

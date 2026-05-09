@@ -47,7 +47,7 @@ export default function AccountPage() {
     }
     // Sign out and redirect — forces re-authentication after email change
     await supabase.auth.signOut()
-    localStorage.removeItem('sea-reader-preferences')
+    localStorage.removeItem('reminiscences-preferences')
     window.location.href = '/'
   }, [newEmail, supabase.auth])
 
@@ -66,14 +66,14 @@ export default function AccountPage() {
     // Clear user data and redirect — don't call signOut() here because
     // it destroys the PKCE code verifier cookie that the reset link needs.
     // The auth session will be replaced when the user clicks the reset link.
-    localStorage.removeItem('sea-reader-preferences')
+    localStorage.removeItem('reminiscences-preferences')
     sessionStorage.setItem('password-reset-pending', '1')
     window.location.href = '/?recovery=true'
   }, [user, supabase.auth])
 
   const handleSignOut = useCallback(async () => {
     await supabase.auth.signOut()
-    localStorage.removeItem('sea-reader-preferences')
+    localStorage.removeItem('reminiscences-preferences')
     window.location.href = '/'
   }, [supabase.auth])
 
@@ -85,7 +85,7 @@ export default function AccountPage() {
       return
     }
     await supabase.auth.signOut()
-    localStorage.removeItem('sea-reader-preferences')
+    localStorage.removeItem('reminiscences-preferences')
     window.location.href = '/'
   }, [supabase.auth])
 

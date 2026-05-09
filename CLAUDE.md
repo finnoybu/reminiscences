@@ -1,9 +1,9 @@
-# CLAUDE.md — sea-reader
+# CLAUDE.md — reminiscences
 
 Registry of authority documents, hard rules, and pointers. Low-drift by design. Prefer linking over restating.
 
 ## What this repo is
-Next.js 14 (App Router) reader platform serving a 70-chapter English manuscript — a Norwegian sailor's memoir — from [content/en/](content/en/). Server-rendered markdown via `gray-matter` + `marked`. Owned by Finnoybu; repo at `github.com/finnoybu/sea-reader`.
+Next.js 14 (App Router) reader platform serving a 70-chapter English manuscript — a Norwegian sailor's memoir — from [content/en/](content/en/). Server-rendered markdown via `gray-matter` + `marked`. Owned by Finnoybu; repo at `github.com/finnoybu/reminiscences` (formerly `sea-reader`).
 
 ## Authority (in order)
 1. [GOVERNANCE_CHARTER.md](GOVERNANCE_CHARTER.md) — policy
@@ -43,4 +43,4 @@ Node 24.x, pnpm 9.
 
 ## Related context (external)
 - Parent brand/IP: Finnoybu. Sibling repo: `d:/dev/finnoybu-press-deploy`.
-- Sea-reader is **not** part of the AEGIS Initiative (`d:/dev/AEGIS Initiative/`). Don't import AEGIS-specific concepts (ADRs, RFCs, GFN/AGP) here.
+- Reminiscences is **not** part of the AEGIS Initiative (`d:/dev/AEGIS Initiative/`). Don't import AEGIS-specific concepts (ADRs, RFCs, GFN/AGP) here.
