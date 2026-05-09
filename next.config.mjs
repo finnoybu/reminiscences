@@ -7,10 +7,10 @@ const withMDX = nextMDX({
 export default withMDX({
   pageExtensions: ['ts', 'tsx', 'mdx'],
   transpilePackages: ['@supabase/auth-js'],
-  outputFileTracingIncludes: {
-    '/api/download': ['./output/a-sailors-reminiscences.pdf', './output/a-sailors-reminiscences.epub'],
-  },
   experimental: {
-    typedRoutes: true
+    typedRoutes: true,
+    outputFileTracingIncludes: {
+      '/api/download': ['./output/a-sailors-reminiscences.pdf', './output/a-sailors-reminiscences.epub'],
+    },
   }
 })
