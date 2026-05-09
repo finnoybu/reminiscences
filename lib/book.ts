@@ -1,10 +1,10 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**
- * The book slug for sea-reader. Used to look up the book_id UUID from
+ * The book slug for reminiscences. Used to look up the book_id UUID from
  * the shared public.books table at runtime and cache it for all queries.
  */
-export const BOOK_SLUG = 'sea-reader' as const
+export const BOOK_SLUG = 'reminiscences' as const
 
 // Module-scoped cache. Separate per-server-process and per-client-page-load,
 // which is fine — the UUID is stable so either cache lifetime is safe.

@@ -6,8 +6,8 @@ import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
 import { useReader } from '@/lib/reader-context'
 
-const DISMISSED_KEY = 'sea-reader-welcome-dismissed'
-const SESSION_SHOWN_KEY = 'sea-reader-welcome-shown'
+const DISMISSED_KEY = 'reminiscences-welcome-dismissed'
+const SESSION_SHOWN_KEY = 'reminiscences-welcome-shown'
 
 export default function WelcomeModal() {
   const [show, setShow] = useState(false)

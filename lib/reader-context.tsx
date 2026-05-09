@@ -26,7 +26,7 @@ interface ReaderContextType {
 
 const ReaderContext = createContext<ReaderContextType | undefined>(undefined)
 
-const STORAGE_KEY = 'sea-reader-preferences'
+const STORAGE_KEY = 'reminiscences-preferences'
 
 const DEFAULT_PREFERENCES: ReaderPreferences = {
   theme: 'light',
