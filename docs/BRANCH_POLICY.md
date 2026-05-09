@@ -1,7 +1,7 @@
 # SemVer and Branch Policy Enforcement
 
 ## Overview
-Sea Reader enforces strict SemVer versioning and branch naming conventions through GitHub Actions CI checks on all pull requests.
+Reminiscences enforces strict SemVer versioning and branch naming conventions through GitHub Actions CI checks on all pull requests.
 
 ## Branch Naming Schema
 

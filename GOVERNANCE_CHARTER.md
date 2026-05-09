@@ -1,4 +1,4 @@
-# Sea Reader Governance Charter
+# Reminiscences Governance Charter
 
 Generated: 2026-03-03
 

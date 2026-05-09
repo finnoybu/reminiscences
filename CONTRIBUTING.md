@@ -1,6 +1,6 @@
-# Contributing to Sea Reader
+# Contributing to Reminiscences
 
-Thank you for your interest in contributing to the Sea Reader project!
+Thank you for your interest in contributing to the Reminiscences project!
 
 ## Getting Started
 

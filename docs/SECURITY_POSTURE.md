@@ -1,7 +1,7 @@
 # Security Scanning and Dependency Management
 
 ## Overview
-Sea Reader implements defense-in-depth security scanning through GitHub's native security tools and automated dependency management.
+Reminiscences implements defense-in-depth security scanning through GitHub's native security tools and automated dependency management.
 
 ## Security Tools Enabled
 
