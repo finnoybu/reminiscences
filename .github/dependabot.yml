@@ -4,3 +4,46 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    # Block automatic major-version bumps for packages where a major is a real
+    # migration (build tooling, framework, content rendering, platform SDKs).
+    # Majors for these get done as deliberate PRs with the migration code,
+    # not drive-by lockfile bumps. See feedback_dependabot_screening memory
+    # and PR #108 (revert of tailwind 4 + marked 18) for the incident this
+    # config is responding to.
+    ignore:
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "marked"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@next/mdx"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@mdx-js/loader"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@mdx-js/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@supabase/ssr"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@supabase/supabase-js"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
+    # Bundle remaining minor + patch updates into single PRs so noise stays low
+    # and a careful diff scan covers a whole batch at once.
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
