@@ -1,6 +1,6 @@
 # Release Checklist
 
-Use this checklist before releasing Sea Reader v0.1.x+ to production.
+Use this checklist before releasing Reminiscences v0.1.x+ to production.
 
 ## Pre-Release Validation (24h before)
 

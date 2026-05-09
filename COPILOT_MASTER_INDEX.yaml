@@ -1,5 +1,5 @@
 meta:
-  pack_name: "Sea Reader — Copilot Instruction Pack (v0.0.x Infrastructure)"
+  pack_name: "Reminiscences — Copilot Instruction Pack (v0.0.x Infrastructure)"
   generated: "2026-03-03"
   purpose: "Fully-automated infrastructure/bootstrap + content ingestion governance. Designed for 'Ingest and comply'."
   authority_layers:
