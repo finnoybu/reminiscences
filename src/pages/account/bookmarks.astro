@@ -1,0 +1,57 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BookmarksList from '~/components/BookmarksList';
+import { getDb, schema } from '~/db';
+import { isAuthConfigured, getEnv } from '~/lib/env';
+import { asc, eq } from 'drizzle-orm';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/');
+
+const env = getEnv(Astro);
+type BookmarkRow = {
+  id: string;
+  chapterSlug: string;
+  scrollPosition: number;
+  label: string | null;
+  createdAt: string;
+};
+let bookmarks: BookmarkRow[] = [];
+if (isAuthConfigured(env)) {
+  try {
+    const db = getDb(Astro);
+    const rows = await db
+      .select({
+        id: schema.bookmarks.id,
+        chapterSlug: schema.bookmarks.chapterSlug,
+        scrollPosition: schema.bookmarks.scrollPosition,
+        label: schema.bookmarks.label,
+        createdAt: schema.bookmarks.createdAt,
+      })
+      .from(schema.bookmarks)
+      .where(eq(schema.bookmarks.userId, user.id))
+      .orderBy(asc(schema.bookmarks.chapterSlug), asc(schema.bookmarks.scrollPosition));
+    bookmarks = rows.map((r) => ({ ...r, createdAt: r.createdAt?.toISOString() ?? new Date().toISOString() }));
+  } catch (e) {
+    console.warn('[bookmarks] lookup failed', e);
+  }
+}
+---
+<BaseLayout title="Bookmarks">
+  <div class="max-w-shell mx-auto px-6 py-16 md:py-24">
+    <div class="max-w-measure mx-auto">
+      <a href="/account" class="font-sans text-xs uppercase tracking-widest text-ink-faint hover:text-accent transition-colors">
+        ← Account
+      </a>
+      <h1
+        class="font-display text-4xl md:text-5xl leading-tight text-ink mt-4 mb-10"
+        style="font-feature-settings: 'ss01'"
+      >
+        Bookmarks
+      </h1>
+      <BookmarksList client:load initial={bookmarks} />
+    </div>
+  </div>
+</BaseLayout>

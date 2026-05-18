@@ -1,0 +1,182 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ChapterCard from '~/components/ChapterCard.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const all = (await getCollection('chapters')).sort((a, b) => a.data.id - b.data.id);
+const intro = all.find((c) => c.data.slug === 'introduction');
+const chapters = all.filter((c) => c.data.slug !== 'introduction');
+
+// First-paragraph excerpt for the prologue card — pulled from the entry body.
+function makeExcerpt(body: string, maxLen = 180): string {
+  const firstPara = body
+    .replace(/\r\n/g, '\n')
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .find((p) => p.length > 0 && !p.startsWith('#')) || '';
+  const clean = firstPara.replace(/\s+/g, ' ').trim();
+  if (clean.length <= maxLen) return clean;
+  const cut = clean.slice(0, maxLen);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut) + '…';
+}
+
+const introExcerpt = intro ? makeExcerpt(intro.body ?? '') : '';
+---
+<BaseLayout>
+  {/* ───────── Hero ───────── */}
+  <section class="border-b border-rule-soft">
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        {intro?.data.hero?.image && (
+          <img
+            src={intro.data.hero.image}
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale"
+            loading="eager"
+          />
+        )}
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(to bottom, var(--color-bg) 0%, rgb(0 0 0 / 0) 25%, rgb(0 0 0 / 0) 60%, var(--color-bg) 100%);"
+        ></div>
+      </div>
+
+      <div class="max-w-shell mx-auto px-6 py-24 md:py-32 lg:py-40">
+        <div class="max-w-3xl">
+          <p class="eyebrow mb-6">Finnoybu · Book I</p>
+          <h1
+            class="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-ink"
+            style="font-feature-settings: 'ss01'"
+          >
+            Salt and <span class="italic text-accent">Silence</span>
+          </h1>
+          <p class="mt-8 font-serif text-xl md:text-2xl leading-relaxed text-ink-muted max-w-2xl">
+            In the last great age of sail, a young Norwegian ships out promised to a
+            girl at home — and learns, watch by watch, that the heart keeps two
+            courses at once.
+          </p>
+          <div class="mt-8 flex flex-col gap-0.5 font-serif text-sm text-ink-muted italic">
+            <p>A novel by E.&thinsp;A. Westbo</p>
+          </div>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="/chapters/introduction"
+              class="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"
+            >
+              Cast off
+              <span aria-hidden>→</span>
+            </a>
+            <a
+              href="#chapters"
+              class="inline-flex items-center gap-2 h-12 px-6 rounded-full border border-rule text-ink font-sans text-sm tracking-wider uppercase hover:border-accent hover:text-accent transition-colors"
+            >
+              Chapters
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── Framing ───────── */}
+  <section class="max-w-shell mx-auto px-6 py-20">
+    <div class="max-w-measure mx-auto text-center">
+      <p class="font-serif text-lg md:text-xl leading-relaxed text-ink-muted">
+        It is 1875, and eighteen-year-old <em>Olav Hestby</em> sails out of
+        Stavanger as cook on the brig <em>Nanna</em> — with his father's blessing
+        and his promise to the girl he means to marry. Over seven years and as many
+        voyages he will find out what the horizon takes and what it gives back — and
+        he will come home carrying something he cannot yet name, not even to
+        himself.
+      </p>
+    </div>
+  </section>
+
+  {/* ───────── Chapter grid ───────── */}
+  <section id="chapters" class="max-w-shell mx-auto px-6 pb-24 scroll-mt-20">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+      <div>
+        <p class="eyebrow mb-3">Book I · chapters</p>
+        <h2
+          class="font-display text-4xl md:text-5xl text-ink"
+          style="font-feature-settings: 'ss01'"
+        >
+          The watches
+        </h2>
+      </div>
+    </div>
+
+    {intro && (
+      <a
+        href={`/chapters/${intro.data.slug}`}
+        class="chapter-card group relative mb-10 grid md:grid-cols-[1.5fr_1fr] overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule transition-colors"
+      >
+        <div class="p-8 md:p-12 flex flex-col justify-center">
+          <p class="eyebrow mb-3">Prologue</p>
+          <h3
+            class="font-display text-3xl md:text-4xl text-ink group-hover:text-accent transition-colors"
+            style="font-feature-settings: 'ss01'"
+          >
+            {intro.data.title}
+          </h3>
+          <p class="mt-4 font-serif text-base md:text-lg leading-relaxed text-ink-muted line-clamp-4">
+            {introExcerpt}
+          </p>
+          <div class="mt-6 inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-brass">
+            Begin here
+            <span aria-hidden class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </div>
+        </div>
+        <div class="relative aspect-[1200/630] bg-bg-sunk overflow-hidden order-first md:order-last">
+          {intro.data.hero?.image && (
+            <img
+              src={intro.data.hero.image}
+              alt=""
+              loading="eager"
+              class="absolute inset-0 w-full h-full object-contain"
+            />
+          )}
+        </div>
+      </a>
+    )}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {chapters.map((chapter, i) => (
+        <ChapterCard chapter={chapter} ordinal={i + 1} />
+      ))}
+    </div>
+  </section>
+
+  {/* ───────── Reminiscences promo ───────── */}
+  <section class="max-w-shell mx-auto px-6 pb-24">
+    <a
+      href="https://memoirs.finnoybu.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="chapter-card group relative block overflow-hidden rounded-lg border border-rule-soft bg-bg-sunk hover:border-rule transition-colors"
+    >
+      <div class="p-8 md:p-12 md:pr-16">
+        <p class="eyebrow mb-3">Also from Finnoybu · true memoir</p>
+        <h3
+          class="font-display text-3xl md:text-4xl text-ink group-hover:text-accent transition-colors"
+          style="font-feature-settings: 'ss01'"
+        >
+          Reminiscences
+        </h3>
+        <p class="mt-4 font-serif text-base md:text-lg leading-relaxed text-ink-muted max-w-2xl">
+          The actual voyages of Olavus Bjørnson Vestbø — the great-great-grandfather
+          whose life became this novel. His own unvarnished account of seven years
+          at sea, in his own voice.
+        </p>
+        <div class="mt-6 inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-brass">
+          Read the memoir at memoirs.finnoybu.com
+          <span aria-hidden class="transition-transform duration-300 group-hover:translate-x-1">↗</span>
+        </div>
+      </div>
+    </a>
+  </section>
+</BaseLayout>

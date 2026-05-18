@@ -1,0 +1,14 @@
+---
+interface Props {
+  size?: number;
+}
+const { size = 40 } = Astro.props;
+---
+<img
+  src="/images/finnoy_arrowhead_2026_mini-blue.png"
+  alt=""
+  width={size}
+  height={size}
+  class="inline-block"
+  aria-hidden="true"
+/>
