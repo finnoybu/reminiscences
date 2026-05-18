@@ -1,0 +1,79 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Arrowhead from './Arrowhead.astro';
+
+interface Props {
+  prev: CollectionEntry<'chapters'> | null;
+  next: CollectionEntry<'chapters'> | null;
+}
+
+const { prev, next } = Astro.props;
+---
+<nav class="mt-16 pt-10 border-t border-rule-soft">
+  <div class="grid md:grid-cols-2 gap-4">
+    {prev ? (
+      <a
+        href={`/chapters/${prev.data.slug}`}
+        class="chapter-card group relative flex items-stretch gap-4 overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule p-4"
+      >
+        <div class="relative flex-shrink-0 w-20 h-20 rounded overflow-hidden bg-bg-sunk">
+          {prev.data.hero?.image && (
+            <img
+              src={prev.data.hero.image}
+              alt=""
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover grayscale sepia-[.15]"
+            />
+          )}
+        </div>
+        <div class="flex-1 min-w-0 flex flex-col justify-center">
+          <p class="eyebrow mb-1 text-[10px]">← Previous</p>
+          <p
+            class="font-display text-lg leading-tight text-ink group-hover:text-accent transition-colors truncate"
+            style="font-feature-settings: 'ss01';"
+          >
+            {prev.data.title}
+          </p>
+        </div>
+      </a>
+    ) : (
+      <div />
+    )}
+    {next ? (
+      <a
+        href={`/chapters/${next.data.slug}`}
+        class="chapter-card group relative flex items-stretch gap-4 overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule p-4 md:flex-row-reverse md:text-right"
+      >
+        <div class="relative flex-shrink-0 w-20 h-20 rounded overflow-hidden bg-bg-sunk">
+          {next.data.hero?.image && (
+            <img
+              src={next.data.hero.image}
+              alt=""
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover grayscale sepia-[.15]"
+            />
+          )}
+        </div>
+        <div class="flex-1 min-w-0 flex flex-col justify-center">
+          <p class="eyebrow mb-1 text-[10px]">Next →</p>
+          <p
+            class="font-display text-lg leading-tight text-ink group-hover:text-accent transition-colors truncate"
+            style="font-feature-settings: 'ss01';"
+          >
+            {next.data.title}
+          </p>
+        </div>
+      </a>
+    ) : (
+      <div />
+    )}
+  </div>
+  <div class="mt-8 text-center">
+    <a
+      href="/#chapters"
+      class="font-sans text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors"
+    >
+      <Arrowhead size={24} /> All chapters
+    </a>
+  </div>
+</nav>

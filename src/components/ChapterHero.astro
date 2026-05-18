@@ -1,0 +1,59 @@
+---
+import Arrowhead from './Arrowhead.astro';
+
+interface Props {
+  title: string;
+  image?: string;
+  ordinal: number;
+  isPrologue?: boolean;
+}
+
+const { title, image, ordinal, isPrologue } = Astro.props;
+
+function toRoman(num: number): string {
+  if (num <= 0) return '';
+  const map: [number, string][] = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+    [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ];
+  let n = num;
+  let out = '';
+  for (const [v, s] of map) while (n >= v) { out += s; n -= v; }
+  return out;
+}
+---
+<header class="relative border-b border-rule-soft">
+  {image && (
+    <div class="relative aspect-[1200/630] w-full max-h-[75vh] overflow-hidden bg-bg-sunk">
+      <img
+        src={image}
+        alt=""
+        fetchpriority="high"
+        class="absolute inset-0 w-full h-full object-cover grayscale sepia-[.15]"
+      />
+      <div
+        class="absolute inset-0"
+        style="background: linear-gradient(to bottom, rgb(0 0 0 / 0.15) 0%, rgb(0 0 0 / 0) 30%, rgb(0 0 0 / 0) 60%, var(--color-bg) 100%);"
+      />
+    </div>
+  )}
+  <div class="max-w-shell mx-auto px-6 pt-10 md:pt-14 pb-10">
+    <div class="max-w-measure mx-auto text-center">
+      <p class="eyebrow mb-4">
+        {isPrologue ? 'Prologue' : `Chapter ${toRoman(ordinal)}`}
+      </p>
+      <h1
+        class="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] text-ink italic"
+        style="font-feature-settings: 'ss01';"
+      >
+        {title}
+      </h1>
+      <div class="mt-8 flex items-center justify-center gap-3 text-brass">
+        <span class="block w-16 h-px bg-rule" />
+        <Arrowhead />
+        <span class="block w-16 h-px bg-rule" />
+      </div>
+    </div>
+  </div>
+</header>
