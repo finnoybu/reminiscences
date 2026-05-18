@@ -146,8 +146,8 @@ export default function AccountClient({ user, stats, totalChapters }: Props) {
             </p>
             {stats.hasPurchase ? (
               <div className="mt-2 flex gap-2">
-                <a href="/api/download/salt-and-silence?format=pdf" className="font-sans text-xs text-accent hover:text-accent-hi transition-colors">PDF</a>
-                <a href="/api/download/salt-and-silence?format=epub" className="font-sans text-xs text-accent hover:text-accent-hi transition-colors">ePub</a>
+                <a href="/api/download/pdf-epub?format=pdf" className="font-sans text-xs text-accent hover:text-accent-hi transition-colors">PDF</a>
+                <a href="/api/download/pdf-epub?format=epub" className="font-sans text-xs text-accent hover:text-accent-hi transition-colors">ePub</a>
               </div>
             ) : (
               <a href="/shop" className="mt-2 inline-block font-sans text-xs text-accent hover:text-accent-hi transition-colors">

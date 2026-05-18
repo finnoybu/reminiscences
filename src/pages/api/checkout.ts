@@ -34,7 +34,7 @@ export const POST: APIRoute = async (ctx) => {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const slug = payload.slug ?? 'salt-and-silence';
+  const slug = payload.slug ?? 'pdf-epub';
   const title = TITLES[slug];
   if (!title) {
     return Response.json({ error: `Unknown title: ${slug}` }, { status: 400 });

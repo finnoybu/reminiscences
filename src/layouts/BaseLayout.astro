@@ -14,15 +14,15 @@ interface Props {
 
 const {
   title,
-  description = "Finnoybu: Salt and Silence—Book I. A young Norwegian sailor in the age of sail, torn between the woman he has promised himself to and the men who share his watches. A period historical romance by E. A. Westbo.",
-  ogImage = '/images/finnoybu-salt-and-silence.png',
+  description = "A Sailor's Reminiscences from the Days of the Sailships — a Norwegian sailor recounting his youth aboard the proud sailships of a vanished age. By Olavus V. B. Vestbø.",
+  ogImage = '/images/amazon_kdp_hardcover.jpg',
   ogType = 'website',
   chapterOrdinal,
 } = Astro.props;
 
 const pageTitle = title
-  ? `${title} · Finnoybu`
-  : 'Finnoybu: Salt and Silence—Book I';
+  ? `${title} · A Sailor’s Reminiscences`
+  : "A Sailor’s Reminiscences from the Days of the Sailships";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -62,7 +62,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
   <!-- Open Graph -->
   <meta property="og:type" content={ogType} />
-  <meta property="og:site_name" content="Finnoybu" />
+  <meta property="og:site_name" content="A Sailor's Reminiscences" />
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalURL} />

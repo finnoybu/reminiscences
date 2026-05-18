@@ -1,8 +1,8 @@
 // Auth-gated streaming download from the R2 bucket bound as `FILES`.
 //
 // Files are uploaded by slug:
-//   wrangler r2 object put finnoybu-trilogy-files/<slug>/<slug>.pdf  --file=output/digital/<slug>/<slug>.pdf
-//   wrangler r2 object put finnoybu-trilogy-files/<slug>/<slug>.epub --file=output/digital/<slug>/<slug>.epub
+//   wrangler r2 object put reminiscences-files/<slug>/<slug>.pdf  --file=output/digital/<slug>/<slug>.pdf
+//   wrangler r2 object put reminiscences-files/<slug>/<slug>.epub --file=output/digital/<slug>/<slug>.epub
 //
 // A user can fetch the file only if they own a purchase row for the slug.
 

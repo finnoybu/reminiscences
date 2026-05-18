@@ -23,10 +23,7 @@ function buildCitation(ann: Annotation): string {
   const quote = ann.textSelection.length > 120
     ? ann.textSelection.slice(0, 120) + '…'
     : ann.textSelection;
-  // Fiction site citation — E. A. Westbo, Salt and Silence. Memoirs site
-  // uses a different author/title; when that port lands, refactor to
-  // accept the citation values as props.
-  return `" ${quote} " — E. A. Westbo, Finnoybu: Salt and Silence — Book I, “${chapter}.” Finnøybu Press, 2026.`;
+  return `" ${quote} " — Olavus V. B. Vestbø, A Sailor's Reminiscences, “${chapter}.” Finnøybu Press, 2026.`;
 }
 
 function CopyButton({ text }: { text: string }) {
