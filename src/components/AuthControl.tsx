@@ -59,7 +59,7 @@ export default function AuthControl() {
         onClick={() => window.dispatchEvent(new CustomEvent('auth:open'))}
         className="ml-2 px-3 py-2 font-sans text-sm tracking-wider uppercase text-ink-muted hover:text-accent transition-colors"
       >
-        Sign in
+        Sign in/up
       </button>
     );
   }
