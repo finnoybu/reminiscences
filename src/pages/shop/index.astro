@@ -20,7 +20,7 @@ if (user && isAuthConfigured(env)) {
       .where(
         and(
           eq(schema.purchases.userId, user.id),
-          eq(schema.purchases.productId, 'salt-and-silence'),
+          eq(schema.purchases.productId, 'pdf-epub'),
         ),
       )
       .limit(1);
@@ -47,23 +47,23 @@ const editions: Edition[] = [
     description: 'Read on any Kindle device or app.',
     badge: 'Digital',
     icon: '📱',
-    href: 'https://www.amazon.com/dp/B0GZ47WCM9',
+    href: 'https://www.amazon.com/Sailors-Reminiscences-Days-Sailships-ebook/dp/B0FLY96HSZ',
   },
   {
     format: 'Paperback',
     price: '$17.99',
-    description: 'Soft cover, trade trim — 6 × 9 inches.',
+    description: 'Soft cover, perfect for reading at sea.',
     badge: 'Print',
     icon: '📖',
-    href: 'https://www.amazon.com/dp/B0GZ6PZZNS',
+    href: 'https://www.amazon.com/Sailors-Reminiscences-Days-Sailships/dp/B0GW85ZGFN',
   },
   {
     format: 'Hardcover',
     price: '$24.99',
-    description: 'Cloth-bound hardcover — 6 × 9 inches.',
+    description: 'A lasting keepsake edition.',
     badge: 'Print',
     icon: '📕',
-    href: 'https://www.amazon.com/dp/B0GZ6QHXZ4',
+    href: 'https://www.amazon.com/Sailors-Reminiscences-Days-Sailships/dp/B0GW88THSK',
   },
   {
     format: 'PDF / ePub',
@@ -77,11 +77,11 @@ const editions: Edition[] = [
 ---
 <BaseLayout
   title="Shop"
-  description="Purchase Finnoybu: Salt and Silence — Kindle, paperback, hardcover, or direct PDF/ePub download."
+  description="Purchase A Sailor's Reminiscences from the Days of the Sailships — Kindle, paperback, hardcover, or direct PDF/ePub download."
 >
   <div class="max-w-shell mx-auto px-6 py-16 md:py-24">
     <div class="max-w-measure mx-auto text-center mb-16">
-      <p class="eyebrow mb-4">Own the complete novel</p>
+      <p class="eyebrow mb-4">Own the complete memoir</p>
       <h1
         class="font-display text-4xl md:text-5xl leading-tight text-ink mb-6"
         style="font-feature-settings: 'ss01'"
@@ -89,17 +89,17 @@ const editions: Edition[] = [
         Shop
       </h1>
       <p class="font-serif text-lg text-ink-muted leading-relaxed max-w-prose mx-auto">
-        <em>Finnoybu: Salt and Silence</em> — Book One of the Finnoybu trilogy —
-        available in multiple formats. Read it online for free, or
-        take it with you in print or as a DRM-free direct download.
+        <em>A Sailor&rsquo;s Reminiscences from the Days of the Sailships</em>
+        is available in multiple formats. Read the full memoir online for free,
+        or take it with you in print or as a DRM-free direct download.
       </p>
     </div>
 
     <div class="max-w-xs mx-auto mb-16">
       <div class="relative aspect-[2/3] rounded-lg overflow-hidden shadow-lift">
         <img
-          src="/images/finnoybu-salt-and-silence.png"
-          alt="Finnoybu: Salt and Silence — book cover"
+          src="/images/amazon_kdp_hardcover.jpg"
+          alt="A Sailor's Reminiscences from the Days of the Sailships — book cover"
           loading="eager"
           class="absolute inset-0 w-full h-full object-cover"
         />
@@ -127,11 +127,11 @@ const editions: Edition[] = [
               owns ? (
                 <div class="grid grid-cols-2 gap-2">
                   <a
-                    href="/api/download/salt-and-silence?format=pdf"
+                    href="/api/download/pdf-epub?format=pdf"
                     class="h-10 inline-flex items-center justify-center rounded-md bg-accent text-bg font-sans text-xs tracking-wider uppercase hover:bg-accent-hi transition-colors"
                   >Get PDF</a>
                   <a
-                    href="/api/download/salt-and-silence?format=epub"
+                    href="/api/download/pdf-epub?format=epub"
                     class="h-10 inline-flex items-center justify-center rounded-md border border-rule text-ink font-sans text-xs tracking-wider uppercase hover:border-accent hover:text-accent transition-colors"
                   >Get ePub</a>
                 </div>
@@ -164,7 +164,6 @@ const editions: Edition[] = [
     document.querySelectorAll('[data-buy-direct]').forEach((btn) => {
       btn.addEventListener('click', async () => {
         if (!isSignedIn) {
-          // Open the sign-in modal; user will retry after signing in
           const opener = document.querySelector('[data-open-signin]');
           if (opener instanceof HTMLElement) opener.click();
           return;
@@ -173,7 +172,7 @@ const editions: Edition[] = [
           const res = await fetch('/api/checkout', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ slug: 'salt-and-silence' }),
+            body: JSON.stringify({ slug: 'pdf-epub' }),
           });
           const json = await res.json();
           if (json.url) window.location.href = json.url;

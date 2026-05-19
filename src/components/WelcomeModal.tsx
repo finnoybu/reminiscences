@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useReader } from '~/lib/reader-context';
 
 const DISMISSED_KEY = 'reminiscences-welcome-dismissed';
 const SESSION_SHOWN_KEY = 'reminiscences-welcome-shown';
@@ -9,7 +8,31 @@ export default function WelcomeModal() {
   const [show, setShow] = useState(false);
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { user } = useReader();
+  const [user, setUser] = useState<{ id: string } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/whoami', { credentials: 'include' });
+        if (!res.ok) {
+          if (!cancelled) setUser(null);
+          return;
+        }
+        const data = (await res.json()) as { user: { id: string } | null };
+        if (!cancelled) setUser(data.user);
+      } catch {
+        if (!cancelled) setUser(null);
+      }
+    };
+    fetchUser();
+    const onAuthChanged = () => fetchUser();
+    window.addEventListener('auth:changed', onAuthChanged);
+    return () => {
+      cancelled = true;
+      window.removeEventListener('auth:changed', onAuthChanged);
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -18,7 +41,6 @@ export default function WelcomeModal() {
   useEffect(() => {
     if (!mounted) return;
     if (!user) return;
-    if (window.location.pathname === '/auth/confirmed') return;
     if (window.location.search.includes('recovery=true')) return;
 
     try {

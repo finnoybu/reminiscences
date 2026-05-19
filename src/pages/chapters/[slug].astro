@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import ChapterHero from '~/components/ChapterHero.astro';
+import ChapterNav from '~/components/ChapterNav.astro';
+import ChapterScrubber from '~/components/ChapterScrubber';
+import PromoModal from '~/components/PromoModal';
 import ReaderRoot from '~/components/ReaderRoot';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
@@ -23,24 +27,13 @@ const { Content } = await render(chapter);
 
 const isPrologue = chapter.data.slug === 'introduction';
 const nonIntro = all.filter((c) => c.data.slug !== 'introduction');
-const ordinal = isPrologue ? 0 : nonIntro.findIndex((c) => c.data.slug === chapter.data.slug) + 1;
+const ordinal = isPrologue
+  ? 0
+  : nonIntro.findIndex((c) => c.data.slug === chapter.data.slug) + 1;
 
 const sortedIndex = all.findIndex((c) => c.data.slug === chapter.data.slug);
 const prev = sortedIndex > 0 ? all[sortedIndex - 1] : null;
 const next = sortedIndex < all.length - 1 ? all[sortedIndex + 1] : null;
-
-function toRoman(num: number): string {
-  if (num <= 0) return '';
-  const map: [number, string][] = [
-    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-    [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
-    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
-  ];
-  let n = num;
-  let out = '';
-  for (const [v, s] of map) while (n >= v) { out += s; n -= v; }
-  return out;
-}
 
 const description =
   chapter.body
@@ -59,37 +52,14 @@ const description =
   ogType="article"
   chapterOrdinal={chapter.data.id}
 >
-  <header class="relative border-b border-rule-soft">
-    {chapter.data.hero?.image && (
-      <div class="max-w-[60.8rem] mx-auto px-6 pt-6">
-        <div class="relative aspect-[1200/630] w-full max-h-[75vh] overflow-hidden">
-          <img
-            src={chapter.data.hero.image}
-            alt=""
-            loading="eager"
-            class="w-full h-full object-contain"
-          />
-          <div
-            class="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none"
-            style="background: linear-gradient(to bottom, rgb(0 0 0 / 0) 0%, var(--color-bg) 100%);"
-          ></div>
-        </div>
-      </div>
-    )}
-    <div class="max-w-shell mx-auto px-6 pt-10 md:pt-14 pb-10">
-      <div class="max-w-measure mx-auto text-center">
-        <p class="eyebrow mb-4">
-          {isPrologue ? 'Prologue' : `Chapter ${toRoman(ordinal)}`}
-        </p>
-        <h1
-          class="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] text-ink italic"
-          style="font-feature-settings: 'ss01'"
-        >
-          {chapter.data.title}
-        </h1>
-      </div>
-    </div>
-  </header>
+  <ChapterScrubber client:idle />
+
+  <ChapterHero
+    title={chapter.data.title}
+    image={chapter.data.hero?.image}
+    ordinal={ordinal}
+    isPrologue={isPrologue}
+  />
 
   <div class="max-w-shell mx-auto px-6 py-12 md:py-16">
     <article class="prose-memoir mx-auto">
@@ -99,62 +69,9 @@ const description =
     <ReaderRoot chapterSlug={chapter.data.slug} client:load />
 
     <div class="max-w-measure mx-auto">
-      <nav class="mt-16 pt-10 border-t border-rule-soft">
-        <div class="grid md:grid-cols-2 gap-4">
-          {prev ? (
-            <a
-              href={`/chapters/${prev.data.slug}`}
-              class="chapter-card group relative flex items-stretch gap-4 overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule transition-colors p-4"
-            >
-              <div class="relative flex-shrink-0 w-20 h-20 rounded overflow-hidden bg-bg-sunk">
-                {prev.data.hero?.image && (
-                  <img
-                    src={prev.data.hero.image}
-                    alt=""
-                    loading="lazy"
-                    class="absolute inset-0 w-full h-full object-cover grayscale sepia-[15%]"
-                  />
-                )}
-              </div>
-              <div class="flex-1 min-w-0 flex flex-col justify-center">
-                <p class="eyebrow mb-1 text-[10px]">← Previous</p>
-                <p
-                  class="font-display text-lg leading-tight text-ink group-hover:text-accent transition-colors truncate"
-                  style="font-feature-settings: 'ss01'"
-                >
-                  {prev.data.title}
-                </p>
-              </div>
-            </a>
-          ) : <div />}
-          {next ? (
-            <a
-              href={`/chapters/${next.data.slug}`}
-              class="chapter-card group relative flex items-stretch gap-4 overflow-hidden rounded-lg border border-rule-soft bg-bg-elev hover:border-rule transition-colors p-4 md:flex-row-reverse md:text-right"
-            >
-              <div class="relative flex-shrink-0 w-20 h-20 rounded overflow-hidden bg-bg-sunk">
-                {next.data.hero?.image && (
-                  <img
-                    src={next.data.hero.image}
-                    alt=""
-                    loading="lazy"
-                    class="absolute inset-0 w-full h-full object-cover grayscale sepia-[15%]"
-                  />
-                )}
-              </div>
-              <div class="flex-1 min-w-0 flex flex-col justify-center">
-                <p class="eyebrow mb-1 text-[10px]">Next →</p>
-                <p
-                  class="font-display text-lg leading-tight text-ink group-hover:text-accent transition-colors truncate"
-                  style="font-feature-settings: 'ss01'"
-                >
-                  {next.data.title}
-                </p>
-              </div>
-            </a>
-          ) : <div />}
-        </div>
-      </nav>
+      <ChapterNav prev={prev} next={next} />
     </div>
   </div>
+
+  <PromoModal totalChapters={nonIntro.length} client:idle />
 </BaseLayout>

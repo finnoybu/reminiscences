@@ -1,13 +1,28 @@
-import { useReader } from '~/lib/reader-context';
+import { useEffect, useState } from 'react';
 
 interface Props {
   chapterIndex: Record<string, number>;
   totalChapters: number;
 }
 
+const STORAGE_KEY = 'hestby-reader-preferences';
+
+interface StoredPreferences {
+  currentChapter?: string;
+}
+
 export default function ReadingProgress({ chapterIndex, totalChapters }: Props) {
-  const { preferences } = useReader();
-  const slug = preferences.currentChapter;
+  const [slug, setSlug] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoredPreferences;
+      if (parsed?.currentChapter) setSlug(parsed.currentChapter);
+    } catch {}
+  }, []);
+
   if (!slug) return null;
 
   const idx = chapterIndex[slug];

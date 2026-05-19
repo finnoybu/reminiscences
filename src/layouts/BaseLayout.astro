@@ -3,6 +3,8 @@ import '~/styles/global.css';
 import SiteHeader from '~/components/SiteHeader.astro';
 import SiteFooter from '~/components/SiteFooter.astro';
 import AuthModalRoot from '~/components/AuthModalRoot';
+import CookieBanner from '~/components/CookieBanner';
+import WelcomeModal from '~/components/WelcomeModal';
 
 interface Props {
   title?: string;
@@ -97,5 +99,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       carries ?token=<token>, even for signed-in users mid-reset. The sign-in
       modal inside ignores the trigger when there's no Sign in button to click. */}
   <AuthModalRoot client:load />
+  <WelcomeModal client:idle />
+  <CookieBanner client:idle />
 </body>
 </html>
