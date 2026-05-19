@@ -44,7 +44,7 @@ export const GET: APIRoute = async ({ url }) => {
     const lines = body.split('\n');
     for (const line of lines) {
       if (line.toLowerCase().includes(lowerQuery)) {
-        const cleanLine = line.replace(/<[^<>]*>|[<>]/g, '').trim();
+        const cleanLine = line.replace(/[<>]/g, '').trim();
         if (cleanLine.length > 0) {
           results.push({
             id: data.id,
