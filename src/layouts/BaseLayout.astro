@@ -1,0 +1,105 @@
+---
+import '~/styles/global.css';
+import SiteHeader from '~/components/SiteHeader.astro';
+import SiteFooter from '~/components/SiteFooter.astro';
+import AuthModalRoot from '~/components/AuthModalRoot';
+import CookieBanner from '~/components/CookieBanner';
+import WelcomeModal from '~/components/WelcomeModal';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  chapterOrdinal?: number;
+}
+
+const {
+  title,
+  description = "A Sailor's Reminiscences from the Days of the Sailships — a Norwegian sailor recounting his youth aboard the proud sailships of a vanished age. By Olavus V. B. Vestbø.",
+  ogImage = '/images/amazon_kdp_hardcover.jpg',
+  ogType = 'website',
+  chapterOrdinal,
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} · A Sailor’s Reminiscences`
+  : "A Sailor’s Reminiscences from the Days of the Sailships";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Per-chapter ordinal is exposed as a meta tag so the (TBD) promo modal can
+// trigger on specific chapter visits (Ch 2, Ch 10 thresholds, etc.).
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Theme persistence: read class from localStorage BEFORE paint so the page
+       lands in the right mode instead of flashing. -->
+  <script is:inline>
+    (function() {
+      try {
+        const stored = localStorage.getItem('finnoybu-theme');
+        const cls = stored === 'dark' || stored === 'high-contrast' ? stored : null;
+        if (cls) document.documentElement.classList.add(cls);
+      } catch {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/images/blue-arrowhead.svg" />
+
+  <!-- Fonts: Fraunces (display), EB Garamond (serif body), Inter (sans), Caveat (hand) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,30..100&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Inter:wght@400..700&family=Caveat:wght@400..700&display=swap"
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content="A Sailor's Reminiscences" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+  {chapterOrdinal !== undefined && (
+    <meta name="x-chapter-ordinal" content={String(chapterOrdinal)} />
+  )}
+
+  <style is:global>
+    :root {
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-serif: 'EB Garamond', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <SiteHeader />
+  <main class="flex-1">
+    <slot />
+  </main>
+  <SiteFooter />
+  {/* Always mounted: the recovery modal opens automatically when the URL
+      carries ?token=<token>, even for signed-in users mid-reset. The sign-in
+      modal inside ignores the trigger when there's no Sign in button to click. */}
+  <AuthModalRoot client:load />
+  <WelcomeModal client:idle />
+  <CookieBanner client:idle />
+</body>
+</html>

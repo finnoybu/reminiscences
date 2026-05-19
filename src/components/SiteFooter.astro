@@ -1,0 +1,32 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-rule-soft">
+  <div class="max-w-shell mx-auto px-6 py-8">
+    <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 font-sans text-xs uppercase tracking-widest">
+      <a href="/about" class="text-ink-muted hover:text-accent transition-colors">About</a>
+      <a href="/contact" class="text-ink-muted hover:text-accent transition-colors">Contact</a>
+      <a href="/legal" class="text-ink-muted hover:text-accent transition-colors">Legal</a>
+      <a href="/legal#privacy-policy" class="text-ink-muted hover:text-accent transition-colors">Privacy Policy</a>
+    </nav>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-ink-faint">
+      <p>
+        Built and maintained by{' '}
+        <a
+          href="https://finnoybu.github.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ink-muted hover:text-accent transition-colors"
+        >
+          Ken Tannenbaum
+        </a>
+      </p>
+      <p>
+        <a href="/legal#copyright" class="hover:text-accent transition-colors">
+          © {year} Finnoybu Press
+        </a>
+        . All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

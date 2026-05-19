@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const sessionId = Astro.url.searchParams.get('session_id');
+---
+<BaseLayout title="Thanks for your purchase">
+  <div class="max-w-shell mx-auto px-6 py-24">
+    <div class="max-w-prose mx-auto text-center">
+      <p class="eyebrow mb-4">Order confirmed</p>
+      <h1
+        class="font-display text-4xl md:text-5xl leading-tight text-ink mb-6"
+        style="font-feature-settings: 'ss01'"
+      >
+        Thanks for reading.
+      </h1>
+      <p class="font-serif text-lg text-ink-muted leading-relaxed mb-10">
+        Your purchase is being recorded. Once Stripe confirms the payment — usually
+        within seconds — your PDF and ePub downloads will be available on your
+        account page.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/account"
+          class="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-accent text-bg font-sans text-sm tracking-wider uppercase hover:bg-accent-hi transition-colors"
+        >Go to my account →</a>
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 h-12 px-6 rounded-full border border-rule text-ink font-sans text-sm tracking-wider uppercase hover:border-accent hover:text-accent transition-colors"
+        >Back home</a>
+      </div>
+      {sessionId && (
+        <p class="mt-10 font-serif text-xs text-ink-faint">
+          Order reference: <code class="font-mono">{sessionId}</code>
+        </p>
+      )}
+    </div>
+  </div>
+</BaseLayout>

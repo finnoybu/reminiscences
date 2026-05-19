@@ -1,0 +1,59 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AnnotationsList from '~/components/AnnotationsList';
+import { getDb, schema } from '~/db';
+import { isAuthConfigured, getEnv } from '~/lib/env';
+import { desc, eq } from 'drizzle-orm';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/');
+
+const env = getEnv(Astro);
+type AnnotationRow = {
+  id: string;
+  chapterSlug: string;
+  textSelection: string;
+  note: string;
+  selectionStart: number | null;
+  createdAt: string;
+};
+let annotations: AnnotationRow[] = [];
+if (isAuthConfigured(env)) {
+  try {
+    const db = getDb(Astro);
+    const rows = await db
+      .select({
+        id: schema.annotations.id,
+        chapterSlug: schema.annotations.chapterSlug,
+        textSelection: schema.annotations.textSelection,
+        note: schema.annotations.note,
+        selectionStart: schema.annotations.selectionStart,
+        createdAt: schema.annotations.createdAt,
+      })
+      .from(schema.annotations)
+      .where(eq(schema.annotations.userId, user.id))
+      .orderBy(desc(schema.annotations.createdAt));
+    annotations = rows.map((r) => ({ ...r, createdAt: r.createdAt?.toISOString() ?? new Date().toISOString() }));
+  } catch (e) {
+    console.warn('[annotations] lookup failed', e);
+  }
+}
+---
+<BaseLayout title="Notes">
+  <div class="max-w-shell mx-auto px-6 py-16 md:py-24">
+    <div class="max-w-measure mx-auto">
+      <a href="/account" class="font-sans text-xs uppercase tracking-widest text-ink-faint hover:text-accent transition-colors">
+        ← Account
+      </a>
+      <h1
+        class="font-display text-4xl md:text-5xl leading-tight text-ink mt-4 mb-10"
+        style="font-feature-settings: 'ss01'"
+      >
+        Notes
+      </h1>
+      <AnnotationsList client:load initial={annotations} />
+    </div>
+  </div>
+</BaseLayout>

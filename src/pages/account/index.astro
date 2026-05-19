@@ -1,0 +1,54 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AccountClient from '~/components/AccountClient';
+import { getDb, schema } from '~/db';
+import { isAuthConfigured, getEnv } from '~/lib/env';
+import { eq } from 'drizzle-orm';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect('/');
+}
+
+const env = getEnv(Astro);
+let chaptersRead = 0;
+let hasPurchase = false;
+
+if (isAuthConfigured(env)) {
+  try {
+    const db = getDb(Astro);
+    const [progressRows, purchaseRows] = await Promise.all([
+      db
+        .select({ chapterSlug: schema.readingProgress.chapterSlug })
+        .from(schema.readingProgress)
+        .where(eq(schema.readingProgress.userId, user.id)),
+      db
+        .select({ id: schema.purchases.id })
+        .from(schema.purchases)
+        .where(eq(schema.purchases.userId, user.id))
+        .limit(1),
+    ]);
+    chaptersRead = progressRows.length;
+    hasPurchase = purchaseRows.length > 0;
+  } catch (e) {
+    console.warn('[account] stats lookup failed', e);
+  }
+}
+
+// Total chapter count for the progress bar — same source as the home page
+// renders chapter cards from.
+const totalChapters = (await getCollection('chapters')).filter(
+  (c) => c.data.slug !== 'introduction',
+).length;
+---
+<BaseLayout title="My account">
+  <AccountClient
+    client:load
+    user={{ id: user.id, email: user.email, name: user.name }}
+    stats={{ chaptersRead, hasPurchase }}
+    totalChapters={totalChapters}
+  />
+</BaseLayout>

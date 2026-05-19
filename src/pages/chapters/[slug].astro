@@ -1,0 +1,77 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ChapterHero from '~/components/ChapterHero.astro';
+import ChapterNav from '~/components/ChapterNav.astro';
+import ChapterScrubber from '~/components/ChapterScrubber';
+import PromoModal from '~/components/PromoModal';
+import ReaderRoot from '~/components/ReaderRoot';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const all = (await getCollection('chapters')).sort((a, b) => a.data.id - b.data.id);
+  return all.map((chapter) => ({
+    params: { slug: chapter.data.slug },
+    props: { chapter, all },
+  }));
+}
+
+interface Props {
+  chapter: CollectionEntry<'chapters'>;
+  all: CollectionEntry<'chapters'>[];
+}
+
+const { chapter, all } = Astro.props;
+const { Content } = await render(chapter);
+
+const isPrologue = chapter.data.slug === 'introduction';
+const nonIntro = all.filter((c) => c.data.slug !== 'introduction');
+const ordinal = isPrologue
+  ? 0
+  : nonIntro.findIndex((c) => c.data.slug === chapter.data.slug) + 1;
+
+const sortedIndex = all.findIndex((c) => c.data.slug === chapter.data.slug);
+const prev = sortedIndex > 0 ? all[sortedIndex - 1] : null;
+const next = sortedIndex < all.length - 1 ? all[sortedIndex + 1] : null;
+
+const description =
+  chapter.body
+    ?.replace(/\r\n/g, '\n')
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .find((p) => p.length > 0 && !p.startsWith('#'))
+    ?.replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 180) ?? '';
+---
+<BaseLayout
+  title={chapter.data.title}
+  description={description}
+  ogImage={chapter.data.hero?.image}
+  ogType="article"
+  chapterOrdinal={chapter.data.id}
+>
+  <ChapterScrubber client:idle />
+
+  <ChapterHero
+    title={chapter.data.title}
+    image={chapter.data.hero?.image}
+    ordinal={ordinal}
+    isPrologue={isPrologue}
+  />
+
+  <div class="max-w-shell mx-auto px-6 py-12 md:py-16">
+    <article class="prose-memoir mx-auto">
+      <Content />
+    </article>
+
+    <ReaderRoot chapterSlug={chapter.data.slug} client:load />
+
+    <div class="max-w-measure mx-auto">
+      <ChapterNav prev={prev} next={next} />
+    </div>
+  </div>
+
+  <PromoModal totalChapters={nonIntro.length} client:idle />
+</BaseLayout>

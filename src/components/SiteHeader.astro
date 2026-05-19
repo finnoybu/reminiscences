@@ -1,0 +1,88 @@
+---
+// Sticky site header. Theme toggle + nav + auth control (signed-out: Sign in
+// button; signed-in: avatar + dropdown). The auth UI is a React island that
+// fetches /api/whoami client-side, so it renders correctly on prerendered
+// pages without the SSR-render-both + script-toggle dance we used before.
+
+import AuthControl from '~/components/AuthControl';
+
+const navLinks: { href: string; label: string; accent?: boolean }[] = [
+  { href: '/#chapters', label: 'Chapters' },
+  { href: '/chapters/introduction', label: 'Read' },
+  { href: '/shop', label: 'Shop', accent: true },
+];
+---
+<header class="sticky top-0 z-40 border-b border-rule-soft bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70">
+  <div class="max-w-shell mx-auto px-6 h-16 flex items-center gap-6">
+    <a href="/" class="group flex items-baseline gap-2 text-ink hover:text-accent transition-colors">
+      <span class="font-display text-xl tracking-wide" style="font-feature-settings: 'ss01'">
+        <span class="hidden sm:inline">A Sailor&rsquo;s Reminiscences</span>
+        <span class="sm:hidden">Reminiscences</span>
+      </span>
+    </a>
+
+    <nav class="ml-auto flex items-center gap-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'px-3 py-2 font-sans text-sm tracking-wider uppercase transition-colors',
+            link.accent
+              ? 'text-accent hover:text-accent-hi'
+              : 'text-ink-muted hover:text-accent',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <button
+        type="button"
+        data-theme-toggle
+        class="ml-2 w-9 h-9 flex items-center justify-center text-ink-muted hover:text-accent transition-colors"
+        aria-label="Toggle theme"
+        title="Toggle theme"
+      >
+        <span data-theme-icon>☀</span>
+      </button>
+
+      <AuthControl client:load />
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  // Theme cycle: light → dark → high-contrast → light. Persisted in
+  // localStorage; the BaseLayout pre-paint script reads on next load.
+  (function() {
+    const order = ['light', 'dark', 'high-contrast'];
+    const icons = { light: '☀', dark: '☾', 'high-contrast': '◐' };
+
+    function current() {
+      const cl = document.documentElement.classList;
+      if (cl.contains('high-contrast')) return 'high-contrast';
+      if (cl.contains('dark')) return 'dark';
+      return 'light';
+    }
+
+    function apply(next) {
+      const cl = document.documentElement.classList;
+      cl.remove('dark', 'high-contrast');
+      if (next === 'dark' || next === 'high-contrast') cl.add(next);
+      try { localStorage.setItem('finnoybu-theme', next); } catch {}
+      const icon = document.querySelector('[data-theme-icon]');
+      if (icon) icon.textContent = icons[next];
+    }
+
+    // Sync icon on load to the persisted state
+    apply(current());
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cur = current();
+        const next = order[(order.indexOf(cur) + 1) % order.length];
+        apply(next);
+      });
+    });
+  })();
+</script>

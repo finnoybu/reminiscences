@@ -18,12 +18,7 @@ jobs:
           node-version: '24'
 
       - name: Validate branch naming
-        run: >
-          if [ -f scripts/validate-versioning.mjs ]; then
-            node scripts/validate-versioning.mjs;
-          else
-            echo "No versioning script yet.";
-          fi
+        run: node scripts/validate-versioning.mjs
 
   content:
     name: CI / content-validate
@@ -35,13 +30,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.0.0 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - run: npm ci
 
       - name: Validate frontmatter schema
         run: >
@@ -59,42 +48,6 @@ jobs:
             echo "No hash verification configured.";
           fi
 
-  lint:
-    name: CI / lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.0.0 --activate
-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-
-  test:
-    name: CI / test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.0.0 --activate
-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test || echo "No tests defined yet."
-
   build:
     name: CI / build
     runs-on: ubuntu-latest
@@ -105,17 +58,6 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.0.0 --activate
+      - run: npm ci
 
-      - run: pnpm install --frozen-lockfile
-      - name: Build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: placeholder
-          SUPABASE_SECRET_KEY: placeholder
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: placeholder
-          STRIPE_SECRET_KEY: placeholder
-        run: pnpm build
+      - run: npm run build

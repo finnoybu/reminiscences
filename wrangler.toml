@@ -1,0 +1,95 @@
+# Cloudflare Pages configuration for memoirs.finnoybu.com.
+#
+# Source of truth for non-secret config. True secrets (BETTER_AUTH_SECRET,
+# all *_CLIENT_SECRETs, AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY, both
+# STRIPE_* keys) live in the Cloudflare Pages dashboard:
+#   Pages → reminiscences → Settings → Variables and Secrets
+#
+# D1 is *shared* with fiction.finnoybu.com (same database_id). One user row
+# spans both sites because cookies are set at `.finnoybu.com` and both Pages
+# projects bind the same D1. Migrations are authored in finnoybu-trilogy;
+# memoirs binds the existing database and does not generate its own.
+#
+# OAuth Client IDs are public per provider docs — they get embedded in OAuth
+# redirect URLs anyway. AWS access keys are treated as a credential pair, so
+# both halves stay encrypted in the dashboard.
+#
+# Cloudflare Pages quirk: once any [env.<name>.*] block exists, Pages treats
+# "production" as a named environment that does NOT auto-inherit top-level
+# bindings. So [[d1_databases]] and [[r2_buckets]] are repeated explicitly
+# inside each environment block. Top-level declarations stay only as a fallback
+# for `wrangler dev` (which DOES inherit them).
+
+name = "reminiscences"
+compatibility_date = "2026-05-16"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+## Top-level: used by wrangler dev / wrangler d1 commands, NOT by Pages
+## production (which reads only from the [env.production] block below).
+
+[[d1_databases]]
+binding = "DB"
+database_name = "finnoybu-trilogy"
+database_id = "954d7506-aea2-4900-8f84-07f227466e59"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "reminiscences-files"
+
+[vars]
+AWS_REGION = "us-east-1"
+EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
+GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
+FACEBOOK_CLIENT_ID = "953161987308635"
+GITHUB_CLIENT_ID = "Ov23liKTIJ2dbmteTrQZ"
+APPLE_CLIENT_ID = "com.finnoybu.auth"
+
+## ═══════════════════════════════════════════════════════════════════════════
+## PRODUCTION — memoirs.finnoybu.com
+## ═══════════════════════════════════════════════════════════════════════════
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "finnoybu-trilogy"
+database_id = "954d7506-aea2-4900-8f84-07f227466e59"
+
+[[env.production.r2_buckets]]
+binding = "FILES"
+bucket_name = "reminiscences-files"
+
+[env.production.vars]
+PUBLIC_SITE_URL = "https://memoirs.finnoybu.com"
+COOKIE_DOMAIN = ".finnoybu.com"
+AWS_REGION = "us-east-1"
+EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
+GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
+FACEBOOK_CLIENT_ID = "953161987308635"
+GITHUB_CLIENT_ID = "Ov23liKTIJ2dbmteTrQZ"
+APPLE_CLIENT_ID = "com.finnoybu.auth"
+
+## ═══════════════════════════════════════════════════════════════════════════
+## PREVIEW — per-deploy *.reminiscences.pages.dev hashes. PUBLIC_SITE_URL
+## and COOKIE_DOMAIN stay empty so src/lib/env's request-origin fallback
+## resolves to the per-hash hostname and cookies don't try to attach to
+## .finnoybu.com (which a .pages.dev host can't share with anyway).
+## ═══════════════════════════════════════════════════════════════════════════
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "finnoybu-trilogy"
+database_id = "954d7506-aea2-4900-8f84-07f227466e59"
+
+[[env.preview.r2_buckets]]
+binding = "FILES"
+bucket_name = "reminiscences-files"
+
+[env.preview.vars]
+PUBLIC_SITE_URL = ""
+COOKIE_DOMAIN = ""
+AWS_REGION = "us-east-1"
+EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
+GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
+FACEBOOK_CLIENT_ID = "953161987308635"
+GITHUB_CLIENT_ID = "Ov23liKTIJ2dbmteTrQZ"
+APPLE_CLIENT_ID = "com.finnoybu.auth"

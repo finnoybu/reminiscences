@@ -1,11 +1,8 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   darkMode: 'class',
-  content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}'
-  ],
+  content: ['./src/**/*.{astro,html,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -44,9 +41,9 @@ const config: Config = {
       transitionTimingFunction: {
         tide: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
       },
-    }
+    },
   },
-  plugins: []
-}
+  plugins: [],
+};
 
-export default config
+export default config;
