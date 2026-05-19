@@ -81,6 +81,10 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Always reserve scrollbar width so short pages (contact, shop above
+     fold) don't horizontally shift the centered layout relative to
+     long pages (chapter, homepage). */
+  scrollbar-gutter: stable;
 }
 
 body {

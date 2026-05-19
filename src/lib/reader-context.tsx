@@ -163,13 +163,18 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
     [user],
   );
 
-  // Apply font-size to the document. Theme is intentionally NOT applied
-  // here — SiteHeader.astro owns the theme system.
+  // Apply font-size to the article prose container, not <html>. Reader
+  // font-size is a *reading* preference and was leaking up to chrome:
+  // Tailwind's text-base { font-size: 1rem } on <html> overrides the
+  // 17px baseline in global.css, shrinking the entire page (including
+  // the sticky SiteHeader) on pages where ReaderProvider mounts.
+  // Theme is intentionally NOT applied here — SiteHeader.astro owns it.
   useEffect(() => {
     if (!hydrated) return;
-    const html = document.documentElement;
-    html.classList.remove('text-sm', 'text-base', 'text-lg', 'text-xl');
-    html.classList.add(`text-${preferences.fontSize}`);
+    const article = document.querySelector('.prose-memoir');
+    if (!article) return;
+    article.classList.remove('text-sm', 'text-base', 'text-lg', 'text-xl');
+    article.classList.add(`text-${preferences.fontSize}`);
   }, [preferences.fontSize, hydrated]);
 
   const setTheme = (theme: Theme) => {
