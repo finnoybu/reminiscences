@@ -3,55 +3,49 @@
 @tailwind utilities;
 
 /* ───────────────────────────────────────────────────────────
-   Design tokens—Sea-Fog (light) / Lantern (dark)
-   Derived from the Salt and Silence cover: cool slate-blue-grey,
-   near-black ship hull, a single warm amber lantern.
+   Design tokens — Parchment (light) / Midnight Voyage (dark)
    ─────────────────────────────────────────────────────────── */
 :root {
-  /* surfaces—pale sea-fog */
-  --color-bg: #e8ecee;
-  --color-bg-elev: #f2f5f6;
-  --color-bg-sunk: #d8dee2;
+  /* surfaces */
+  --color-bg: #f6f1e4;
+  --color-bg-elev: #fbf7ec;
+  --color-bg-sunk: #ede5cf;
 
-  /* ink—cold slate */
-  --color-ink: #151b22;
-  --color-ink-muted: #5a6877;
-  --color-ink-faint: #8a97a5;
+  /* ink */
+  --color-ink: #1a1611;
+  --color-ink-muted: #5a4f3f;
+  --color-ink-faint: #8a7e6a;
 
   /* rules */
-  --color-rule: #b8c2cc;
-  --color-rule-soft: #cdd5dc;
+  --color-rule: #c7bb9e;
+  --color-rule-soft: #dfd5bb;
 
-  /* accents—deep navy water + oxide-red ember */
-  --color-accent: #1f3a55;
+  /* accents */
+  --color-accent: #1d3a52;
   --color-accent-hi: #2d5a7f;
-  --color-brass: #a7381d;
+  --color-brass: #a8763e;
 
   /* shadows */
-  --shadow-tint: 20 28 38;
+  --shadow-tint: 24 22 16;
 
   color-scheme: light;
 }
 
 html.dark {
-  /* surfaces—near-black hull against dim water */
-  --color-bg: #08101a;
-  --color-bg-elev: #0f1923;
-  --color-bg-sunk: #040810;
+  --color-bg: #0d1620;
+  --color-bg-elev: #131f2c;
+  --color-bg-sunk: #08111a;
 
-  /* ink—cool pale mist (NOT warm cream) */
-  --color-ink: #d2d6dc;
-  --color-ink-muted: #8a97a5;
-  --color-ink-faint: #5a6877;
+  --color-ink: #ece4d0;
+  --color-ink-muted: #a9afba;
+  --color-ink-faint: #6f7682;
 
-  /* rules */
-  --color-rule: #1e2a38;
-  --color-rule-soft: #141c28;
+  --color-rule: #23303e;
+  --color-rule-soft: #1a2530;
 
-  /* accents—moon-blue + oxide-red ember */
-  --color-accent: #8aa4b8;
-  --color-accent-hi: #b1c5d5;
-  --color-brass: #d86240;
+  --color-accent: #79b3dc;
+  --color-accent-hi: #a4cbe8;
+  --color-brass: #d4a24a;
 
   --shadow-tint: 0 0 0;
 
