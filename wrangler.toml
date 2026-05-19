@@ -42,10 +42,7 @@ AWS_REGION = "us-east-1"
 EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
 GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
 FACEBOOK_CLIENT_ID = "953161987308635"
-# GITHUB_CLIENT_ID is intentionally omitted at the top level — memoirs needs
-# its OWN GitHub OAuth app (GitHub allows only one callback URL per app, so
-# fiction's app can't be reused). Set the memoirs-specific value in the
-# dashboard under both Production and Preview when the second app exists.
+GITHUB_CLIENT_ID = "Ov23li4nADGWGLvpGzKO"
 APPLE_CLIENT_ID = "com.finnoybu.auth"
 
 ## ═══════════════════════════════════════════════════════════════════════════
@@ -68,6 +65,7 @@ AWS_REGION = "us-east-1"
 EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
 GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
 FACEBOOK_CLIENT_ID = "953161987308635"
+GITHUB_CLIENT_ID = "Ov23li4nADGWGLvpGzKO"
 APPLE_CLIENT_ID = "com.finnoybu.auth"
 
 ## ═══════════════════════════════════════════════════════════════════════════
@@ -93,4 +91,5 @@ AWS_REGION = "us-east-1"
 EMAIL_FROM = "Finnoybu.com <hello@finnoybu.com>"
 GOOGLE_CLIENT_ID = "753668982308-i3cvsardb34qcgkqau174uskn4aoqkn5.apps.googleusercontent.com"
 FACEBOOK_CLIENT_ID = "953161987308635"
+GITHUB_CLIENT_ID = "Ov23li4nADGWGLvpGzKO"
 APPLE_CLIENT_ID = "com.finnoybu.auth"
