@@ -66,9 +66,9 @@ are the only ones that *must* be entered by hand:
 | `AWS_SECRET_ACCESS_KEY` | (secret)              | (secret)              | Same as above.                                                        |
 | `GOOGLE_CLIENT_SECRET`  | (secret)              | (secret)              | Same Google OAuth client as fiction. Add memoirs's callback URL to the existing Google client: `https://memoirs.finnoybu.com/api/auth/callback/google`. |
 | `FACEBOOK_CLIENT_SECRET`| (secret)              | (secret)              | Same Facebook app as fiction. Add memoirs's callback URL similarly.   |
-| `APPLE_CLIENT_SECRET`   | (secret)              | (secret)              | Same as fiction; generated from the same Apple Service ID.            |
-| `GITHUB_CLIENT_ID`      | (new — see step 4)    | (new — see step 4)    | **Memoirs needs its own GitHub OAuth app.** GitHub allows only one callback URL per app, so fiction's app can't be reused. Intentionally omitted from `wrangler.toml` for this reason. |
-| `GITHUB_CLIENT_SECRET`  | (new — see step 4)    | (new — see step 4)    | Same.                                                                 |
+| `APPLE_CLIENT_SECRET`   | **DEFER**             | **DEFER**             | Apple Developer enrollment is pending — skip this row at cutover; `auth.ts:55` only registers the Apple provider when both ID + secret are present, so missing secret is harmless. Add when enrollment completes. |
+| `GITHUB_CLIENT_ID`      | (new — see step 4)    | (new — see step 4)    | **Memoirs needs its own GitHub OAuth app.** Despite GitHub docs' "subdomain swap allowed" example, in practice GitHub rejects redirect_uris from a different subdomain than the registered callback. Confirmed at cutover (2026-05-19) — sign-in failed with "redirect_uri not associated" until we created a memoirs-only app. Memoirs's CLIENT_ID lives in `wrangler.toml`; the SECRET lives here. |
+| `GITHUB_CLIENT_SECRET`  | (new — see step 4)    | (new — see step 4)    | Generated alongside the memoirs-specific GitHub OAuth app in step 4.  |
 
 Anything not listed in the table above (e.g. `PUBLIC_SITE_URL`, `COOKIE_DOMAIN`,
 `AWS_REGION`, `EMAIL_FROM`, `GOOGLE_CLIENT_ID`, `FACEBOOK_CLIENT_ID`,
@@ -92,18 +92,26 @@ fiction app.)
 ## 5. Upload digital files to R2
 
 The shop sells one direct-download SKU, `pdf-epub`. The download endpoint
-`src/pages/api/download/[slug].ts` reads `env.FILES.get(...)` so the bucket
-needs both file variants. Upload via wrangler (faster than dashboard for
-multi-MB files):
+`src/pages/api/download/[slug].ts` builds the key as `${slug}/${slug}.${ext}`
+(slug-prefixed path, not flat), so the bucket needs both file variants at
+the right keys.
+
+Source files for memoirs live at `D:\dev\reminiscences\output\` (the repo's
+own build output dir, not under FINNOYBU Press — memoirs has a different
+production pipeline than the AI guidebook series).
 
 ```sh
-wrangler r2 object put reminiscences-files/pdf-epub.pdf  --file=<path>/A-Sailors-Reminiscences.pdf  --remote
-wrangler r2 object put reminiscences-files/pdf-epub.epub --file=<path>/A-Sailors-Reminiscences.epub --remote
+npx wrangler r2 object put "reminiscences-files/pdf-epub/pdf-epub.pdf"  --file="D:/dev/reminiscences/output/a-sailors-reminiscences.pdf"
+npx wrangler r2 object put "reminiscences-files/pdf-epub/pdf-epub.epub" --file="D:/dev/reminiscences/output/a-sailors-reminiscences.epub"
 ```
 
-Source file locations match the FINNOYBU Press convention —
-`D:\dev\FINNOYBU Press\<book>\output\<book>-digital.{pdf,epub}` — verify
-the exact paths before running the commands.
+Notes:
+
+- Wrangler 3.x defaults to remote storage. The `--remote` flag was added in
+  wrangler 4 — do NOT include it on v3 or the command errors with
+  "Unknown argument: remote". The playbook pins wrangler to `^3.95.0`.
+- Use `npx wrangler` rather than a globally-installed `wrangler` to match
+  the project's pinned version from `devDependencies`.
 
 ## 6. Stripe webhook endpoint
 
@@ -194,4 +202,51 @@ is fine after a week of stable Pages traffic.
   already `'pdf-epub'`, so don't rename.
 - **`npm ci` fails on Cloudflare's build** — `package-lock.json` was
   regenerated under Windows, which strips Linux platform binaries. Re-run
-  the regenerate-via-WSL step. See `feedback_windows_npm_lockfile.md`.
+  the regenerate-via-WSL step (`npm run lock:wsl`). See
+  `feedback_windows_npm_lockfile.md`.
+
+## Pitfalls discovered during memoirs cutover (2026-05-19)
+
+These bit during the actual migration and are worth knowing about up front
+for any future port:
+
+- **`tailwind.config.ts` is mandatory** — without it, Tailwind defaults to
+  `content: []` and emits only the base layer (CSS reset + custom
+  properties), giving an unstyled site. Port fiction's config but change
+  the content glob to `./src/**/*.{astro,html,ts,tsx}`.
+- **Don't blindly copy fiction's `src/styles/global.css`** — fiction's
+  Sea-Fog palette (`#e8ecee` cool slate-blue-grey) bleeds into memoirs
+  unless you replace the design tokens with memoirs's Parchment palette
+  (`#f6f1e4` warm cream, `#1a1611` warm dark brown, `#a8763e` brass).
+  The source of truth is on the pre-migration `main` branch at
+  `app/globals.css`.
+- **Image grayscale treatment differs** — fiction uses
+  `grayscale sepia-[.15]` for a slight warm tint on chapter cards/heroes;
+  memoirs uses pure `grayscale` (no sepia). Check `src/components/Chapter*.astro`
+  and `src/pages/{about,index}.astro` after porting.
+- **Better Auth `baseURL = ctx.url.origin`** — see [`src/pages/api/auth/[...all].ts`](../src/pages/api/auth/%5B...all%5D.ts).
+  The handler uses the request origin, NOT `PUBLIC_SITE_URL`. Consequence:
+  smoke-testing OAuth on `*.pages.dev` requires registering that hostname
+  with each provider's redirect-URI list. Easier to just do the DNS cutover
+  first and smoke-test on the canonical domain.
+- **GitHub OAuth Apps don't actually permit cross-subdomain redirects** —
+  the docs' "subdomain swap allowed" example is misleading. Confirmed at
+  cutover: a fiction OAuth app rejected the memoirs callback with
+  "redirect_uri is not associated with this application." Always create a
+  per-subdomain OAuth app for GitHub (one app per site).
+- **CI workflow needs Astro/npm refit** — `.github/workflows/ci.yml` was
+  originally written for pnpm + Next.js. After migration: switch to
+  `npm ci`, drop the lint/test jobs (no scripts exist for them yet), and
+  drop Next.js-era env vars in the build step. Also add `migration/*` to
+  `scripts/validate-versioning.mjs` if you're using that branch name pattern.
+- **`scripts/validate-frontmatter.mjs` needs `gray-matter` + `ajv`** —
+  these were Next.js runtime deps in the old codebase; Astro doesn't need
+  them at runtime but the validation script imports them. Add to
+  `devDependencies` and regen the lockfile via WSL.
+- **Direct push to `main` is blocked by repository ruleset** — even with
+  `--admin`, the "Changes must be made through a pull request" rule applies.
+  To trigger a Production build of `main` without committing through a PR,
+  use `npx wrangler pages deploy ./dist --project-name reminiscences --branch main`.
+- **CodeQL flags `String.replace(/<[^>]*>/g, '')` as incomplete
+  sanitization** — for excerpts, prefer the stricter `replace(/[<>]/g, '')`
+  which is provably incapable of leaving any angle brackets in the output.
