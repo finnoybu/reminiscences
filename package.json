@@ -42,7 +42,9 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/zxcvbn": "^4.4.5",
+    "ajv": "^8.20.0",
     "autoprefixer": "^10.4.19",
+    "gray-matter": "^4.0.3",
     "wrangler": "^3.95.0"
   },
   "overrides": {
